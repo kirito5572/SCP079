@@ -16,6 +16,7 @@ public class CommandManager {
         addCommand(new HelpCommand(this));
         addCommand(new PingCommand());
         addCommand(new VersionCommand());
+        addCommand(new imforCommand());
     }
 
     private void addCommand(ICommand command) {

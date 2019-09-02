@@ -31,8 +31,12 @@ public class HelpCommand implements ICommand {
 
         String joined = String.join(" ", args);
 
-        if(event.getGuild().getSelfMember().hasPermission(Permission.MESSAGE_EMBED_LINKS)) {
+        if(!event.getGuild().getSelfMember().hasPermission(Permission.MESSAGE_EMBED_LINKS)) {
             event.getChannel().sendMessage("봇이 임베디드 링크를 보낼 권한이 없습니다.").queue();
+            event.getChannel().sendMessage("봇이 링크를 보낼 권한이 제대로 설정되어있는지 확인하여 주시기 바랍니다.\n" +
+                    "비밀 채널의 경우, 링크 권한이 / 가 아닌 V 로 체크를 하셔야 합니다.").queue();
+
+            return;
         }
 
         if (args.contains("1") || args.isEmpty()) {
