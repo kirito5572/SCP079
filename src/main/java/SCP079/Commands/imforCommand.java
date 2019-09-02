@@ -21,10 +21,13 @@ public class imforCommand implements ICommand {
         String dokdoServer = "581835684986486785";
         String snoServer = "570659322007126029";
         String gariaServer = "585437712639590423";
+        String gariaServerChat = "617973738582966292";
         String carDogeServer = "609985979167670272";
         String carDogeServerChat = "617938587102478337";
         String tlServer = "551022729441312779";
         String tlServerChat = "617924927944785931";
+        String koreanServer = "607542356866236416";
+        String koreanServerChat = "607548370843860994";
         if(!(event.getMember().hasPermission(Permission.ADMINISTRATOR) || event.getMember().hasPermission(Permission.MANAGE_ROLES) ||
                 event.getMember().hasPermission(Permission.MESSAGE_MANAGE) || event.getMember().hasPermission(Permission.MANAGE_CHANNEL) ||
                 event.getMember().hasPermission(Permission.MANAGE_PERMISSIONS))) {
@@ -102,7 +105,8 @@ public class imforCommand implements ICommand {
                     .addField("제재 대상자", NickName, false)
                     .addField("스팀 ID", ID, false)
                     .addField("제재 사유", reason.toString(), false)
-                    .addField("제재 담당 서버", event.getGuild().getName(), false);
+                    .addField("제재 담당 서버", event.getGuild().getName(), false)
+                    .addField("공유자", event.getMember().getAsMention(), false);
 
             if(!event.getGuild().getId().equals(greenServer)) {
                 event.getJDA().getGuildById(greenServer).getTextChannelById(greenServerChat).sendMessage(builder.build()).queue();
@@ -112,6 +116,12 @@ public class imforCommand implements ICommand {
             }
             if(!event.getGuild().getId().equals(carDogeServer)) {
                 event.getJDA().getGuildById(carDogeServer).getTextChannelById(carDogeServerChat).sendMessage(builder.build()).queue();
+            }
+            if(!event.getGuild().getId().equals(koreanServer)) {
+                event.getJDA().getGuildById(koreanServer).getTextChannelById(koreanServerChat).sendMessage(builder.build()).queue();
+            }
+            if(!event.getGuild().getId().equals(gariaServer)) {
+                event.getJDA().getGuildById(gariaServer).getTextChannelById(gariaServerChat).sendMessage(builder.build()).queue();
             }
 
         }));
