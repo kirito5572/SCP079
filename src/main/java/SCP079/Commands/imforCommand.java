@@ -107,21 +107,40 @@ public class imforCommand implements ICommand {
                     .addField("제재 사유", reason.toString(), false)
                     .addField("제재 담당 서버", event.getGuild().getName(), false)
                     .addField("공유자", event.getMember().getAsMention(), false);
+            try {
+                if(!serverID.equals(greenServer)) {
+                    event.getJDA().getGuildById(greenServer).getTextChannelById(greenServerChat).sendMessage(builder.build()).queue();
+                }
+            } catch (Exception ignored) {
 
-            if(!event.getGuild().getId().equals(greenServer)) {
-                event.getJDA().getGuildById(greenServer).getTextChannelById(greenServerChat).sendMessage(builder.build()).queue();
             }
-            if(!event.getGuild().getId().equals(tlServer)) {
-                event.getJDA().getGuildById(tlServer).getTextChannelById(tlServerChat).sendMessage(builder.build()).queue();
+            try {
+                if(!serverID.equals(tlServer)) {
+                    event.getJDA().getGuildById(tlServer).getTextChannelById(tlServerChat).sendMessage(builder.build()).queue();
+                }
+            } catch (Exception ignored) {
+
             }
-            if(!event.getGuild().getId().equals(carDogeServer)) {
-                event.getJDA().getGuildById(carDogeServer).getTextChannelById(carDogeServerChat).sendMessage(builder.build()).queue();
+            try {
+                if(!serverID.equals(carDogeServer)) {
+                    event.getJDA().getGuildById(carDogeServer).getTextChannelById(carDogeServerChat).sendMessage(builder.build()).queue();
+                }
+            } catch (Exception ignored) {
+
             }
-            if(!event.getGuild().getId().equals(koreanServer)) {
-                event.getJDA().getGuildById(koreanServer).getTextChannelById(koreanServerChat).sendMessage(builder.build()).queue();
+            try {
+                if(!serverID.equals(koreanServer)) {
+                    event.getJDA().getGuildById(koreanServer).getTextChannelById(koreanServerChat).sendMessage(builder.build()).queue();
+                }
+            } catch (Exception ignored) {
+
             }
-            if(!event.getGuild().getId().equals(gariaServer)) {
-                event.getJDA().getGuildById(gariaServer).getTextChannelById(gariaServerChat).sendMessage(builder.build()).queue();
+            try {
+                if(!serverID.equals(gariaServer)) {
+                    event.getJDA().getGuildById(gariaServer).getTextChannelById(gariaServerChat).sendMessage(builder.build()).queue();
+                }
+            } catch (Exception ignored) {
+
             }
 
         }));
