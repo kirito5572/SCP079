@@ -22,6 +22,7 @@ public class imforCommand implements ICommand {
         String snoServer = "570659322007126029";
         String gariaServer = "585437712639590423";
         String carDogeServer = "609985979167670272";
+        String carDogeServerChat = "617938587102478337";
         String tlServer = "551022729441312779";
         String tlServerChat = "617924927944785931";
         if(!(event.getMember().hasPermission(Permission.ADMINISTRATOR) || event.getMember().hasPermission(Permission.MANAGE_ROLES) ||
@@ -108,6 +109,9 @@ public class imforCommand implements ICommand {
             }
             if(!event.getGuild().getId().equals(tlServer)) {
                 event.getJDA().getGuildById(tlServer).getTextChannelById(tlServerChat).sendMessage(builder.build()).queue();
+            }
+            if(!event.getGuild().getId().equals(carDogeServer)) {
+                event.getJDA().getGuildById(carDogeServer).getTextChannelById(carDogeServerChat).sendMessage(builder.build()).queue();
             }
 
         }));
