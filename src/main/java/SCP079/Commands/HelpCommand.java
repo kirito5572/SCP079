@@ -5,6 +5,7 @@ import SCP079.Objects.CommandManager;
 import SCP079.Objects.ICommand;
 import me.duncte123.botcommons.messaging.EmbedUtils;
 import net.dv8tion.jda.core.EmbedBuilder;
+import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
 
 import java.util.Collection;
@@ -27,7 +28,12 @@ public class HelpCommand implements ICommand {
 
     @Override
     public void handle(List<String> args, GuildMessageReceivedEvent event) {
+
         String joined = String.join(" ", args);
+
+        if(event.getGuild().getSelfMember().hasPermission(Permission.MESSAGE_EMBED_LINKS)) {
+            event.getChannel().sendMessage("봇이 임베디드 링크를 보낼 권한이 없습니다.").queue();
+        }
 
         if (args.contains("1") || args.isEmpty()) {
             if(!joined.equals("")) {
