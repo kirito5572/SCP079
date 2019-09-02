@@ -63,6 +63,7 @@ public class imforCommand implements ICommand {
                 return;
             }
         }
+        String reasonFinal = String.join(" ", reason.toString());
         final String[] temp = new String[1];
         WebUtils.ins.scrapeWebPage("https://steamid.io/lookup/" + SteamID).async((document1 -> {
             String a1 = document1.getElementsByTag("body").first().toString();
@@ -104,51 +105,18 @@ public class imforCommand implements ICommand {
                     .setColor(Color.RED)
                     .addField("제재 대상자", NickName, false)
                     .addField("스팀 ID", ID, false)
-                    .addField("제재 사유", reason.toString(), false)
+                    .addField("제재 사유", reasonFinal, false)
                     .addField("제재 담당 서버", event.getGuild().getName(), false)
                     .addField("공유자", event.getMember().getAsMention(), false);
-            try {
-                if(!serverID.equals(greenServer)) {
-                    event.getJDA().getGuildById(greenServer).getTextChannelById(greenServerChat).sendMessage(builder.build()).queue();
-                }
-            } catch (Exception ignored) {
 
-            }
-            try {
-                if(!serverID.equals(tlServer)) {
-                    event.getJDA().getGuildById(tlServer).getTextChannelById(tlServerChat).sendMessage(builder.build()).queue();
-                }
-            } catch (Exception ignored) {
-
-            }
-            try {
-                if(!serverID.equals(carDogeServer)) {
-                    event.getJDA().getGuildById(carDogeServer).getTextChannelById(carDogeServerChat).sendMessage(builder.build()).queue();
-                }
-            } catch (Exception ignored) {
-
-            }
-            try {
-                if(!serverID.equals(koreanServer)) {
-                    event.getJDA().getGuildById(koreanServer).getTextChannelById(koreanServerChat).sendMessage(builder.build()).queue();
-                }
-            } catch (Exception ignored) {
-
-            }
-            try {
-                if(!serverID.equals(gariaServer)) {
-                    event.getJDA().getGuildById(gariaServer).getTextChannelById(gariaServerChat).sendMessage(builder.build()).queue();
-                }
-            } catch (Exception ignored) {
-
-            }
+            HackCommand.server_Send(serverID, builder, event);
 
         }));
     }
 
     @Override
     public String getHelp() {
-        return "SCP 한국 서버간 제재 정보 공유를 위한 커맨드입니다. \n" +
+        return "SCP 한국 서버들간 제재 정보 공유를 위한 커맨드입니다. \n" +
                 "사용법: `" + App.getPREFIX() + getInvoke() + " <Steam ID> <사유> `";
     }
 
