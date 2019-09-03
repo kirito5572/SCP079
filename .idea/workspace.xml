@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="cdb961d0-c07c-4030-9401-b0386cab9ae1" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/resources/logback.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/5.2.1/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.2.1/executionHistory/executionHistory.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/5.2.1/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.2.1/executionHistory/executionHistory.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/5.2.1/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.2.1/fileHashes/fileHashes.bin" afterDir="false" />
@@ -9,9 +10,10 @@
       <change beforePath="$PROJECT_DIR$/.gradle/5.2.1/javaCompile/classAnalysis.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.2.1/javaCompile/classAnalysis.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/5.2.1/javaCompile/javaCompile.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.2.1/javaCompile/javaCompile.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/libs/rito-bot-1.0-SNAPSHOT.jar" beforeDir="false" afterPath="$PROJECT_DIR$/build/libs/rito-bot-1.0-SNAPSHOT.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/SCP079/Objects/CommandManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/SCP079/Objects/CommandManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/SCP079/Commands/HackCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/SCP079/Commands/HackCommand.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -50,7 +52,7 @@
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/main/resources" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
@@ -70,6 +72,7 @@
       <recent name="SCP079" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\ruby0\IdeaProjects\SCP-079-2\SCP079\src\main\resources" />
       <recent name="C:\Users\ruby0\IdeaProjects\SCP-079-2\src\main\java\SCP079\Commands" />
     </key>
   </component>
@@ -142,7 +145,7 @@
       <option name="presentableId" value="Default" />
       <updated>1567390102490</updated>
       <workItem from="1567390106341" duration="2263000" />
-      <workItem from="1567392651400" duration="15245000" />
+      <workItem from="1567392651400" duration="17546000" />
     </task>
     <servers />
   </component>

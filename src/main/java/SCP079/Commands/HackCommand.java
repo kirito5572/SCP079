@@ -13,7 +13,6 @@ import java.util.List;
 
 public class HackCommand implements ICommand {
     private String serverID;
-    private static String dokdoServer = "581835684986486785";
     private static String snoServer = "570659322007126029";
     private static String starhaServer = "576823770329907201";
 
@@ -179,10 +178,21 @@ public class HackCommand implements ICommand {
             String simaServer = "582091661266386944";
             if(!serverID.equals(simaServer)) {
                 String simaServerChat = "595597485238648833";
+                String simaServerChat2 = "598126633588883457";
                 event.getJDA().getGuildById(simaServer).getTextChannelById(simaServerChat).sendMessage(builder.build()).queue();
+                event.getJDA().getGuildById(simaServer).getTextChannelById(simaServerChat2).sendMessage(builder.build()).queue();
             }
         } catch (Exception ignored) {
             event.getChannel().sendMessage("시마서버 전송 실패").queue();
+        }
+        try {
+            String dokdoServer = "581835684986486785";
+            if(!serverID.equals(dokdoServer)) {
+                String dokdoServerChat = "618411407742074880";
+                event.getJDA().getGuildById(dokdoServer).getTextChannelById(dokdoServerChat).sendMessage(builder.build()).queue();
+            }
+        } catch (Exception ignored) {
+            event.getChannel().sendMessage("독도 서버 전송 실패").queue();
         }
 
         event.getChannel().sendMessage("전송이 완료되었습니다.").queue();
