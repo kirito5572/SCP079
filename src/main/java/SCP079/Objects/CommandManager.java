@@ -18,6 +18,7 @@ public class CommandManager {
         addCommand(new VersionCommand());
         addCommand(new imforCommand());
         addCommand(new UnbanCommand());
+        addCommand(new HackCommand());
     }
 
     private void addCommand(ICommand command) {
