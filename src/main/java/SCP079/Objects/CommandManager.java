@@ -17,6 +17,7 @@ public class CommandManager {
         addCommand(new PingCommand());
         addCommand(new VersionCommand());
         addCommand(new imforCommand());
+        addCommand(new UnbanCommand());
     }
 
     private void addCommand(ICommand command) {

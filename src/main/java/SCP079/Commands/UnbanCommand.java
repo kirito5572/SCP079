@@ -11,11 +11,10 @@ import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
 import java.awt.*;
 import java.util.List;
 
-public class imforCommand implements ICommand {
+public class UnbanCommand implements ICommand {
     @Override
     public void handle(List<String> args, GuildMessageReceivedEvent event) {
-        String serverID = event.getGuild().getId();
-
+        String serverID;
         if(!(event.getMember().hasPermission(Permission.ADMINISTRATOR) || event.getMember().hasPermission(Permission.MANAGE_ROLES) ||
                 event.getMember().hasPermission(Permission.MESSAGE_MANAGE) || event.getMember().hasPermission(Permission.MANAGE_CHANNEL) ||
                 event.getMember().hasPermission(Permission.MANAGE_PERMISSIONS))) {
@@ -24,13 +23,16 @@ public class imforCommand implements ICommand {
             return;
         }
 
+        serverID = event.getGuild().getId();
+
         if(args.isEmpty()) {
             event.getChannel().sendMessage("인수 부족 '" + App.getPREFIX() + "명령어" +
                     getInvoke() + "'").queue();
             return;
         }
         String SteamID;
-        StringBuilder reason;
+        String ipAddress;
+        String level;
         try {
             SteamID = args.get(0);
 
@@ -39,20 +41,30 @@ public class imforCommand implements ICommand {
 
             return;
         }
-        reason = new StringBuilder();
         try {
-            for(int i = 1; i <= args.size(); i++) {
-                reason.append(args.get(i));
+            ipAddress = args.get(1);
+
+        } catch (Exception e) {
+            event.getChannel().sendMessage("ip 주소가 입력되지 않았거나, 인수가 잘못 입력되었습니다.").queue();
+
+            return;
+        }
+        StringBuilder levelBuilder = new StringBuilder();
+        try {
+            for(int i = 2; i <= args.size(); i++) {
+                levelBuilder.append(args.get(i));
             }
         } catch (Exception e) {
-            if(reason.toString().equals("")) {
-                event.getChannel().sendMessage("사유가 입력되지 않았습니다.").queue();
+            if(levelBuilder.toString().equals("")) {
+                event.getChannel().sendMessage("제재 감소 기간이 입력되지 않았습니다.").queue();
 
                 return;
             }
         }
-        String reasonFinal = String.join(" ", reason.toString());
+        level = levelBuilder.toString();
+
         final String[] temp = new String[1];
+        String finalLevel = level;
         WebUtils.ins.scrapeWebPage("https://steamid.io/lookup/" + SteamID).async((document1 -> {
             String a1 = document1.getElementsByTag("body").first().toString();
             String a2 = a1;
@@ -89,11 +101,12 @@ public class imforCommand implements ICommand {
             NickName= NickName.replaceAll("\\p{Z}","");
 
             EmbedBuilder builder = EmbedUtils.defaultEmbed()
-                    .setTitle("공유된 제재 정보")
-                    .setColor(Color.RED)
-                    .addField("제재 대상자", NickName, false)
+                    .setTitle("공유된 제재 해제 정보")
+                    .setColor(Color.GREEN)
+                    .addField("제재 대상자", NickName + "(" + ipAddress + ")", false)
                     .addField("스팀 ID", ID, false)
-                    .addField("제재 사유", reasonFinal, false)
+                    .addField("제재 해제 사유", "이의 제기가 받아드려 제재 해제/기간 감소", false)
+                    .addField("제재 감소 기간", finalLevel, false)
                     .addField("제재 담당 서버", event.getGuild().getName(), false)
                     .addField("공유자", event.getMember().getAsMention(), false);
 
@@ -104,17 +117,17 @@ public class imforCommand implements ICommand {
 
     @Override
     public String getHelp() {
-        return "SCP 한국 서버들간 제재 정보 공유를 위한 커맨드입니다. \n" +
-                "사용법: `" + App.getPREFIX() + getInvoke() + " <Steam ID> <사유> `";
+        return "SCP 한국 서버들간 제재 해제 정보 공유를 위한 커맨드입니다. \n" +
+                "사용법: `" + App.getPREFIX() + getInvoke() + " <Steam ID> <ip주소> <의심 정도>`";
     }
 
     @Override
     public String getInvoke() {
-        return "정보";
+        return "이의";
     }
 
     @Override
     public String getSmallHelp() {
-        return "SCP 서버간 제재자 공유";
+        return "SCP 서버간 제재 해제 정보 공유";
     }
 }

@@ -13,9 +13,9 @@ import java.util.List;
 
 public class HackCommand implements ICommand {
     private String serverID;
-    private static String simaServer = "582091661266386944";
     private static String dokdoServer = "581835684986486785";
     private static String snoServer = "570659322007126029";
+    private static String starhaServer = "576823770329907201";
 
     @Override
     public void handle(List<String> args, GuildMessageReceivedEvent event) {
@@ -137,7 +137,7 @@ public class HackCommand implements ICommand {
                 event.getJDA().getGuildById(greenServer).getTextChannelById(greenServerChat).sendMessage(builder.build()).queue();
             }
         } catch (Exception ignored) {
-
+            event.getChannel().sendMessage("그린서버 전송 실패").queue();
         }
         try {
             String tlServer = "551022729441312779";
@@ -146,7 +146,7 @@ public class HackCommand implements ICommand {
                 event.getJDA().getGuildById(tlServer).getTextChannelById(tlServerChat).sendMessage(builder.build()).queue();
             }
         } catch (Exception ignored) {
-
+            event.getChannel().sendMessage("TL서버 전송 실패").queue();
         }
         try {
             String carDogeServer = "609985979167670272";
@@ -155,7 +155,7 @@ public class HackCommand implements ICommand {
                 event.getJDA().getGuildById(carDogeServer).getTextChannelById(carDogeServerChat).sendMessage(builder.build()).queue();
             }
         } catch (Exception ignored) {
-
+            event.getChannel().sendMessage("Doge서버 전송 실패").queue();
         }
         try {
             String koreanServer = "607542356866236416";
@@ -164,7 +164,7 @@ public class HackCommand implements ICommand {
                 event.getJDA().getGuildById(koreanServer).getTextChannelById(koreanServerChat).sendMessage(builder.build()).queue();
             }
         } catch (Exception ignored) {
-
+            event.getChannel().sendMessage("한국서버 전송 실패").queue();
         }
         try {
             String gariaServer = "585437712639590423";
@@ -173,7 +173,18 @@ public class HackCommand implements ICommand {
                 event.getJDA().getGuildById(gariaServer).getTextChannelById(gariaServerChat).sendMessage(builder.build()).queue();
             }
         } catch (Exception ignored) {
-
+            event.getChannel().sendMessage("가리아서버 전송 실패").queue();
         }
+        try {
+            String simaServer = "582091661266386944";
+            if(!serverID.equals(simaServer)) {
+                String simaServerChat = "595597485238648833";
+                event.getJDA().getGuildById(simaServer).getTextChannelById(simaServerChat).sendMessage(builder.build()).queue();
+            }
+        } catch (Exception ignored) {
+            event.getChannel().sendMessage("시마서버 전송 실패").queue();
+        }
+
+        event.getChannel().sendMessage("전송이 완료되었습니다.").queue();
     }
 }
