@@ -1,12 +1,12 @@
 package SCP079.Listener;
 
 import SCP079.App;
+import SCP079.Commands.HackCommand;
 import SCP079.Constants;
 import SCP079.Objects.CommandManager;
 import me.duncte123.botcommons.messaging.EmbedUtils;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.JDA;
-import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.*;
 import net.dv8tion.jda.core.events.ReadyEvent;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
@@ -15,15 +15,13 @@ import net.dv8tion.jda.core.hooks.ListenerAdapter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.awt.*;
 import java.io.File;
 import java.io.FileReader;
 
 public class Listener extends ListenerAdapter {
     private final CommandManager manager;
     private final Logger logger = LoggerFactory.getLogger(Listener.class);
-    private static String ID1;
-    private static String ID2;
+
     public Listener(CommandManager manager) {
         this.manager = manager;
     }
@@ -75,14 +73,23 @@ public class Listener extends ListenerAdapter {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        ID1 = IDreader.toString();
-        ID2 = IDreader1.toString();
+        String ID1 = IDreader.toString();
+        String ID2 = IDreader1.toString();
         if (event.getMessage().getContentRaw().equalsIgnoreCase(App.getPREFIX() + "종료") &&
                 (
-                        (event.getAuthor().getIdLong() == Long.decode(IDreader.toString())) ||
-                        (event.getAuthor().getIdLong() == Long.decode(IDreader1.toString()))
+                        (event.getAuthor().getIdLong() == Long.decode(ID1)) ||
+                                (event.getAuthor().getIdLong() == Long.decode(ID2))
                 )) {
+            System.out.println(ID1 + ID2);
             shutdown(event.getJDA(), event);
+            return;
+
+        } else if(event.getMessage().getContentRaw().equalsIgnoreCase(App.getPREFIX() + "재시작") &&
+                (
+                        (event.getAuthor().getIdLong() == Long.decode(ID1)) ||
+                                (event.getAuthor().getIdLong() == Long.decode(ID2))
+                )) {
+            restart(event.getJDA(), event);
             return;
         }
         if(event.getAuthor().isBot()) {
@@ -93,62 +100,12 @@ public class Listener extends ListenerAdapter {
 
             return;
         }
-        if(event.getGuild().getId().equals("600010501266866186")) {
-            if(!event.getChannel().getId().equals("600012818879741963")) {
-                if(!event.getMember().hasPermission(Permission.MANAGE_ROLES)) {
-                    if (event.getMessage().getContentRaw().startsWith(Constants.PREFIX)) {
-                        event.getChannel().sendMessage(event.getMember().getAsMention() + " , 명령어는 봇 명령어 채널에서 사용해주세요").queue();
-
-                        return;
-                    }
-                }
-            }
-        }
-        if(event.getGuild().getId().equals("617222347425972234")) {
-            if(!event.getChannel().getId().equals("617230917315854356")) {
-                if(!event.getMember().hasPermission(Permission.MANAGE_ROLES)) {
-                    if (event.getMessage().getContentRaw().startsWith(Constants.PREFIX)) {
-                        event.getChannel().sendMessage(event.getMember().getAsMention() + " , 명령어는 봇 명령어 채널에서 사용해주세요").queue();
-
-                        return;
-                    }
-                }
-            }
-        }
 
         if (event.getMessage().getContentRaw().startsWith(Constants.PREFIX)) {
             manager.handleCommand(event);
         }
     }
     private void shutdown(JDA jda, GuildMessageReceivedEvent event) {
-        Guild greenServer;
-        TextChannel channel;
-        String[] status = new String[5];
-        try {
-            greenServer = event.getJDA().getGuildById("600010501266866186");
-            channel = greenServer.getTextChannelById("600015521433518090");
-            status[0] = greenServer.getMemberById("580691748276142100").getOnlineStatus().toString();
-            status[1] = greenServer.getMemberById("586590053539643408").getOnlineStatus().toString();
-            status[2] = greenServer.getMemberById("600658772876197888").getOnlineStatus().toString();
-            status[3] = greenServer.getMemberById("600660530230722560").getOnlineStatus().toString();
-            status[4] = greenServer.getMemberById("600676751118696448").getOnlineStatus().toString();
-
-        } catch (Exception e) {
-
-            return;
-        }
-        EmbedBuilder builder = EmbedUtils.defaultEmbed()
-                .setTitle("서버 오픈 상태")
-                .setColor(Color.RED)
-                .addField("Green Color 상태", "OFF", false)
-                .addField("1서버", status[0], false)
-                .addField("2서버", status[1], false)
-                .addField("3서버", status[2], false)
-                .addField("4서버", status[3], false)
-                .addField("5서버", status[4], false)
-                .setFooter("1분마다 서버 상태가 자동 새로고침됩니다.","https://steamuserimages-a.akamaihd.net/ugc/982233321887038211/EB88C5E32425929921EF653FF5B784715B7D0639/");
-        channel.editMessageById("616234404452499476", builder.build() + "\n" +
-                "서버의 상태를 확인하는 봇이 종료되어 확인이 불가능합니다.").queue();
         new Thread(() -> {
             event.getChannel().sendMessage("봇이 종료됩니다.").queue();
             try {
@@ -160,13 +117,32 @@ public class Listener extends ListenerAdapter {
             System.exit(0);
         }).start();
     }
-
-    public static String getID1() {
-        return ID1;
+    private void restart(JDA jda, GuildMessageReceivedEvent event) {
+        new Thread(() -> {
+            String reason = event.getMessage().getContentRaw().substring((App.getPREFIX() + "재시작").length());
+            event.getMessage().delete().queue();
+            event.getChannel().sendMessage("종료 하는중....").queue();
+            if (event.getAuthor().getId().equals("284508374924787713")) {
+                EmbedBuilder builder = EmbedUtils.defaultEmbed()
+                        .setTitle("봇 재시작")
+                        .addField("재시작 목적", reason, false)
+                        .addField("점검 시간","최대 5분간", false)
+                        .setDescription("이용에 불편을 드려 죄송합니다.");
+                HackCommand.server_Send(event.getGuild().getId(), builder, event);
+            } else {
+                event.getJDA().getGuildById("600010501266866186").getTextChannelById("600010501266866188").sendMessage(event.getJDA().getSelfUser().getAsMention() + " 업데이트틀 위해 1분간 사용이 불가능합니다.").queue();
+            }
+            new Thread(() -> {
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                jda.shutdown();
+                System.exit(-1);
+            }).start();
+        }).start();
     }
 
-    public static String getID2() {
-        return ID2;
-    }
 }
 

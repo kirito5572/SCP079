@@ -42,7 +42,7 @@ public class imforCommand implements ICommand {
         reason = new StringBuilder();
         try {
             for(int i = 1; i <= args.size(); i++) {
-                reason.append(args.get(i));
+                reason.append(args.get(i)).append(" ");
             }
         } catch (Exception e) {
             if(reason.toString().equals("")) {

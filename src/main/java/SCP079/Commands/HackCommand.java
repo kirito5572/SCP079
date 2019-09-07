@@ -13,7 +13,6 @@ import java.util.List;
 
 public class HackCommand implements ICommand {
     private String serverID;
-    private static String snoServer = "570659322007126029";
     private static String starhaServer = "576823770329907201";
 
     @Override
@@ -128,7 +127,7 @@ public class HackCommand implements ICommand {
         return "SCP 서버간 핵 유저 공유";
     }
 
-    static void server_Send(String serverID, EmbedBuilder builder, GuildMessageReceivedEvent event) {
+    public static void server_Send(String serverID, EmbedBuilder builder, GuildMessageReceivedEvent event) {
         try {
             String greenServer = "600010501266866186";
             if(!serverID.equals(greenServer)) {
@@ -192,7 +191,16 @@ public class HackCommand implements ICommand {
                 event.getJDA().getGuildById(dokdoServer).getTextChannelById(dokdoServerChat).sendMessage(builder.build()).queue();
             }
         } catch (Exception ignored) {
-            event.getChannel().sendMessage("독도 서버 전송 실패").queue();
+            event.getChannel().sendMessage("독도서버 전송 실패").queue();
+        }
+        try {
+            String snoServer = "570659322007126029";
+            if(!serverID.equals(snoServer)) {
+                String snoServerChat = "570659322007126029";
+                event.getJDA().getGuildById(snoServer).getTextChannelById(snoServerChat).sendMessage(builder.build()).queue();
+            }
+        } catch (Exception ignored) {
+            event.getChannel().sendMessage("스노서버 전송 실패").queue();
         }
 
         event.getChannel().sendMessage("전송이 완료되었습니다.").queue();
