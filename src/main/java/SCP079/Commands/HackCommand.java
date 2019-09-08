@@ -134,7 +134,8 @@ public class HackCommand implements ICommand {
                 String greenServerChat = "617908612064346122";
                 event.getJDA().getGuildById(greenServer).getTextChannelById(greenServerChat).sendMessage(builder.build()).queue();
             }
-        } catch (Exception ignored) {
+        } catch (Exception e) {
+            
             event.getChannel().sendMessage("그린서버 전송 실패").queue();
         }
         try {
@@ -143,7 +144,8 @@ public class HackCommand implements ICommand {
                 String tlServerChat = "617924927944785931";
                 event.getJDA().getGuildById(tlServer).getTextChannelById(tlServerChat).sendMessage(builder.build()).queue();
             }
-        } catch (Exception ignored) {
+        } catch (Exception e) {
+            e.printStackTrace();
             event.getChannel().sendMessage("TL서버 전송 실패").queue();
         }
         try {
@@ -152,7 +154,8 @@ public class HackCommand implements ICommand {
                 String carDogeServerChat = "617938587102478337";
                 event.getJDA().getGuildById(carDogeServer).getTextChannelById(carDogeServerChat).sendMessage(builder.build()).queue();
             }
-        } catch (Exception ignored) {
+        } catch (Exception e) {
+            e.printStackTrace();
             event.getChannel().sendMessage("Doge서버 전송 실패").queue();
         }
         try {
@@ -161,7 +164,8 @@ public class HackCommand implements ICommand {
                 String koreanServerChat = "607548370843860994";
                 event.getJDA().getGuildById(koreanServer).getTextChannelById(koreanServerChat).sendMessage(builder.build()).queue();
             }
-        } catch (Exception ignored) {
+        } catch (Exception e) {
+            e.printStackTrace();
             event.getChannel().sendMessage("한국서버 전송 실패").queue();
         }
         try {
@@ -170,7 +174,8 @@ public class HackCommand implements ICommand {
                 String gariaServerChat = "617973738582966292";
                 event.getJDA().getGuildById(gariaServer).getTextChannelById(gariaServerChat).sendMessage(builder.build()).queue();
             }
-        } catch (Exception ignored) {
+        } catch (Exception e) {
+            e.printStackTrace();
             event.getChannel().sendMessage("가리아서버 전송 실패").queue();
         }
         try {
@@ -181,7 +186,8 @@ public class HackCommand implements ICommand {
                 event.getJDA().getGuildById(simaServer).getTextChannelById(simaServerChat).sendMessage(builder.build()).queue();
                 event.getJDA().getGuildById(simaServer).getTextChannelById(simaServerChat2).sendMessage(builder.build()).queue();
             }
-        } catch (Exception ignored) {
+        } catch (Exception e) {
+            e.printStackTrace();
             event.getChannel().sendMessage("시마서버 전송 실패").queue();
         }
         try {
@@ -190,7 +196,8 @@ public class HackCommand implements ICommand {
                 String dokdoServerChat = "618411407742074880";
                 event.getJDA().getGuildById(dokdoServer).getTextChannelById(dokdoServerChat).sendMessage(builder.build()).queue();
             }
-        } catch (Exception ignored) {
+        } catch (Exception e) {
+            e.printStackTrace();
             event.getChannel().sendMessage("독도서버 전송 실패").queue();
         }
         try {
@@ -199,7 +206,8 @@ public class HackCommand implements ICommand {
                 String snoServerChat = "570659322007126029";
                 event.getJDA().getGuildById(snoServer).getTextChannelById(snoServerChat).sendMessage(builder.build()).queue();
             }
-        } catch (Exception ignored) {
+        } catch (Exception e) {
+            e.printStackTrace();
             event.getChannel().sendMessage("스노서버 전송 실패").queue();
         }
 
