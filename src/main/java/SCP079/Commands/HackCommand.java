@@ -203,7 +203,7 @@ public class HackCommand implements ICommand {
         try {
             String snoServer = "570659322007126029";
             if(!serverID.equals(snoServer)) {
-                String snoServerChat = "570659322007126029";
+                String snoServerChat = "620125504246382592";
                 event.getJDA().getGuildById(snoServer).getTextChannelById(snoServerChat).sendMessage(builder.build()).queue();
             }
         } catch (Exception e) {
