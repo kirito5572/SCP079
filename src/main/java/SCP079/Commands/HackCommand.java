@@ -2,6 +2,7 @@ package SCP079.Commands;
 
 import SCP079.App;
 import SCP079.Objects.ICommand;
+import SCP079.Objects.getSteamID;
 import me.duncte123.botcommons.messaging.EmbedUtils;
 import me.duncte123.botcommons.web.WebUtils;
 import net.dv8tion.jda.core.EmbedBuilder;
@@ -60,55 +61,33 @@ public class HackCommand implements ICommand {
             return;
         }
 
-        final String[] temp = new String[1];
-        WebUtils.ins.scrapeWebPage("https://steamid.io/lookup/" + SteamID).async((document1 -> {
-            String a1 = document1.getElementsByTag("body").first().toString();
-            String a2 = a1;
-            try {
-                int b2 = a2.indexOf("data-clipboard-text=\"");
-                int b1 = a1.indexOf(" <dt class=\"key\">\n" +
-                        "       name");
-                a1 = a1.substring(b1 + 75);
-                a2 = a2.substring(b2 + 21);
-                b2 = a2.indexOf("data-clipboard-text=\"");
-                a2 = a2.substring(b2 + 21);
-                b2 = a2.indexOf("data-clipboard-text=\"");
-                a2 = a2.substring(b2 + 21);
-                int c1 = a1.indexOf("</dd>");
-                int c2 = a2.indexOf(" src=");
-                a1 = a1.substring(0, c1 - 7);
-                a2 = a2.substring(0, c2 - 1);
-                System.out.println(a1);
-                System.out.println(a2);
-                temp[0] = a1;
-            } catch (Exception e) {
-                e.printStackTrace();
-                event.getChannel().sendMessage("봇이 스팀 프로필을 불러오는데 실패하였습니다.").queue();
+        String[] returns = getSteamID.SteamID(SteamID);
 
-                return;
-            }
-            String NickName;
-            String ID;
-            ID = a2;
+        if(returns[0].equals("error")) {
+            event.getChannel().sendMessage("스팀 ID가 잘못 입력되었거나, 그런 ID는 존재하지 않습니다.").queue();
 
-            NickName = temp[0];
+            return;
+        }
 
-            NickName = NickName.replace(" ", "");
-            NickName= NickName.replaceAll("\\p{Z}","");
+        String NickName = returns[0];
+        String ID = returns[1];
 
-            EmbedBuilder builder = EmbedUtils.defaultEmbed()
-                    .setTitle("공유된 제재 정보")
-                    .setColor(Color.RED)
-                    .addField("제재 대상자", NickName + "(" + ipAddress + ")", false)
-                    .addField("스팀 ID", ID, false)
-                    .addField("제재 사유", "핵 사용자", false)
-                    .addField("의심 등급", level, false)
-                    .addField("제재 담당 서버", event.getGuild().getName(), false)
-                    .addField("공유자", event.getMember().getAsMention(), false);
 
-            server_Send(serverID, builder, event);
+        NickName = NickName.replace(" ", "");
+        NickName= NickName.replaceAll("\\p{Z}","");
 
-        }));
+        EmbedBuilder builder = EmbedUtils.defaultEmbed()
+                .setTitle("공유된 제재 정보")
+                .setColor(Color.RED)
+                .addField("제재 대상자", NickName + "(" + ipAddress + ")", false)
+                .addField("스팀 ID", ID, false)
+                .addField("제재 사유", "핵 사용자", false)
+                .addField("의심 등급", level, false)
+                .addField("제재 담당 서버", event.getGuild().getName(), false)
+                .addField("공유자", event.getMember().getAsMention(), false);
+
+        server_Send(serverID, builder, event);
+
     }
 
     @Override
@@ -138,7 +117,7 @@ public class HackCommand implements ICommand {
             
             event.getChannel().sendMessage("그린서버 전송 실패").queue();
         }
-        try {
+        /*try {
             String tlServer = "551022729441312779";
             if(!serverID.equals(tlServer)) {
                 String tlServerChat = "617924927944785931";
@@ -147,7 +126,7 @@ public class HackCommand implements ICommand {
         } catch (Exception e) {
             e.printStackTrace();
             event.getChannel().sendMessage("TL서버 전송 실패").queue();
-        }
+        }*/
         try {
             String carDogeServer = "609985979167670272";
             if(!serverID.equals(carDogeServer)) {

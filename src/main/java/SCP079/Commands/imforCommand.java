@@ -31,7 +31,9 @@ public class imforCommand implements ICommand {
             return;
         }
         String SteamID;
+        String time;
         StringBuilder reason;
+
         try {
             SteamID = args.get(0);
 
@@ -40,9 +42,17 @@ public class imforCommand implements ICommand {
 
             return;
         }
+        try {
+            time = args.get(1);
+
+        } catch (Exception e) {
+            event.getChannel().sendMessage("시간이 입력되지 않았거나, 인수가 잘못 입력되었습니다.").queue();
+
+            return;
+        }
         reason = new StringBuilder();
         try {
-            for(int i = 1; i <= args.size(); i++) {
+            for(int i = 2; i <= args.size(); i++) {
                 reason.append(args.get(i)).append(" ");
             }
         } catch (Exception e) {
@@ -74,6 +84,7 @@ public class imforCommand implements ICommand {
                 .addField("제재 대상자", NickName, false)
                 .addField("스팀 ID", ID, false)
                 .addField("제재 사유", reasonFinal, false)
+                .addField("제재 기간", time, false)
                 .addField("제재 담당 서버", event.getGuild().getName(), false)
                 .addField("공유자", event.getMember().getAsMention(), false);
 
@@ -84,7 +95,7 @@ public class imforCommand implements ICommand {
     @Override
     public String getHelp() {
         return "SCP 한국 서버들간 제재 정보 공유를 위한 커맨드입니다. \n" +
-                "사용법: `" + App.getPREFIX() + getInvoke() + " <Steam ID> <사유> `";
+                "사용법: `" + App.getPREFIX() + getInvoke() + " <Steam ID> <제재 기간> <사유> `";
     }
 
     @Override
