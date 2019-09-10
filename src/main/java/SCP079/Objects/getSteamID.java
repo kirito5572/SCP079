@@ -10,7 +10,7 @@ public class getSteamID {
             String a1 = document.getElementsByTag("profile").first().toString();
             String a2 = a1;
             try {
-                a1 = a1.substring(a1.indexOf("<steamid64>") + 11 , a1.indexOf("</steamid64>") - 3);
+                a1 = a1.substring(a1.indexOf("<steamid64>") + 14 , a1.indexOf("</steamid64>") - 2);
                 a2 = a2.substring(a2.indexOf("<steamid>"));
                 a2 = a2.substring(a2.indexOf("![CDATA[") + 8, a2.indexOf("]]>"));
                 returns[0] = a2;
