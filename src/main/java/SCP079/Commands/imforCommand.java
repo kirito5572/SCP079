@@ -4,9 +4,9 @@ import SCP079.App;
 import SCP079.Objects.ICommand;
 import SCP079.Objects.getSteamID;
 import me.duncte123.botcommons.messaging.EmbedUtils;
-import me.duncte123.botcommons.web.WebUtils;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.Permission;
+import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
 
 import java.awt.*;
@@ -24,6 +24,7 @@ public class imforCommand implements ICommand {
 
             return;
         }
+        TextChannel channel = event.getChannel();
 
         if(args.isEmpty()) {
             event.getChannel().sendMessage("인수 부족 '" + App.getPREFIX() + "명령어" +
@@ -31,14 +32,14 @@ public class imforCommand implements ICommand {
             return;
         }
         String SteamID;
-        String time;
+        String time, rawtime;
         StringBuilder reason;
 
         try {
             SteamID = args.get(0);
 
         } catch (Exception e) {
-            event.getChannel().sendMessage("Steam ID가 입력되지 않았거나, 인수가 잘못 입력되었습니다.").queue();
+            channel.sendMessage("Steam ID가 입력되지 않았거나, 인수가 잘못 입력되었습니다.").queue();
 
             return;
         }
@@ -46,7 +47,72 @@ public class imforCommand implements ICommand {
             time = args.get(1);
 
         } catch (Exception e) {
-            event.getChannel().sendMessage("시간이 입력되지 않았거나, 인수가 잘못 입력되었습니다.").queue();
+            channel.sendMessage("시간이 입력되지 않았거나, 인수가 잘못 입력되었습니다.").queue();
+
+            return;
+        }
+        int temp1;
+        rawtime = time;
+        if (time.contains("m")) {
+            time = time.substring(0,time.indexOf("m"));
+            try {
+                temp1 = Integer.parseInt(time);
+            } catch (Exception e) {
+                channel.sendMessage("시간의 숫자가 잘못 입력되었습니다.").queue();
+
+                return;
+            }
+            time = String.valueOf(temp1);
+
+        } else if(time.contains("h")) {
+            time = time.substring(0,time.indexOf("h"));
+            try {
+                temp1 = Integer.parseInt(time);
+            } catch (Exception e) {
+                channel.sendMessage("시간의 숫자가 잘못 입력되었습니다.").queue();
+
+                return;
+            }
+            time = String.valueOf((temp1 * 60));
+
+
+        } else if(time.contains("d")) {
+            time = time.substring(0,time.indexOf("d"));
+            try {
+                temp1 = Integer.parseInt(time);
+            } catch (Exception e) {
+                channel.sendMessage("시간의 숫자가 잘못 입력되었습니다.").queue();
+
+                return;
+            }
+            time = String.valueOf((temp1 * 1440));
+
+        } else if(time.contains("M")) {
+            time = time.substring(0,time.indexOf("M"));
+            try {
+                temp1 = Integer.parseInt(time);
+            } catch (Exception e) {
+                channel.sendMessage("시간의 숫자가 잘못 입력되었습니다.").queue();
+
+                return;
+            }
+            time = String.valueOf((temp1 * 43830));
+
+        } else if(time.contains("y")) {
+            time = time.substring(0,time.indexOf("y"));
+            try {
+                temp1 = Integer.parseInt(time);
+            } catch (Exception e) {
+                channel.sendMessage("시간의 숫자가 잘못 입력되었습니다.").queue();
+
+                return;
+            }
+            time = String.valueOf((temp1 * 525960));
+        } else if(time.contains("영구")) {
+            time = "26297460";
+        } else {
+            channel.sendMessage("시간 단위가 틀렸거나, 스팀 닉네임의 띄워쓰기를 삭제하여 주세요.\n" +
+                    "사용법: `" + App.getPREFIX() + "명령어/도움말/help" +getInvoke() + "`").queue();
 
             return;
         }
@@ -84,7 +150,7 @@ public class imforCommand implements ICommand {
                 .addField("제재 대상자", NickName, false)
                 .addField("스팀 ID", ID, false)
                 .addField("제재 사유", reasonFinal, false)
-                .addField("제재 기간", time, false)
+                .addField("제재 기간", rawtime + "(" + time + "분)", false)
                 .addField("제재 담당 서버", event.getGuild().getName(), false)
                 .addField("공유자", event.getMember().getAsMention(), false);
 
@@ -95,7 +161,8 @@ public class imforCommand implements ICommand {
     @Override
     public String getHelp() {
         return "SCP 한국 서버들간 제재 정보 공유를 위한 커맨드입니다. \n" +
-                "사용법: `" + App.getPREFIX() + getInvoke() + " <Steam ID> <제재 기간> <사유> `";
+                "사용법: `" + App.getPREFIX() + getInvoke() + " <Steam ID> <제재 기간> <사유> `\n" +
+                "제재기한 : m(min)/h(hour)/d(day)/M(month)/y(year)/영구(50y)";
     }
 
     @Override
