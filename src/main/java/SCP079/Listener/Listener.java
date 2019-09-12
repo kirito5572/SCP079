@@ -93,8 +93,17 @@ public class Listener extends ListenerAdapter {
             return;
         }
         if(event.getAuthor().isBot()) {
-            return;
-
+            boolean flag = true;
+            if(event.getMember().getUser().getId().equals("607585394237636629")) {
+                if(event.getGuild().getId().equals("600010501266866186")) {
+                    if(event.getChannel().getId().equals("600012818879741963")) {
+                        flag = false;
+                    }
+                }
+            }
+            if(flag) {
+                return;
+            }
         }
         if(event.getMessage().isWebhookMessage()) {
 
