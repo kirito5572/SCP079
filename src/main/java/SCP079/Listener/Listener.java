@@ -94,12 +94,15 @@ public class Listener extends ListenerAdapter {
         }
         if(event.getAuthor().isBot()) {
             boolean flag = true;
-            if(event.getMember().getUser().getId().equals("607585394237636629")) {
-                if(event.getGuild().getId().equals("600010501266866186")) {
-                    if(event.getChannel().getId().equals("600012818879741963")) {
-                        flag = false;
+            try {
+                if (event.getMember().getUser().getId().equals("607585394237636629")) {
+                    if (event.getGuild().getId().equals("600010501266866186")) {
+                        if (event.getChannel().getId().equals("600012818879741963")) {
+                            flag = false;
+                        }
                     }
                 }
+            } catch (Exception ignored) {
             }
             if(flag) {
                 return;
