@@ -20,6 +20,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class getHoryuBanList extends ListenerAdapter {
+    private static int caseNum = 176;
     @Override
     public void onReady(ReadyEvent event) {
         TimerTask job = new TimerTask() {
@@ -47,6 +48,11 @@ public class getHoryuBanList extends ListenerAdapter {
                     }
                 }
                 String[] maindata = splitString(message);
+                if(caseNum < Integer.parseInt(maindata[4])) {
+                    caseNum = Integer.parseInt(maindata[4]);
+                } else {
+                    return;
+                }
 
                 EmbedBuilder builder = EmbedUtils.defaultEmbed()
                         .setTitle("제재 정보 공유(호류서버)")
