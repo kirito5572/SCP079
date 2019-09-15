@@ -55,6 +55,7 @@ public class App {
         WebUtils.setUserAgent("Chrome 75.0.3770.100 kirito's discord bot/kirito5572#5572");
 
         Listener listener = new Listener(commandManager);
+        getHoryuBanList getHoryuBanList = new getHoryuBanList();
 
         EmbedUtils.setEmbedBuilder(
                 () -> new EmbedBuilder()
@@ -68,6 +69,7 @@ public class App {
                     .setToken(TOKEN)
                     .setAutoReconnect(true)
                     .addEventListener(listener)
+                    .addEventListener(getHoryuBanList)
                     .setGame(Game.streaming("사용법: "
                             + PREFIX + "명령어", "https://github.com/kirito5572/DiscordBOT"))
                     .build().awaitReady();

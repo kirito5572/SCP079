@@ -11,6 +11,7 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.HttpClientBuilder;
 
+import java.awt.*;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -36,7 +37,7 @@ public class getHoryuBanList extends ListenerAdapter {
                 String message = data[data.length - 1];
                 if(lastmessage.equals(message)) {
 
-                    //return;
+                    return;
                 } else {
                     try {
                         filesave(message);
@@ -49,11 +50,13 @@ public class getHoryuBanList extends ListenerAdapter {
 
                 EmbedBuilder builder = EmbedUtils.defaultEmbed()
                         .setTitle("제재 정보 공유(호류서버)")
+                        .setColor(Color.RED)
                         .setFooter("From scpsl.kr", "https://cdn.discordapp.com/attachments/563060742551633931/607216118859431966/HoryuServer_Logo_Final.gif")
+                        .addField("case", maindata[4], false)
                         .addField("제재 대상자", maindata[0], false)
                         .addField("스팀 ID", maindata[1], false)
                         .addField("제재 사유", maindata[2], false)
-                        .addField("제재 기간", "무기한", false)
+                        .addField("제재 종료 시간", maindata[5], false)
                         .addField("제재 담당 서버", "호류 SCP 서버", false);
                 send(builder, event);
             }
@@ -106,11 +109,18 @@ public class getHoryuBanList extends ListenerAdapter {
         return message.toString();
     }
     private String[] splitString(String message) {
-        String[] returnData = new String[4];
+        String[] returnData = new String[6];
         returnData[0] = message.substring(message.indexOf("\"name\"") + 8, message.indexOf(",\"steamId\"") - 1);
         returnData[1] = message.substring(message.indexOf(",\"steamId\"") + 11, message.indexOf(",\"time\""));
         returnData[2] = message.substring(message.indexOf(",\"reason\"") + 11, message.indexOf("\",\"punishFrom\""));
         returnData[3] = message.substring(message.indexOf("\",\"admin\"") + 11, message.indexOf("\"}"));
+        returnData[4] = message.substring(message.indexOf("\"id\"") + 5, message.indexOf(",\"name\""));
+        returnData[5] = message.substring(message.indexOf("\"pardonTime\"") + 13, message.indexOf(",\"reason\""));
+        if(returnData[5].equals("null")) {
+            returnData[5] = "없음";
+        } else {
+            returnData[5] = message.substring(message.indexOf("\"pardonTime\"") + 14, message.indexOf(",\"reason\"") - 1);
+        }
 
         return returnData;
     }
