@@ -86,7 +86,8 @@ public class HackCommand implements ICommand {
                 .addField("제재 담당 서버", event.getGuild().getName(), false)
                 .addField("공유자", event.getMember().getAsMention(), false);
 
-        server_Send(serverID, builder, event);
+        HackCommand.simaAutoSend(serverID, NickName, ID, "26297460", "핵 사용", event);
+        server_Send(serverID, builder, event, false);
 
     }
 
@@ -106,7 +107,7 @@ public class HackCommand implements ICommand {
         return "SCP 서버간 핵 유저 공유";
     }
 
-    public static void server_Send(String serverID, EmbedBuilder builder, GuildMessageReceivedEvent event) {
+    public static void server_Send(String serverID, EmbedBuilder builder, GuildMessageReceivedEvent event, boolean simaSend) {
         try {
             String greenServer = "600010501266866186";
             if(!serverID.equals(greenServer)) {
@@ -191,5 +192,23 @@ public class HackCommand implements ICommand {
         }
 
         event.getChannel().sendMessage("전송이 완료되었습니다.").queue();
+    }
+    public static void simaAutoSend(String serverID, String Nickname, String ID, String time, String reason, GuildMessageReceivedEvent event) {
+        try {
+            String simaServer = "582091661266386944";
+            if(!serverID.equals(simaServer)) {
+                String simaServerChat = "595597485238648833";
+                String simaServerChat2 = "598126633588883457";
+                String simaAutoBanChat = "582091661266386944";
+                event.getJDA().getGuildById(simaServer).getTextChannelById(simaAutoBanChat).sendMessage("+oban " + Nickname + " " + ID + " " + time).queue();
+                event.getJDA().getGuildById(simaServer).getTextChannelById(simaServerChat).sendMessage(Nickname + "(" + ID + ") 가 " + time + "분의 제재가 수신되어 자동 처리 되었습니다.\n" +
+                        "사유: " + reason).queue();
+                event.getJDA().getGuildById(simaServer).getTextChannelById(simaServerChat2).sendMessage(Nickname + "(" + ID + ") 가 " + time + "분의 제재가 수신되어 자동 처리 되었습니다.\n" +
+                        "사유: " + reason).queue();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            event.getChannel().sendMessage("시마서버 전송 실패").queue();
+        }
     }
 }

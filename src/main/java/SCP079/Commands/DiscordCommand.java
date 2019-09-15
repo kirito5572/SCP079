@@ -83,7 +83,7 @@ public class DiscordCommand implements ICommand {
                 .addField("제재 담당 서버", event.getGuild().getName(), false)
                 .addField("공유자", event.getMember().getAsMention(), false);
 
-        server_Send(serverID, builder, event);
+        server_Send(serverID, builder, event, true);
     }
 
     @Override

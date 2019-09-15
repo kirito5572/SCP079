@@ -140,7 +140,7 @@ public class Listener extends ListenerAdapter {
                         .addField("재시작 목적", reason, false)
                         .addField("점검 시간","최대 5분간", false)
                         .setDescription("이용에 불편을 드려 죄송합니다.");
-                HackCommand.server_Send(event.getGuild().getId(), builder, event);
+                HackCommand.server_Send(event.getGuild().getId(), builder, event, true);
             } else {
                 event.getJDA().getGuildById("600010501266866186").getTextChannelById("600010501266866188").sendMessage(event.getJDA().getSelfUser().getAsMention() + " 업데이트틀 위해 1분간 사용이 불가능합니다.").queue();
             }

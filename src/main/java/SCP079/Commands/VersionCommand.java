@@ -9,7 +9,7 @@ import java.util.List;
 public class VersionCommand implements ICommand {
     @Override
     public void handle(List<String> args, GuildMessageReceivedEvent event) {
-        event.getChannel().sendMessage("빌드 버젼 V 1.0.1.1 (" + App.getTime() + ")").queue();
+        event.getChannel().sendMessage("빌드 버젼 V 1.0.2 (" + App.getTime() + ")").queue();
     }
 
     @Override

@@ -90,7 +90,7 @@ public class UnbanCommand implements ICommand {
                 .addField("제재 담당 서버", event.getGuild().getName(), false)
                 .addField("공유자", event.getMember().getAsMention(), false);
 
-        HackCommand.server_Send(serverID, builder, event);
+        HackCommand.server_Send(serverID, builder, event, true);
     }
 
     @Override
