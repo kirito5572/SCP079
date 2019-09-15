@@ -190,6 +190,16 @@ public class HackCommand implements ICommand {
             e.printStackTrace();
             event.getChannel().sendMessage("스노서버 전송 실패").queue();
         }
+        try {
+            String horyuServer = "563045452774244361";
+            if(!serverID.equals(horyuServer)) {
+                String horyuServerChat = "563045452774244361";
+                event.getJDA().getGuildById(horyuServer).getTextChannelById(horyuServerChat).sendMessage(builder.build()).queue();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            event.getChannel().sendMessage("호류서버 전송 실패").queue();
+        }
 
         event.getChannel().sendMessage("전송이 완료되었습니다.").queue();
     }
