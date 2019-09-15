@@ -193,7 +193,7 @@ public class HackCommand implements ICommand {
         try {
             String horyuServer = "563045452774244361";
             if(!serverID.equals(horyuServer)) {
-                String horyuServerChat = "563045452774244361";
+                String horyuServerChat = "622691793661853706";
                 event.getJDA().getGuildById(horyuServer).getTextChannelById(horyuServerChat).sendMessage(builder.build()).queue();
             }
         } catch (Exception e) {
@@ -209,7 +209,7 @@ public class HackCommand implements ICommand {
             if(!serverID.equals(simaServer)) {
                 String simaServerChat = "595597485238648833";
                 String simaServerChat2 = "598126633588883457";
-                String simaAutoBanChat = "582091661266386944";
+                String simaAutoBanChat = "595597485238648833";
                 event.getJDA().getGuildById(simaServer).getTextChannelById(simaAutoBanChat).sendMessage("+oban " + Nickname + " " + ID + " " + time).queue();
                 event.getJDA().getGuildById(simaServer).getTextChannelById(simaServerChat).sendMessage(Nickname + "(" + ID + ") 가 " + time + "분의 제재가 수신되어 자동 처리 되었습니다.\n" +
                         "사유: " + reason).queue();
