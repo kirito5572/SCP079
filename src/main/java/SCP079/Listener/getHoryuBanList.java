@@ -11,11 +11,15 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.HttpClientBuilder;
 
+import javax.xml.crypto.dsig.SignatureMethod;
 import java.awt.*;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -52,6 +56,37 @@ public class getHoryuBanList extends ListenerAdapter {
                     caseNum = Integer.parseInt(maindata[4]);
                 } else {
                     return;
+                }
+                if(!maindata[5].equals("없음")) {
+                    try {
+                        Date nowdate = new Date();
+                        Date lawData = new SimpleDateFormat("yyyy-MM-ddThh:mm:ss").parse(maindata[5]);
+                        Date date = new Date(lawData.getTime() - nowdate.getTime());
+                        long lawTime = (date.getTime() / 1000);
+                        if(lawTime < 59) {
+                            lawTime = lawTime / 60;
+                            maindata[5] = lawTime + "분";
+                            if(lawTime < 59) {
+                                lawTime = lawTime / 60;
+                                maindata[5] = lawTime+ "시";
+                                if(lawTime < 23) {
+                                    lawTime = lawTime / 24;
+                                    maindata[5] = lawTime+ "일";
+                                    if(lawTime < 29) {
+                                        lawTime = lawTime / 30;
+                                        maindata[5] = lawTime+ "월";
+                                        if(lawTime < 11) {
+                                            lawTime = lawTime / 12;
+                                            maindata[5] = lawTime+ "년";
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
                 }
 
                 EmbedBuilder builder = EmbedUtils.defaultEmbed()
@@ -99,7 +134,7 @@ public class getHoryuBanList extends ListenerAdapter {
         writer.write(message);
         writer.flush();
 
-        if(writer != null) writer.close();
+        writer.close();
 
     }
     private String filereader() throws IOException {
