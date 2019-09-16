@@ -200,6 +200,16 @@ public class HackCommand implements ICommand {
             e.printStackTrace();
             event.getChannel().sendMessage("호류서버 전송 실패").queue();
         }
+        try {
+            String SNJServer = "531777289684254731";
+            if(!serverID.equals(SNJServer)) {
+                String SNJServerChat = "623105335514759168";
+                event.getJDA().getGuildById(SNJServer).getTextChannelById(SNJServerChat).sendMessage(builder.build()).queue();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            event.getChannel().sendMessage("SNJ서버 전송 실패").queue();
+        }
 
         event.getChannel().sendMessage("전송이 완료되었습니다.").queue();
     }

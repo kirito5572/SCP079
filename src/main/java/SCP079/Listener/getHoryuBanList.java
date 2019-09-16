@@ -218,5 +218,11 @@ public class getHoryuBanList extends ListenerAdapter {
             event.getJDA().getGuildById(snoServer).getTextChannelById(snoServerChat).sendMessage(builder.build()).queue();
         } catch (Exception ignored) {
         }
+        try {
+            String SNJServer = "531777289684254731";
+            String SNJServerChat = "623105335514759168";
+            event.getJDA().getGuildById(SNJServer).getTextChannelById(SNJServerChat).sendMessage(builder.build()).queue();
+        } catch (Exception ignored) {
+        }
     }
 }
