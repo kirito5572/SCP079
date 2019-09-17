@@ -11,7 +11,6 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.HttpClientBuilder;
 
-import javax.xml.crypto.dsig.SignatureMethod;
 import java.awt.*;
 import java.io.File;
 import java.io.FileReader;
