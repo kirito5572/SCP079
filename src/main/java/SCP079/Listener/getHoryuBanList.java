@@ -23,7 +23,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class getHoryuBanList extends ListenerAdapter {
-    private static int caseNum = 178;
+    private static int caseNum = 179;
     @Override
     public void onReady(ReadyEvent event) {
         TimerTask job = new TimerTask() {
