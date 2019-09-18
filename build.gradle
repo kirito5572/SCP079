@@ -38,8 +38,14 @@ shadowJar {
     manifest {
         attributes 'Title': 'rito-bot', 'Main-Class': mainClassName
     }
+}
+jar {
+    manifest {
+        attributes 'Title': 'rito-bot', 'Main-Class': mainClassName
+    }
     baseName = 'rito-bot'
 }
+
 task stage(dependsOn: ['build', 'clean'])
 build.mustRunAfter clean
 
