@@ -84,7 +84,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Gradle.SCP079 [jar]">
+  <component name="RunManager" selected="Gradle.SCP-079-2 [shadowJar]">
     <configuration name="App" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="SCP079.App" />
       <module name="kirito5572.main" />
@@ -157,8 +157,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Gradle.SCP079 [jar]" />
         <item itemvalue="Gradle.SCP-079-2 [shadowJar]" />
+        <item itemvalue="Gradle.SCP079 [jar]" />
         <item itemvalue="Application.App" />
         <item itemvalue="Gradle.SCP-079-2 [dependencies]" />
       </list>
