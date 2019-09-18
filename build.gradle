@@ -40,6 +40,9 @@ shadowJar {
     }
 }
 task uberJar(type: Jar) {
+    manifest {
+        attributes 'Title': 'rito-bot-shadowJar', 'Main-Class': mainClassName
+    }
     archiveClassifier = 'uber'
 
     from sourceSets.main.output
