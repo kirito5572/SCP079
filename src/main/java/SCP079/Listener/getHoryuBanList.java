@@ -59,7 +59,7 @@ public class getHoryuBanList extends ListenerAdapter {
                 if(!maindata[5].equals("없음")) {
                     try {
                         Date nowdate = new Date();
-                        Date lawData = new SimpleDateFormat("yyyy-MM-ddThh:mm:ss").parse(maindata[5]);
+                        Date lawData = new SimpleDateFormat("yyyy-MM-ddhh:mm:ss").parse(maindata[5].replaceFirst("T",""));
                         Date date = new Date(lawData.getTime() - nowdate.getTime());
                         long lawTime = (date.getTime() / 1000);
                         if(lawTime < 59) {
