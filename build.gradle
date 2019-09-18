@@ -39,6 +39,7 @@ shadowJar {
         attributes 'Title': 'rito-bot-shadowJar', 'Main-Class': mainClassName
     }
 }
+
 task uberJar(type: Jar) {
     manifest {
         attributes 'Title': 'rito-bot-shadowJar', 'Main-Class': mainClassName
