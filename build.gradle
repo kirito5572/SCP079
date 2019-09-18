@@ -36,14 +36,18 @@ sourceSets {
 }
 shadowJar {
     manifest {
-        attributes 'Title': 'rito-bot', 'Main-Class': mainClassName
+        attributes 'Title': 'rito-bot-shadowJar', 'Main-Class': mainClassName
     }
 }
-jar {
-    manifest {
-        attributes 'Title': 'rito-bot', 'Main-Class': mainClassName
+task uberJar(type: Jar) {
+    archiveClassifier = 'uber'
+
+    from sourceSets.main.output
+
+    dependsOn configurations.runtimeClasspath
+    from {
+        configurations.runtimeClasspath.findAll { it.name.endsWith('jar') }.collect { zipTree(it) }
     }
-    baseName = 'rito-bot'
 }
 
 task stage(dependsOn: ['build', 'clean'])
