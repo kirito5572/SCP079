@@ -4,7 +4,6 @@ import SCP079.App;
 import SCP079.Objects.ICommand;
 import SCP079.Objects.getSteamID;
 import me.duncte123.botcommons.messaging.EmbedUtils;
-import me.duncte123.botcommons.web.WebUtils;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
@@ -96,7 +95,7 @@ public class UnbanCommand implements ICommand {
     @Override
     public String getHelp() {
         return "SCP 한국 서버들간 제재 해제 정보 공유를 위한 커맨드입니다. \n" +
-                "사용법: `" + App.getPREFIX() + getInvoke() + " <Steam ID> <ip주소> <의심 정도>`";
+                "사용법: `" + App.getPREFIX() + getInvoke() + " <Steam ID> <ip주소> <제재 감소 기간>`";
     }
 
     @Override

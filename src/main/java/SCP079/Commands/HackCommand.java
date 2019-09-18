@@ -52,9 +52,12 @@ public class HackCommand implements ICommand {
 
             return;
         }
+        StringBuilder temp = new StringBuilder();
         try {
-            level = args.get(2);
-
+            for(int i = 2; i < args.size(); i++) {
+                temp.append(args.get(i)).append(" ");
+            }
+            level = temp.toString();
         } catch (Exception e) {
             event.getChannel().sendMessage("의심 등급이 입력되지 않았거나, 인수가 잘못 입력되었습니다.").queue();
 
