@@ -58,6 +58,9 @@ public class getSteamID {
                 } else {
                     flag[1] = true;
                 }
+                if(steamno[0]) {
+                    returns[0] = "no";
+                }
                 if(!flag[1]) {
                     returns[0] = a2;
                     returns[1] = a1;
