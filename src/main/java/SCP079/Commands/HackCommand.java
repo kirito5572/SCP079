@@ -67,7 +67,12 @@ public class HackCommand implements ICommand {
         String[] returns = getSteamID.SteamID(SteamID);
 
         if(returns[0].equals("error")) {
-            event.getChannel().sendMessage("스팀 ID가 잘못 입력되었거나, 그런 ID는 존재하지 않습니다.").queue();
+            event.getChannel().sendMessage("스팀 ID 수신중 에러가 발생했습니다.").queue();
+
+            return;
+        }
+        if (returns[0].equals("no")) {
+            event.getChannel().sendMessage("그런 ID는 존재 하지 않습니다.").queue();
 
             return;
         }
@@ -75,9 +80,6 @@ public class HackCommand implements ICommand {
         String NickName = returns[0];
         String ID = returns[1];
 
-
-        NickName = NickName.replace(" ", "");
-        NickName= NickName.replaceAll("\\p{Z}","");
 
         EmbedBuilder builder = EmbedUtils.defaultEmbed()
                 .setTitle("공유된 제재 정보")
@@ -88,6 +90,9 @@ public class HackCommand implements ICommand {
                 .addField("의심 등급", level, false)
                 .addField("제재 담당 서버", event.getGuild().getName(), false)
                 .addField("공유자", event.getMember().getAsMention(), false);
+        if(returns[2].equals("nosteam")) {
+            builder.addField("중요", "이 유저는 스팀 프로필을 등록한 적 없는 유저입니다.", false);
+        }
 
         HackCommand.simaAutoSend(serverID, NickName, ID, "26297460", "핵 사용", event);
         server_Send(serverID, builder, event, false);
