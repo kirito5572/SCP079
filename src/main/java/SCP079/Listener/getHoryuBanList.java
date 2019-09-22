@@ -23,7 +23,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class getHoryuBanList extends ListenerAdapter {
-    private static int caseNum = 198;
+    private static int caseNum = 199;
     @Override
     public void onReady(ReadyEvent event) {
         TimerTask job = new TimerTask() {
@@ -56,10 +56,13 @@ public class getHoryuBanList extends ListenerAdapter {
                 } else {
                     return;
                 }
+                if(maindata[5].contains("T")) {
+                    maindata[5] = maindata[5].replaceFirst("T"," ");
+                }
                 if(!maindata[5].equals("없음")) {
                     try {
                         Date nowdate = new Date();
-                        Date lawData = new SimpleDateFormat("yyyy-MM-ddhh:mm:ss").parse(maindata[5].replaceFirst("T",""));
+                        Date lawData = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss z").parse(maindata[5] + " KST");
                         Date date = new Date(lawData.getTime() - nowdate.getTime());
                         long lawTime = (date.getTime() / 1000);
                         if(lawTime < 59) {

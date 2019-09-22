@@ -4,7 +4,6 @@ import SCP079.App;
 import SCP079.Objects.ICommand;
 import SCP079.Objects.getSteamID;
 import me.duncte123.botcommons.messaging.EmbedUtils;
-import me.duncte123.botcommons.web.WebUtils;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
@@ -94,7 +93,7 @@ public class HackCommand implements ICommand {
             builder.addField("중요", "이 유저는 스팀 프로필을 등록한 적 없는 유저입니다.", false);
         }
 
-        HackCommand.simaAutoSend(serverID, NickName, ID, "26297460", "핵 사용", event);
+        simaAutoSend(serverID, NickName, ID, "26297460", "핵 사용", event);
         server_Send(serverID, builder, event, false);
 
     }
