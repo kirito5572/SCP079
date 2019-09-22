@@ -7,6 +7,8 @@ public class getSteamID {
         String[] returns = new String[3];
         final boolean[] flag = {true, true};
         final boolean[] steamno = {false};
+        final String[] NickName = new String[1];
+        final String[] finalID = new String[1];
         WebUtils.ins.scrapeWebPage("https://steamcommunity.com/profiles/" + ID + "/?xml=1").async((document -> {
             String a1 = document.getElementsByTag("profile").first().toString();
             String a2 = a1;
@@ -17,58 +19,8 @@ public class getSteamID {
                 for(;a2.contains(" ");) {
                     a2 = a2.replaceFirst(" ", "");
                 }
-                if(a2.equals("")) {
-                    flag[1] = false;
-                    WebUtils.ins.scrapeWebPage("https://steamid.io/lookup/" + ID).async((document1 -> {
-                        String a11 = document1.getElementsByTag("body").first().toString();
-                        String a21 = a11;
-                        try {
-                            int b21 = a21.indexOf("data-clipboard-text=\"");
-                            int b11 = a11.indexOf(" <dt class=\"key\">\n" +
-                                    "       name");
-                            a11 = a11.substring(b11 + 75);
-                            a21 = a21.substring(b21 + 21);
-                            b21 = a21.indexOf("data-clipboard-text=\"");
-                            a21 = a21.substring(b21 + 21);
-                            b21 = a21.indexOf("data-clipboard-text=\"");
-                            a21 = a21.substring(b21 + 21);
-                            int c11 = a11.indexOf("</dd>");
-                            int c21 = a21.indexOf(" src=");
-                            a11 = a11.substring(0, c11 - 7);
-                            a21 = a21.substring(0, c21 - 1);
-                            System.out.println(a11);
-                            System.out.println(a21);
-                            for(; a11.contains(" ");) {
-                                a11 = a11.replaceFirst(" ", "");
-                            }
-                            if(a11.equals("")) {
-                                steamno[0] = true;
-                            }
-                            returns[0] = a11;
-                            returns[1] = a21;
-                            returns[2] = "nosteam";
-                            flag[1] = true;
-
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                            returns[0] = "no";
-                            flag[1] = true;
-                        }
-                    }));
-                } else {
-                    flag[1] = true;
-                }
-                if(steamno[0]) {
-                    returns[0] = "no";
-                }
-                if(!flag[1]) {
-                    returns[0] = a2;
-                    returns[1] = a1;
-                    returns[2] = "steam";
-                }
-                System.out.println(returns[0]);
-                System.out.println(returns[1]);
-                System.out.println(returns[2]);
+                NickName[0] = a2;
+                finalID[0] = a1;
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -84,6 +36,49 @@ public class getSteamID {
                 e.printStackTrace();
             }
         }
+        returns[0] = NickName[0];
+        returns[1] = finalID[0];
+        returns[2] = "steam";
+
+        if(returns[0].equals("")) {
+            flag[1] = false;
+            WebUtils.ins.scrapeWebPage("https://steamid.io/lookup/" + ID).async((document1 -> {
+                String a11 = document1.getElementsByTag("body").first().toString();
+                String a21 = a11;
+                try {
+                    int b21 = a21.indexOf("data-clipboard-text=\"");
+                    int b11 = a11.indexOf(" <dt class=\"key\">\n" +
+                            "       name");
+                    a11 = a11.substring(b11 + 75);
+                    a21 = a21.substring(b21 + 21);
+                    b21 = a21.indexOf("data-clipboard-text=\"");
+                    a21 = a21.substring(b21 + 21);
+                    b21 = a21.indexOf("data-clipboard-text=\"");
+                    a21 = a21.substring(b21 + 21);
+                    int c11 = a11.indexOf("</dd>");
+                    int c21 = a21.indexOf(" src=");
+                    a11 = a11.substring(0, c11 - 7);
+                    a21 = a21.substring(0, c21 - 1);
+                    for(; a11.contains(" ");) {
+                        a11 = a11.replaceFirst(" ", "");
+                    }
+                    if(a11.equals("")) {
+                        steamno[0] = true;
+                    }
+                    returns[0] = a11;
+                    returns[1] = a21;
+                    returns[2] = "nosteam";
+                    flag[1] = true;
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    returns[0] = "no";
+                    flag[1] = true;
+                }
+            }));
+        } else {
+            flag[1] = true;
+        }
         while(!flag[1]) {
             try {
                 Thread.sleep(1);
@@ -91,6 +86,12 @@ public class getSteamID {
                 e.printStackTrace();
             }
         }
+        if(steamno[0]) {
+            returns[0] = "no";
+        }
+        System.out.println(returns[0]);
+        System.out.println(returns[1]);
+        System.out.println(returns[2]);
         return returns;
 
     }
