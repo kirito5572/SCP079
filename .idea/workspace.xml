@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="cdb961d0-c07c-4030-9401-b0386cab9ae1" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/SCP079/Objects/getSteamID.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/SCP079/Objects/getSteamID.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -208,7 +209,7 @@
       <workItem from="1568676162942" duration="1972000" />
       <workItem from="1568784010984" duration="6822000" />
       <workItem from="1568807159768" duration="150000" />
-      <workItem from="1569131657346" duration="2036000" />
+      <workItem from="1569131657346" duration="2809000" />
     </task>
     <servers />
   </component>

@@ -75,16 +75,16 @@ public class getSteamID {
 
                 returns[0] = "error";
             }
-            while(!flag[1]) {
-                try {
-                    Thread.sleep(1);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
             flag[0] = false;
         }));
         while(flag[0]) {
+            try {
+                Thread.sleep(1);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        while(!flag[1]) {
             try {
                 Thread.sleep(1);
             } catch (InterruptedException e) {
