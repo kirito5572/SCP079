@@ -23,6 +23,7 @@ public class CommandManager {
         addCommand(new ConnectServerCommand());
         addCommand(new DiscordCommand());
         addCommand(new TestCommand());
+        addCommand(new DBSearchCommand());
     }
 
     private void addCommand(ICommand command) {

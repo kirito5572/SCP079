@@ -77,29 +77,22 @@ public class SQLDB {
             e.printStackTrace();
         }
     }
-    public static String[][] SQLdownload(String SteamID) {
+    public static String[][] SQLdownload(String SteamID) throws SQLException {
         String[][] data = new String[5][7];
 
         String queryString = "SELECT * FROM Sanction_Information WHERE SteamID =\"" + SteamID +"\";";
 
-        try {
-            resultSet = statement.executeQuery(queryString);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        try {
-            int i = 0;
-            while (resultSet.next()) {
-                data[i][0] = resultSet.getString("caseID");
-                data[i][1] = resultSet.getString("SteamID");
-                data[i][2] = resultSet.getString("sanctionTime");
-                data[i][3] = resultSet.getString("endTime");
-                data[i][4] = resultSet.getString("reason");
-                data[i][5] = resultSet.getString("sendServer");
-                data[i][6] = resultSet.getString("serverID");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+
+        resultSet = statement.executeQuery(queryString);
+        int i = 0;
+        while (resultSet.next()) {
+            data[i][0] = resultSet.getString("caseID");
+            data[i][1] = resultSet.getString("SteamID");
+            data[i][2] = resultSet.getString("sanctionTime");
+            data[i][3] = resultSet.getString("endTime");
+            data[i][4] = resultSet.getString("reason");
+            data[i][5] = resultSet.getString("sendServer");
+            data[i][6] = resultSet.getString("serverID");
         }
         return data;
     }
