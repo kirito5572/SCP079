@@ -2,7 +2,6 @@ package SCP079.Objects;
 
 import SCP079.App;
 import SCP079.Commands.*;
-import SCP079.Listener.SQLDB;
 import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
 

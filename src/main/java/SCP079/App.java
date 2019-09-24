@@ -3,7 +3,7 @@ package SCP079;/*
  */
 
 import SCP079.Listener.Listener;
-import SCP079.Listener.SQLDB;
+import SCP079.Objects.SQLDB;
 import SCP079.Listener.getHoryuBanList;
 import SCP079.Objects.CommandManager;
 import me.duncte123.botcommons.messaging.EmbedUtils;

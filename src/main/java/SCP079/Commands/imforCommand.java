@@ -1,7 +1,7 @@
 package SCP079.Commands;
 
 import SCP079.App;
-import SCP079.Listener.SQLDB;
+import SCP079.Objects.SQLDB;
 import SCP079.Objects.ICommand;
 import SCP079.Objects.getSteamID;
 import me.duncte123.botcommons.messaging.EmbedUtils;

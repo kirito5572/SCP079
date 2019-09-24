@@ -1,9 +1,8 @@
 package SCP079.Commands;
 
 import SCP079.App;
-import SCP079.Listener.SQLDB;
+import SCP079.Objects.SQLDB;
 import SCP079.Objects.ICommand;
-import com.mysql.cj.x.protobuf.MysqlxDatatypes;
 import me.duncte123.botcommons.messaging.EmbedUtils;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.Permission;
@@ -11,7 +10,6 @@ import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
 
 import java.sql.SQLException;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 public class DBSearchCommand implements ICommand {
     private static String[][] data;
@@ -31,16 +29,17 @@ public class DBSearchCommand implements ICommand {
             event.getChannel().sendMessage("해당 스팀 ID 검색 결과가 없습니다.").queue();
         }
         int i = 0;
+        int temp;
         try {
-            if (args.get(1).equals("1")) {
-                try {
-                    i = Integer.parseInt(args.get(1)) - 1;
-                } catch (Exception e) {
-                    event.getChannel().sendMessage("숫자를 입력해주세요").queue();
+            i = Integer.parseInt(args.get(1)) - 1;
+        } catch (Exception e) {
+            event.getChannel().sendMessage("숫자를 입력해주세요").queue();
+        }
+        try {
+            if(i != 0) {
+                if (data[i][0].equals(data[i - 1][0])) {
+                    event.getChannel().sendMessage(App.getPREFIX() + getInvoke() + args.get(0) + "를 입력해주세요").queue();
                 }
-            }
-            if(data[i][0] == null) {
-                event.getChannel().sendMessage(App.getPREFIX() + getInvoke() + args.get(0) + "를 입력해주세요").queue();
             }
         } catch (Exception ignored) {
 
