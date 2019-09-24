@@ -1,6 +1,7 @@
 package SCP079.Commands;
 
 import SCP079.App;
+import SCP079.Listener.SQLDB;
 import SCP079.Objects.ICommand;
 import SCP079.Objects.getSteamID;
 import me.duncte123.botcommons.messaging.EmbedUtils;
@@ -147,6 +148,8 @@ public class imforCommand implements ICommand {
 
         NickName = NickName.replace(" ", "");
         NickName= NickName.replaceAll("\\p{Z}","");
+
+        SQLDB.SQLupload(ID, rawtime + "(" + time + "분)", reasonFinal, event.getGuild().getName(), serverID);
 
         EmbedBuilder builder = EmbedUtils.defaultEmbed()
                 .setTitle("공유된 제재 정보")

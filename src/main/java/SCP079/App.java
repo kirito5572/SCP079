@@ -3,6 +3,7 @@ package SCP079;/*
  */
 
 import SCP079.Listener.Listener;
+import SCP079.Listener.SQLDB;
 import SCP079.Listener.getHoryuBanList;
 import SCP079.Objects.CommandManager;
 import me.duncte123.botcommons.messaging.EmbedUtils;
@@ -36,8 +37,8 @@ public class App {
         date = new Date();
         SimpleDateFormat format1 = new SimpleDateFormat( "yyyy/MM/dd aa hh:mm:ss z");
         Time = format1.format(date);
+        SQLDB sqldb = new SQLDB();
         CommandManager commandManager = new CommandManager();
-
         StringBuilder TOKENreader = new StringBuilder();
         try {
             File file = new File("C:\\DiscordServerBotSecrets\\SCP-079\\TOKEN.txt");

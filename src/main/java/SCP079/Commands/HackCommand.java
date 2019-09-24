@@ -1,6 +1,7 @@
 package SCP079.Commands;
 
 import SCP079.App;
+import SCP079.Listener.SQLDB;
 import SCP079.Objects.ICommand;
 import SCP079.Objects.getSteamID;
 import me.duncte123.botcommons.messaging.EmbedUtils;
@@ -14,7 +15,6 @@ import java.util.List;
 public class HackCommand implements ICommand {
     private String serverID;
     private static String starhaServer = "576823770329907201";
-
     @Override
     public void handle(List<String> args, GuildMessageReceivedEvent event) {
         if(!(event.getMember().hasPermission(Permission.ADMINISTRATOR) || event.getMember().hasPermission(Permission.MANAGE_ROLES) ||
@@ -79,6 +79,7 @@ public class HackCommand implements ICommand {
         String NickName = returns[0];
         String ID = returns[1];
 
+        SQLDB.SQLupload(ID, "영구", "핵 사용자", event.getGuild().getName(), serverID);
 
         EmbedBuilder builder = EmbedUtils.defaultEmbed()
                 .setTitle("공유된 제재 정보")
