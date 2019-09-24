@@ -51,8 +51,8 @@ public class SQLDB {
         Date date = new Date();
         SimpleDateFormat dayTime = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
         String sanctionTime = dayTime.format(date);
-        String queryString = "INSERT INTO Sanction_Information VALUE (\""+ SteamID + "\", \"" + sanctionTime + "\", \"" + time + "\", \"" + reason + "\", \"" + server + "\" , \"" + serverID + "\"" + ");";
-                //"UPDATE Sanction_Information SET SteamID =\"" + SteamID + "\", sanctionTime =\"" + sanctionTime + "\", " + "endTime =\"" + time + "\", reason =\"" + reason + "\", sendServer =\"" + server + "\" , serverID =\"" + serverID + "\"" + "WHERE caseID;";
+        String queryString = "INSERT INTO Sanction_Information VALUE (\"\",\""+ SteamID + "\", \"" + sanctionTime + "\", \"" + time + "\", \"" + reason + "\", \"" + server + "\" , \"" + serverID + "\"" + ");";
+
         System.out.println(queryString);
         try {
             statement.executeUpdate(queryString);
