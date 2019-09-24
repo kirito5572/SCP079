@@ -27,6 +27,8 @@ public class DBSearchCommand implements ICommand {
         } catch (SQLException e) {
             e.printStackTrace();
             event.getChannel().sendMessage("해당 스팀 ID 검색 결과가 없습니다.").queue();
+
+            return;
         }
         int i = 0;
         int temp;
@@ -34,11 +36,15 @@ public class DBSearchCommand implements ICommand {
             i = Integer.parseInt(args.get(1)) - 1;
         } catch (Exception e) {
             event.getChannel().sendMessage("숫자를 입력해주세요").queue();
+
+            return;
         }
         try {
             if(i != 0) {
                 if (data[i][0].equals(data[i - 1][0])) {
                     event.getChannel().sendMessage(App.getPREFIX() + getInvoke() + args.get(0) + "를 입력해주세요").queue();
+
+                    return;
                 }
             }
         } catch (Exception ignored) {
