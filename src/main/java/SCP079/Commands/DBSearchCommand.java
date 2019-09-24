@@ -51,6 +51,9 @@ public class DBSearchCommand implements ICommand {
                 flag = true;
             }
         }
+        if(data[i][0] == null) {
+            event.getChannel().sendMessage("해당 SteamID의 검색결과는 없습니다.").queue();
+        }
         EmbedBuilder builder = EmbedUtils.defaultEmbed()
                 .setTitle("검색된 제재 정보")
                 .addField("caseID", data[i][0], false)
