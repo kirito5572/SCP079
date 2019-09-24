@@ -53,6 +53,7 @@ public class SQLDB {
         String sanctionTime = dayTime.format(date);
         String queryString = "UPDATE Sanction_Information SET SteamID =\"" + SteamID + "\", sanctionTime =\"" + sanctionTime + "\", " +
                 "endTime =\"" + time + "\", reason =\"" + reason + "\", sendServer =\"" + server + "\" , serverID =\"" + serverID + "\";";
+        System.out.println(queryString);
         try {
             statement.executeUpdate(queryString);
         } catch (Exception e) {

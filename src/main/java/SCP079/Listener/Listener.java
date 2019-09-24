@@ -21,6 +21,7 @@ import java.io.FileReader;
 public class Listener extends ListenerAdapter {
     private final CommandManager manager;
     private final Logger logger = LoggerFactory.getLogger(Listener.class);
+    private static String ID1;
 
     public Listener(CommandManager manager) {
         this.manager = manager;
@@ -73,7 +74,7 @@ public class Listener extends ListenerAdapter {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        String ID1 = IDreader.toString();
+        ID1 = IDreader.toString();
         String ID2 = IDreader1.toString();
         if (event.getMessage().getContentRaw().equalsIgnoreCase(App.getPREFIX() + "종료") &&
                 (
@@ -156,5 +157,8 @@ public class Listener extends ListenerAdapter {
         }).start();
     }
 
+    public static String getID1() {
+        return ID1;
+    }
 }
 

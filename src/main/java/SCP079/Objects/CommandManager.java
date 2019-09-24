@@ -22,6 +22,7 @@ public class CommandManager {
         addCommand(new HackCommand());
         addCommand(new ConnectServerCommand());
         addCommand(new DiscordCommand());
+        addCommand(new TestCommand());
     }
 
     private void addCommand(ICommand command) {
