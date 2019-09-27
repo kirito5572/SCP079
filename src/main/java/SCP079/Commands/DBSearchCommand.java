@@ -26,7 +26,7 @@ public class DBSearchCommand implements ICommand {
             data = SQLDB.SQLdownload(args.get(0));
         } catch (SQLException e) {
             e.printStackTrace();
-            event.getChannel().sendMessage("해당 스팀 ID 검색 결과가 없습니다.").queue();
+            event.getChannel().sendMessage("에러가 발생했습니다.").queue();
 
             return;
         }
