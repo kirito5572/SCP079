@@ -60,10 +60,15 @@ public class getHoryuBanList extends ListenerAdapter {
                 }
                 if(!maindata[5].equals("없음")) {
                     Date nowDate = new Date();
-                    Date lawData = new Date(Long.parseLong(maindata[5]));
+                    Date lawData;
+                    try {
+                        lawData = new Date(Long.parseLong(maindata[5]));
+                    } catch (Exception e) {
+                        lawData = new Date();
+                    }
                     Date date = new Date(lawData.getTime() - nowDate.getTime());
                     long timeTemp = (date.getTime() / 1000);
-                    if(timeTemp == 0) {
+                    if(timeTemp < 5) {
                         maindata[5] = "영구";
                     } if(timeTemp < 60) {
                         maindata[5] = timeTemp + "초";
