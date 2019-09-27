@@ -26,6 +26,7 @@ public class getHoryuBanList extends ListenerAdapter {
     private static int caseNum = 200;
     @Override
     public void onReady(ReadyEvent event) {
+        final String[] time = new String[1];
         TimerTask job = new TimerTask() {
             @Override
             public void run() {
@@ -60,34 +61,32 @@ public class getHoryuBanList extends ListenerAdapter {
                     maindata[5] = maindata[5].replaceFirst("T"," ");
                 }
                 if(!maindata[5].equals("없음")) {
-                    try {
-                        Date nowdate = new Date();
-                        Date lawData = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss z").parse(maindata[5] + " KST");
-                        Date date = new Date(lawData.getTime() - nowdate.getTime());
-                        long lawTime = (date.getTime() / 1000);
-                        if(lawTime < 59) {
-                            lawTime = lawTime / 60;
-                            maindata[5] = lawTime + "분";
-                            if(lawTime < 59) {
-                                lawTime = lawTime / 60;
-                                maindata[5] = lawTime+ "시";
-                                if(lawTime < 23) {
-                                    lawTime = lawTime / 24;
-                                    maindata[5] = lawTime+ "일";
-                                    if(lawTime < 29) {
-                                        lawTime = lawTime / 30;
-                                        maindata[5] = lawTime+ "월";
-                                        if(lawTime < 11) {
-                                            lawTime = lawTime / 12;
-                                            maindata[5] = lawTime+ "년";
-                                        }
-                                    }
-                                }
-                            }
-                        }
-
-                    } catch (ParseException e) {
-                        e.printStackTrace();
+                    Date nowDate = new Date();
+                    Date lawData = new Date(Long.getLong(maindata[5]));
+                    Date date = new Date(lawData.getTime() - nowDate.getTime());
+                    long timeTemp = (date.getTime() / 1000);
+                    if(timeTemp == 0) {
+                        maindata[5] = "영구";
+                    } if(timeTemp < 60) {
+                        maindata[5] = timeTemp + "초";
+                        time[0] = String.valueOf(timeTemp);
+                    } if(timeTemp > 59) {
+                        timeTemp = timeTemp / 60;
+                        maindata[5] = timeTemp + "분";
+                    } if(timeTemp > 59) {
+                        timeTemp = timeTemp / 60;
+                        maindata[5] = timeTemp + "시";
+                    } if(timeTemp > 23) {
+                        timeTemp = timeTemp / 24;
+                        maindata[5] = timeTemp + "일";
+                    } if(timeTemp > 29) {
+                        timeTemp = timeTemp / 30;
+                        maindata[5] = timeTemp + "월";
+                    } if(timeTemp > 11) {
+                        timeTemp = timeTemp / 12;
+                        maindata[5] = timeTemp + "년";
+                    } if(timeTemp > 50) {
+                        maindata[5] = "50년 이상";
                     }
                 }
 
@@ -99,7 +98,7 @@ public class getHoryuBanList extends ListenerAdapter {
                         .addField("제재 대상자", maindata[0], false)
                         .addField("스팀 ID", maindata[1], false)
                         .addField("제재 사유", maindata[2], false)
-                        .addField("제재 종료 시간", maindata[5], false)
+                        .addField("제재 종료 시간", maindata[5] + "(" + time[0] + "분)", false)
                         .addField("제재 담당 서버", "호류 SCP 서버", false);
                 send(builder, event);
             }

@@ -28,11 +28,11 @@ public class TestCommand implements ICommand {
             return;
         }
         System.out.println(data[0][0]);
-        if(data[0][0].equals("")) {
-            System.out.println("\"\"값");
-        }
         if(data[0][0] == null) {
             System.out.println("null 값");
+        }
+        if(data[0][0].equals("")) {
+            System.out.println("\"\"값");
         }
     }
 

@@ -11,6 +11,8 @@ import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
 import java.sql.SQLException;
 import java.util.List;
 
+import static SCP079.Objects.getSteamID.SteamID;
+
 public class DBSearchCommand implements ICommand {
     private static String[][] data;
     @Override
@@ -21,6 +23,11 @@ public class DBSearchCommand implements ICommand {
 
             event.getChannel().sendMessage("당신은 이 명령어를 사용할 수 없습니다.").queue();
             return;
+        }
+        //Validate Steam ID
+        String[] SteamData = SteamID(args.get(0));
+        if(SteamData[0].equals("no")) {
+            event.getChannel().sendMessage("스팀 ID가 올바르지 않습니다.").queue();
         }
         try {
             data = SQLDB.SQLdownload(args.get(0));
@@ -36,6 +43,13 @@ public class DBSearchCommand implements ICommand {
             i = Integer.parseInt(args.get(1)) - 1;
         } catch (Exception e) {
             event.getChannel().sendMessage("숫자를 입력해주세요").queue();
+
+            return;
+        }
+        if(data[0][0] == null) {
+
+
+            event.getChannel().sendMessage("제재 기록이 없습니다.").queue();
 
             return;
         }
@@ -55,9 +69,6 @@ public class DBSearchCommand implements ICommand {
             if (data[i + 1][0] != null) {
                 flag = true;
             }
-        }
-        if(data[i][0] == null) {
-            event.getChannel().sendMessage("해당 SteamID의 검색결과는 없습니다.").queue();
         }
         EmbedBuilder builder = EmbedUtils.defaultEmbed()
                 .setTitle("검색된 제재 정보")
