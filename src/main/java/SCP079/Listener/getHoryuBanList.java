@@ -16,8 +16,6 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -152,10 +150,10 @@ public class getHoryuBanList extends ListenerAdapter {
     }
     private String[] splitString(String message) {
         String[] returnData = new String[6];
+        //{"name":"니코","steamId":76561198342332000,"time":1569571474000,"pardonTime":0,"reason":"운영진 비하 및 심각한 욕설, SCP-096상태로 중도퇴장"}
         returnData[0] = message.substring(message.indexOf("\"name\"") + 8, message.indexOf(",\"steamId\"") - 1);
         returnData[1] = message.substring(message.indexOf(",\"steamId\"") + 11, message.indexOf(",\"time\""));
-        returnData[2] = message.substring(message.indexOf(",\"reason\"") + 11, message.indexOf("\",\"punishFrom\""));
-        returnData[3] = message.substring(message.indexOf("\",\"admin\"") + 11, message.indexOf("\"}"));
+        returnData[2] = message.substring(message.indexOf(",\"reason\"") + 11);
         returnData[4] = message.substring(message.indexOf("\"id\"") + 5, message.indexOf(",\"name\""));
         returnData[5] = message.substring(message.indexOf("\"pardonTime\"") + 13, message.indexOf(",\"reason\""));
         if(returnData[5].equals("null")) {

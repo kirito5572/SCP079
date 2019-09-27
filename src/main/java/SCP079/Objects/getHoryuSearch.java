@@ -29,6 +29,7 @@ public class getHoryuSearch {
                 return "response is error : " + response.getStatusLine().getStatusCode();
             }
 
+
         } catch (Exception e){
             return e.toString();
         }
