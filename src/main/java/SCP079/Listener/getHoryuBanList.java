@@ -159,7 +159,7 @@ public class getHoryuBanList extends ListenerAdapter {
         if(returnData[5].equals("null")) {
             returnData[5] = "없음";
         } else {
-            returnData[5] = message.substring(message.indexOf("\"pardonTime\"") + 14, message.indexOf(",\"reason\"") - 1);
+            returnData[5] = message.substring(message.indexOf("\"pardonTime\"") + 14, message.indexOf(",\"reason\""));
         }
 
         return returnData;
