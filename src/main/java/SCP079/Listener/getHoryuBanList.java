@@ -70,11 +70,12 @@ public class getHoryuBanList extends ListenerAdapter {
                     long timeTemp = (date.getTime() / 1000);
                     if(timeTemp < 5) {
                         maindata[5] = "영구";
-                    } if(timeTemp < 60) {
+                        time[0] = "99999999";
+                    } else if(timeTemp < 60) {
                         maindata[5] = timeTemp + "초";
-                        time[0] = String.valueOf(timeTemp);
                     } if(timeTemp > 59) {
                         timeTemp = timeTemp / 60;
+                        time[0] = String.valueOf(timeTemp);
                         maindata[5] = timeTemp + "분";
                     } if(timeTemp > 59) {
                         timeTemp = timeTemp / 60;
