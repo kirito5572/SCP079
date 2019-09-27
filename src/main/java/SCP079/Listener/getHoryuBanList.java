@@ -21,7 +21,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class getHoryuBanList extends ListenerAdapter {
-    private static int caseNum = 200;
+    private static int caseNum = 216;
     @Override
     public void onReady(ReadyEvent event) {
         final String[] time = new String[1];
@@ -67,29 +67,29 @@ public class getHoryuBanList extends ListenerAdapter {
                         lawData = new Date();
                     }
                     Date date = new Date(lawData.getTime() - nowDate.getTime());
-                    long timeTemp = (date.getTime() / 1000);
+                    long timeTemp = (date.getTime() / 1000L);
                     if(timeTemp < 5) {
                         maindata[5] = "영구";
                         time[0] = "99999999";
-                    } else if(timeTemp < 60) {
+                    } else if(timeTemp < 60L) {
                         maindata[5] = timeTemp + "초";
-                    } if(timeTemp > 59) {
-                        timeTemp = timeTemp / 60;
+                    } if(timeTemp > 59L) {
+                        timeTemp = timeTemp / 60L;
                         time[0] = String.valueOf(timeTemp);
                         maindata[5] = timeTemp + "분";
-                    } if(timeTemp > 59) {
-                        timeTemp = timeTemp / 60;
+                    } if(timeTemp > 59L) {
+                        timeTemp = timeTemp / 60L;
                         maindata[5] = timeTemp + "시";
-                    } if(timeTemp > 23) {
-                        timeTemp = timeTemp / 24;
+                    } if(timeTemp > 23L) {
+                        timeTemp = timeTemp / 24L;
                         maindata[5] = timeTemp + "일";
-                    } if(timeTemp > 29) {
-                        timeTemp = timeTemp / 30;
+                    } if(timeTemp > 29L) {
+                        timeTemp = timeTemp / 30L;
                         maindata[5] = timeTemp + "월";
-                    } if(timeTemp > 11) {
-                        timeTemp = timeTemp / 12;
+                    } if(timeTemp > 11L) {
+                        timeTemp = timeTemp / 12L;
                         maindata[5] = timeTemp + "년";
-                    } if(timeTemp > 50) {
+                    } if(timeTemp > 50L) {
                         maindata[5] = "50년 이상";
                     }
                 }
@@ -161,11 +161,11 @@ public class getHoryuBanList extends ListenerAdapter {
         returnData[1] = message.substring(message.indexOf(",\"steamId\"") + 11, message.indexOf(",\"time\""));
         returnData[2] = message.substring(message.indexOf(",\"reason\"") + 11);
         returnData[4] = message.substring(message.indexOf("\"id\"") + 5, message.indexOf(",\"name\""));
-        returnData[5] = message.substring(message.indexOf("\"pardonTime\"") + 13, message.indexOf(",\"reason\""));
+        returnData[5] = message.substring(message.indexOf("\"pardonTime\"") + 13, message.indexOf(",\"reason\"") - 2);
         if(returnData[5].equals("null")) {
             returnData[5] = "없음";
         } else {
-            returnData[5] = message.substring(message.indexOf("\"pardonTime\"") + 14, message.indexOf(",\"reason\""));
+            returnData[5] = message.substring(message.indexOf("\"pardonTime\"") + 14, message.indexOf(",\"reason\"") - 2);
         }
 
         return returnData;

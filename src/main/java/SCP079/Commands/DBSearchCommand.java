@@ -1,7 +1,6 @@
 package SCP079.Commands;
 
 import SCP079.App;
-import SCP079.Objects.SQLDB;
 import SCP079.Objects.ICommand;
 import me.duncte123.botcommons.messaging.EmbedUtils;
 import net.dv8tion.jda.core.EmbedBuilder;
@@ -11,6 +10,7 @@ import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
 import java.sql.SQLException;
 import java.util.List;
 
+import static SCP079.Objects.getHoryuSearch.Search;
 import static SCP079.Objects.getSteamID.SteamID;
 
 public class DBSearchCommand implements ICommand {
@@ -30,7 +30,7 @@ public class DBSearchCommand implements ICommand {
             event.getChannel().sendMessage("스팀 ID가 올바르지 않습니다.").queue();
         }
         try {
-            data = SQLDB.SQLdownload(args.get(0));
+            data = Search(args.get(0));
         } catch (SQLException e) {
             e.printStackTrace();
             event.getChannel().sendMessage("에러가 발생했습니다.").queue();
@@ -47,8 +47,6 @@ public class DBSearchCommand implements ICommand {
             return;
         }
         if(data[0][0] == null) {
-
-
             event.getChannel().sendMessage("제재 기록이 없습니다.").queue();
 
             return;
