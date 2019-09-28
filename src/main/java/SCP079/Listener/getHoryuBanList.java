@@ -1,5 +1,7 @@
 package SCP079.Listener;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
 import me.duncte123.botcommons.messaging.EmbedUtils;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.events.ReadyEvent;
@@ -54,15 +56,12 @@ public class getHoryuBanList extends ListenerAdapter {
                 } else {
                     return;
                 }
-                if(maindata[5].contains("T")) {
-                    maindata[5] = maindata[5].replaceFirst("T"," ");
-                }
                 if(!maindata[5].equals("없음")) {
                     long temp1 = Long.parseLong(maindata[5], 10);
                     long temp2 = Long.parseLong(maindata[4], 10);
                     long timeTemp = temp1 - temp2;
                     timeTemp = timeTemp / 1000L;
-                    if(timeTemp < 5) {
+                    if(timeTemp == 0) {
                         maindata[5] = "영구";
                         time[0] = "99999999";
                     } else if(timeTemp < 60L) {
@@ -91,15 +90,15 @@ public class getHoryuBanList extends ListenerAdapter {
                 EmbedBuilder builder = EmbedUtils.defaultEmbed()
                         .setTitle("제재 정보 공유(호류서버)")
                         .setColor(Color.RED)
-                        .setFooter("From scpsl.kr", "https://cdn.discordapp.com/attachments/563060742551633931/607216118859431966/HoryuServer_Logo_Final.gif")
+                        .setFooter("API from scpsl.kr, API made by 호류#1234", "https://cdn.discordapp.com/attachments/563060742551633931/607216118859431966/HoryuServer_Logo_Final.gif")
                         .addField("case", maindata[6], false)
                         .addField("제재 대상자", maindata[0], false)
                         .addField("스팀 ID", maindata[1], false)
                         .addField("제재 사유", maindata[2], false)
                         .addField("제재 종료 시간", maindata[5] + "(" + time[0] + "분)", false)
                         .addField("제재 담당 서버", "호류 SCP 서버", false);
-                testsend(builder, event);
-                //send(builder, event);
+                //testsend(builder, event);
+                send(builder, event);
             }
         };
         Timer jobScheduler = new Timer();
@@ -151,17 +150,22 @@ public class getHoryuBanList extends ListenerAdapter {
     }
     private String[] splitString(String message) {
         String[] returnData = new String[7];
-        //{"name":"니코","steamId":76561198342332000,"time":1569571474000,"pardonTime":0,"reason":"운영진 비하 및 심각한 욕설, SCP-096상태로 중도퇴장"}
-        returnData[0] = message.substring(message.indexOf("\"name\"") + 8, message.indexOf(",\"steamId\"") - 1);    //이름
-        returnData[1] = message.substring(message.indexOf(",\"steamId\"") + 11, message.indexOf(",\"time\""));      //SteamID
-        returnData[2] = message.substring(message.indexOf(",\"reason\"") + 11, message.indexOf("\"}]"));            //reason
-        returnData[4] = message.substring(message.indexOf("\"time\"") + 7, message.indexOf(",\"pardonTime\""));     //time
-        returnData[5] = message.substring(message.indexOf("\"pardonTime\"") + 12, message.indexOf(",\"reason\""));  //pardonTime;
-        returnData[6] = message.substring(message.indexOf("\"id\"") + 5, message.indexOf(",\"name\""));             //id
+        message = message.substring(0, message.length() - 1);
+        //{"id":223,"name":"keum2912","steamId":76561198965054054,"time":1569663223000,"pardonTime":1570527223000,"reason":"문트롤"}]
+        JsonParser parser = new JsonParser();
+        JsonElement element = parser.parse(message);
+        returnData[0] = element.getAsJsonObject().get("name").getAsString();        //CaseID
+        returnData[1] = element.getAsJsonObject().get("steamId").getAsString();     //SteamID
+        returnData[2] = element.getAsJsonObject().get("reason").getAsString();      //reason
+        returnData[4] = element.getAsJsonObject().get("time").getAsString();        //time
+        returnData[5] = element.getAsJsonObject().get("pardonTime").getAsString();  //pardonTime;
+        returnData[6] = element.getAsJsonObject().get("id").getAsString();          //id
         if(returnData[5].equals("null")) {
             returnData[5] = "없음";
+        } else if(returnData[5].equals("0")) {
+            returnData[5] = returnData[4];
         } else {
-            returnData[5] = message.substring(message.indexOf("\"pardonTime\"") + 14, message.indexOf(",\"reason\""));
+            returnData[5] = element.getAsJsonObject().get("pardonTime").getAsString();
         }
 
         return returnData;
