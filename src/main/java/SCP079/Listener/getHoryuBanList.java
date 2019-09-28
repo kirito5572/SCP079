@@ -59,7 +59,7 @@ public class getHoryuBanList extends ListenerAdapter {
                     maindata[5] = maindata[5].replaceFirst("T"," ");
                 }
                 if(!maindata[5].equals("없음")) {
-                    long timeTemp = Long.parseLong(maindata[5]) - Long.parseLong(maindata[4]));
+                    long timeTemp = Long.parseLong(maindata[5]) - Long.parseLong(maindata[4]);
                     timeTemp = timeTemp / 1000L;
                     if(timeTemp < 5) {
                         maindata[5] = "영구";
