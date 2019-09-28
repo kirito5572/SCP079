@@ -95,7 +95,7 @@ public class getHoryuBanList extends ListenerAdapter {
                         .addField("제재 대상자", maindata[0], false)
                         .addField("스팀 ID", maindata[1], false)
                         .addField("제재 사유", maindata[2], false)
-                        .addField("제재 종료 시간", maindata[5] + "(" + time[0] + "분)", false)
+                        .addField("제재 기간", maindata[5] + "(" + time[0] + "분)", false)
                         .addField("제재 담당 서버", "호류 SCP 서버", false);
                 //testsend(builder, event);
                 send(builder, event);
