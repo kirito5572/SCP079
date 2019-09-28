@@ -59,8 +59,10 @@ public class getHoryuBanList extends ListenerAdapter {
                     maindata[5] = maindata[5].replaceFirst("T"," ");
                 }
                 if(!maindata[5].equals("없음")) {
-                    long timeTemp = Long.parseLong(maindata[5]) - Long.parseLong(maindata[4]);
+                    long timeTemp = Long.parseLong(maindata[5], 10) - Long.parseLong(maindata[4], 10);
+                    System.out.println(timeTemp);
                     timeTemp = timeTemp / 1000L;
+                    System.out.println(timeTemp);
                     if(timeTemp < 5) {
                         maindata[5] = "영구";
                         time[0] = "99999999";
@@ -97,7 +99,8 @@ public class getHoryuBanList extends ListenerAdapter {
                         .addField("제재 사유", maindata[2], false)
                         .addField("제재 종료 시간", maindata[5] + "(" + time[0] + "분)", false)
                         .addField("제재 담당 서버", "호류 SCP 서버", false);
-                send(builder, event);
+                testsend(builder, event);
+                //send(builder, event);
             }
         };
         Timer jobScheduler = new Timer();
@@ -221,6 +224,14 @@ public class getHoryuBanList extends ListenerAdapter {
             String SNJServer = "531777289684254731";
             String SNJServerChat = "623105335514759168";
             event.getJDA().getGuildById(SNJServer).getTextChannelById(SNJServerChat).sendMessage(builder.build()).queue();
+        } catch (Exception ignored) {
+        }
+    }
+    private void testsend(EmbedBuilder builder, ReadyEvent event) {
+        try {
+            String greenServer = "600010501266866186";
+            String greenServerChat = "617908612064346122";
+            event.getJDA().getGuildById(greenServer).getTextChannelById(greenServerChat).sendMessage(builder.build()).queue();
         } catch (Exception ignored) {
         }
     }
