@@ -60,12 +60,8 @@ public class getHoryuBanList extends ListenerAdapter {
                 if(!maindata[5].equals("없음")) {
                     long temp1 = Long.parseLong(maindata[5], 10);
                     long temp2 = Long.parseLong(maindata[4], 10);
-                    System.out.println(temp1);
-                    System.out.println(temp2);
                     long timeTemp = temp1 - temp2;
-                    System.out.println(timeTemp);
                     timeTemp = timeTemp / 1000L;
-                    System.out.println(timeTemp);
                     if(timeTemp < 5) {
                         maindata[5] = "영구";
                         time[0] = "99999999";
@@ -160,7 +156,7 @@ public class getHoryuBanList extends ListenerAdapter {
         returnData[1] = message.substring(message.indexOf(",\"steamId\"") + 11, message.indexOf(",\"time\""));      //SteamID
         returnData[2] = message.substring(message.indexOf(",\"reason\"") + 11, message.indexOf("\"}]"));            //reason
         returnData[4] = message.substring(message.indexOf("\"time\"") + 7, message.indexOf(",\"pardonTime\""));     //time
-        returnData[5] = message.substring(message.indexOf("\"pardonTime\"") + 13, message.indexOf(",\"reason\""));  //pardonTime;
+        returnData[5] = message.substring(message.indexOf("\"pardonTime\"") + 12, message.indexOf(",\"reason\""));  //pardonTime;
         returnData[6] = message.substring(message.indexOf("\"id\"") + 5, message.indexOf(",\"name\""));             //id
         if(returnData[5].equals("null")) {
             returnData[5] = "없음";
