@@ -16,7 +16,6 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -59,7 +58,11 @@ public class getHoryuBanList extends ListenerAdapter {
                     maindata[5] = maindata[5].replaceFirst("T"," ");
                 }
                 if(!maindata[5].equals("없음")) {
-                    long timeTemp = Long.parseLong(maindata[5], 10) - Long.parseLong(maindata[4], 10);
+                    long temp1 = Long.parseLong(maindata[5], 10);
+                    long temp2 = Long.parseLong(maindata[4], 10);
+                    System.out.println(temp1);
+                    System.out.println(temp2);
+                    long timeTemp = temp1 - temp2;
                     System.out.println(timeTemp);
                     timeTemp = timeTemp / 1000L;
                     System.out.println(timeTemp);
