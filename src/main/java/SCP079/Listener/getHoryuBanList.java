@@ -50,8 +50,8 @@ public class getHoryuBanList extends ListenerAdapter {
                     }
                 }
                 String[] maindata = splitString(message);
-                if(caseNum < Integer.parseInt(maindata[4])) {
-                    caseNum = Integer.parseInt(maindata[4]);
+                if(caseNum < Integer.parseInt(maindata[6])) {
+                    caseNum = Integer.parseInt(maindata[6]);
                 } else {
                     return;
                 }
@@ -59,15 +59,8 @@ public class getHoryuBanList extends ListenerAdapter {
                     maindata[5] = maindata[5].replaceFirst("T"," ");
                 }
                 if(!maindata[5].equals("없음")) {
-                    Date nowDate = new Date();
-                    Date lawData;
-                    try {
-                        lawData = new Date(Long.parseLong(maindata[5]));
-                    } catch (Exception e) {
-                        lawData = new Date();
-                    }
-                    Date date = new Date(lawData.getTime() - nowDate.getTime());
-                    long timeTemp = (date.getTime() / 1000L);
+                    long timeTemp = Long.parseLong(maindata[5]) - Long.parseLong(maindata[4]));
+                    timeTemp = timeTemp / 1000L;
                     if(timeTemp < 5) {
                         maindata[5] = "영구";
                         time[0] = "99999999";
@@ -98,7 +91,7 @@ public class getHoryuBanList extends ListenerAdapter {
                         .setTitle("제재 정보 공유(호류서버)")
                         .setColor(Color.RED)
                         .setFooter("From scpsl.kr", "https://cdn.discordapp.com/attachments/563060742551633931/607216118859431966/HoryuServer_Logo_Final.gif")
-                        .addField("case", maindata[4], false)
+                        .addField("case", maindata[6], false)
                         .addField("제재 대상자", maindata[0], false)
                         .addField("스팀 ID", maindata[1], false)
                         .addField("제재 사유", maindata[2], false)
@@ -155,13 +148,14 @@ public class getHoryuBanList extends ListenerAdapter {
         return message.toString();
     }
     private String[] splitString(String message) {
-        String[] returnData = new String[6];
+        String[] returnData = new String[7];
         //{"name":"니코","steamId":76561198342332000,"time":1569571474000,"pardonTime":0,"reason":"운영진 비하 및 심각한 욕설, SCP-096상태로 중도퇴장"}
-        returnData[0] = message.substring(message.indexOf("\"name\"") + 8, message.indexOf(",\"steamId\"") - 1);
-        returnData[1] = message.substring(message.indexOf(",\"steamId\"") + 11, message.indexOf(",\"time\""));
-        returnData[2] = message.substring(message.indexOf(",\"reason\"") + 11, message.indexOf("\"}]"));
-        returnData[4] = message.substring(message.indexOf("\"id\"") + 5, message.indexOf(",\"name\""));
-        returnData[5] = message.substring(message.indexOf("\"pardonTime\"") + 13, message.indexOf(",\"reason\""));
+        returnData[0] = message.substring(message.indexOf("\"name\"") + 8, message.indexOf(",\"steamId\"") - 1);    //이름
+        returnData[1] = message.substring(message.indexOf(",\"steamId\"") + 11, message.indexOf(",\"time\""));      //SteamID
+        returnData[2] = message.substring(message.indexOf(",\"reason\"") + 11, message.indexOf("\"}]"));            //reason
+        returnData[4] = message.substring(message.indexOf("\"time\"") + 7, message.indexOf(",\"pardonTime\""));     //time
+        returnData[5] = message.substring(message.indexOf("\"pardonTime\"") + 13, message.indexOf(",\"reason\""));  //pardonTime;
+        returnData[6] = message.substring(message.indexOf("\"id\"") + 5, message.indexOf(",\"name\""));             //id
         if(returnData[5].equals("null")) {
             returnData[5] = "없음";
         } else {
