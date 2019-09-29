@@ -66,7 +66,7 @@ public class SQLDB {
         caseIDup();
 
         Date date = new Date();
-        SimpleDateFormat dayTime = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
+        SimpleDateFormat dayTime = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         String sanctionTime = dayTime.format(date);
         String queryString = "INSERT INTO Sanction_Information VALUE (\"" + caseID + "\",\""+ SteamID + "\", \"" + sanctionTime + "\", \"" + time + "\", \"" + reason + "\", \"" + server + "\" , \"" + serverID + "\"" + ");";
 

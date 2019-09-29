@@ -6,6 +6,7 @@ import com.jagrosh.jdautilities.commons.utils.FinderUtil;
 import me.duncte123.botcommons.messaging.EmbedUtils;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.Permission;
+import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
@@ -41,21 +42,30 @@ public class DiscordCommand implements ICommand {
             return;
         }
         try {
-            List<User> foundUsers = FinderUtil.findUsers(args.get(0), event.getGuild().getJDA());
-
-            if(foundUsers.isEmpty()) {
-                List<Member> foundMember = FinderUtil.findMembers(args.get(0), event.getGuild());
-                if(foundMember.isEmpty()) {
-                    event.getChannel().sendMessage("'" + args.get(0) + "' 라는 유저는 없습니다.").queue();
-                    return;
+            boolean bypass = false;
+            List<Member> foundMember = null;
+            List<Guild> guilds = event.getJDA().getGuilds();
+            for (Guild guild : guilds) {
+                if(!bypass) {
+                    foundMember = FinderUtil.findMembers(args.get(0), guild);
+                    if (!foundMember.isEmpty()) {
+                        bypass = true;
+                    }
                 }
-
-                foundUsers = foundMember.stream().map(Member::getUser).collect(Collectors.toList());
             }
-            User user = foundUsers.get(0);
+            if(foundMember == null) {
+                event.getChannel().sendMessage("'" + args.get(0) + "' 라는 유저는 없습니다.").queue();
+                return;
+            }
+            if(foundMember.isEmpty()) {
+                event.getChannel().sendMessage("'" + args.get(0) + "' 라는 유저는 없습니다.").queue();
+                return;
+            }
+
+            User user = foundMember.get(0).getUser();
             ID = user.getId();
             NickName = user.getName();
-            Member member = event.getGuild().getMember(user);
+            Member member = foundMember.get(0);
             Mantion = member.getAsMention();
 
         } catch (Exception e) {
@@ -75,7 +85,7 @@ public class DiscordCommand implements ICommand {
             }
         }
         EmbedBuilder builder = EmbedUtils.defaultEmbed()
-                .setTitle("공유된 제재 정보")
+                .setTitle("공유된 디스코드 제재 정보")
                 .setColor(Color.RED)
                 .addField("제재 대상자", NickName + "(" + Mantion + ")", false)
                 .addField("디스코드 ID", ID, false)
