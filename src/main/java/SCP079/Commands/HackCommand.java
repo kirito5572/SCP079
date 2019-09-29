@@ -147,16 +147,6 @@ public class HackCommand implements ICommand {
             event.getChannel().sendMessage("Doge서버 전송 실패").queue();
         }
         try {
-            String koreanServer = "607542356866236416";
-            if(!serverID.equals(koreanServer)) {
-                String koreanServerChat = "607548370843860994";
-                event.getJDA().getGuildById(koreanServer).getTextChannelById(koreanServerChat).sendMessage(builder.build()).queue();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            event.getChannel().sendMessage("한국서버 전송 실패").queue();
-        }
-        try {
             String gariaServer = "585437712639590423";
             if(!serverID.equals(gariaServer)) {
                 String gariaServerChat = "617973738582966292";

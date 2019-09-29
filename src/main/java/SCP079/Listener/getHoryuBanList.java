@@ -192,12 +192,6 @@ public class getHoryuBanList extends ListenerAdapter {
         } catch (Exception ignored) {
         }
         try {
-            String koreanServer = "607542356866236416";
-            String koreanServerChat = "607548370843860994";
-            event.getJDA().getGuildById(koreanServer).getTextChannelById(koreanServerChat).sendMessage(builder.build()).queue();
-        } catch (Exception ignored) {
-        }
-        try {
             String gariaServer = "585437712639590423";
             String gariaServerChat = "617973738582966292";
             event.getJDA().getGuildById(gariaServer).getTextChannelById(gariaServerChat).sendMessage(builder.build()).queue();
