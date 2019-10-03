@@ -211,7 +211,7 @@ public class HackCommand implements ICommand {
         try {
             String ClassDServer = "614348538222215188";
             if(!serverID.equals(ClassDServer)) {
-                String ClassDServerChat = "628922311927398400";
+                String ClassDServerChat = "629135900059631647";
                 event.getJDA().getGuildById(ClassDServer).getTextChannelById(ClassDServerChat).sendMessage(builder.build()).queue();
             }
         } catch (Exception e) {

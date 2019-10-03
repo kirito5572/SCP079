@@ -225,10 +225,20 @@ public class getHoryuBanList extends ListenerAdapter {
         }
         try {
             String ClassDServer = "614348538222215188";
-            String ClassDServerChat = "628922311927398400";
+            String ClassDServerChat = "629135900059631647";
             event.getJDA().getGuildById(ClassDServer).getTextChannelById(ClassDServerChat).sendMessage(builder.build()).queue();
         } catch (Exception ignored) {
+
         }
+        /*
+        try {
+            String SCP079Server = "614348538222215188";
+            String SCP079ServerChat = "628922311927398400";
+            event.getJDA().getGuildById(SCP079Server).getTextChannelById(SCP079ServerChat).sendMessage(builder.build()).queue();
+        } catch (Exception ignored) {
+        }
+        */
+
     }
     private void testsend(EmbedBuilder builder, ReadyEvent event) {
         try {
