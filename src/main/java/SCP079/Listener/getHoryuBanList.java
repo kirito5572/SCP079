@@ -230,6 +230,12 @@ public class getHoryuBanList extends ListenerAdapter {
         } catch (Exception ignored) {
 
         }
+        try {
+            String ArtServer = "614348538222215188";
+            String ArtServerChat = "629135900059631647";
+            event.getJDA().getGuildById(ArtServer).getTextChannelById(ArtServerChat).sendMessage(builder.build()).queue();
+        } catch (Exception ignored) {
+        }
         /*
         try {
             String SCP079Server = "614348538222215188";
