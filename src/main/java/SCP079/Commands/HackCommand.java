@@ -14,7 +14,6 @@ import java.util.List;
 
 public class HackCommand implements ICommand {
     private String serverID;
-    private static String starhaServer = "576823770329907201";
     @Override
     public void handle(List<String> args, GuildMessageReceivedEvent event) {
         if(!(event.getMember().hasPermission(Permission.ADMINISTRATOR) || event.getMember().hasPermission(Permission.MANAGE_ROLES) ||
@@ -95,7 +94,7 @@ public class HackCommand implements ICommand {
         }
 
         simaAutoSend(serverID, NickName, ID, "26297460", "핵 사용", event);
-        server_Send(serverID, builder, event, false);
+        server_Send(serverID, builder, event, true);
 
     }
 
@@ -115,7 +114,7 @@ public class HackCommand implements ICommand {
         return "SCP 서버간 핵 유저 공유";
     }
 
-    public static void server_Send(String serverID, EmbedBuilder builder, GuildMessageReceivedEvent event, boolean simaSend) {
+    public static void server_Send(String serverID, EmbedBuilder builder, GuildMessageReceivedEvent event, boolean youngminSend) {
         try {
             String greenServer = "600010501266866186";
             if(!serverID.equals(greenServer)) {
@@ -135,16 +134,6 @@ public class HackCommand implements ICommand {
         } catch (Exception e) {
             e.printStackTrace();
             event.getChannel().sendMessage("TL서버 전송 실패").queue();
-        }*/
-        try {
-            String carDogeServer = "609985979167670272";
-            if(!serverID.equals(carDogeServer)) {
-                String carDogeServerChat = "617938587102478337";
-                event.getJDA().getGuildById(carDogeServer).getTextChannelById(carDogeServerChat).sendMessage(builder.build()).queue();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            event.getChannel().sendMessage("Doge서버 전송 실패").queue();
         }
         try {
             String gariaServer = "585437712639590423";
@@ -155,6 +144,16 @@ public class HackCommand implements ICommand {
         } catch (Exception e) {
             e.printStackTrace();
             event.getChannel().sendMessage("가리아서버 전송 실패").queue();
+        }*/
+        try {
+            String carDogeServer = "609985979167670272";
+            if(!serverID.equals(carDogeServer)) {
+                String carDogeServerChat = "617938587102478337";
+                event.getJDA().getGuildById(carDogeServer).getTextChannelById(carDogeServerChat).sendMessage(builder.build()).queue();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            event.getChannel().sendMessage("Doge서버 전송 실패").queue();
         }
         try {
             String simaServer = "582091661266386944";
@@ -228,7 +227,28 @@ public class HackCommand implements ICommand {
             e.printStackTrace();
             event.getChannel().sendMessage("아트서버 전송 실패").queue();
         }
-
+        if(youngminSend) {
+            try {
+                String YoungminServer = "623316315620245544";
+                if (!serverID.equals(YoungminServer)) {
+                    String YoungminServerChat = "623322259570032640";
+                    event.getJDA().getGuildById(YoungminServer).getTextChannelById(YoungminServerChat).sendMessage(builder.build()).queue();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                event.getChannel().sendMessage("영민서버 전송 실패").queue();
+            }
+        }
+        try {
+            String VAServer = "614793325081526282";
+            if(!serverID.equals(VAServer)) {
+                String VAServerChat = "630336982140190730";
+                event.getJDA().getGuildById(VAServer).getTextChannelById(VAServerChat).sendMessage(builder.build()).queue();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            event.getChannel().sendMessage("브아서버 전송 실패").queue();
+        }
         event.getChannel().sendMessage("전송이 완료되었습니다.").queue();
     }
     public static void simaAutoSend(String serverID, String Nickname, String ID, String time, String reason, GuildMessageReceivedEvent event) {

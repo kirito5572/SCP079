@@ -17,6 +17,7 @@ public class imforCommand implements ICommand {
     @Override
     public void handle(List<String> args, GuildMessageReceivedEvent event) {
         String serverID = event.getGuild().getId();
+        boolean youngminSend = false;
 
         if(!(event.getMember().hasPermission(Permission.ADMINISTRATOR) || event.getMember().hasPermission(Permission.MANAGE_ROLES) ||
                 event.getMember().hasPermission(Permission.MESSAGE_MANAGE) || event.getMember().hasPermission(Permission.MANAGE_CHANNEL) ||
@@ -101,6 +102,7 @@ public class imforCommand implements ICommand {
 
         } else if(time.contains("y")) {
             time = time.substring(0,time.indexOf("y"));
+            youngminSend = true;
             try {
                 temp1 = Integer.parseInt(time);
             } catch (Exception e) {
@@ -165,7 +167,7 @@ public class imforCommand implements ICommand {
         }
         HackCommand.simaAutoSend(serverID, NickName, ID, time, reasonFinal, event);
 
-        HackCommand.server_Send(serverID, builder, event, false);
+        HackCommand.server_Send(serverID, builder, event, youngminSend);
 
     }
 

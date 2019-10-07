@@ -14,11 +14,6 @@ import java.util.List;
 public class HelpCommand implements ICommand {
 
     private CommandManager manager;
-
-    private int page = 0;
-    private int x = 0;
-    private int i = 0;
-    private int j = 0;
     private Collection<ICommand> Commands;
 
     public HelpCommand(CommandManager manager) {
@@ -39,10 +34,7 @@ public class HelpCommand implements ICommand {
             return;
         }
 
-        if (args.contains("1") || args.isEmpty()) {
-            if(!joined.equals("")) {
-                page = Integer.parseInt(joined);
-            }
+        if (args.isEmpty()) {
             generateAndSendEmbed(event);
             return;
         }
@@ -62,36 +54,15 @@ public class HelpCommand implements ICommand {
     }
 
     private void generateAndSendEmbed(GuildMessageReceivedEvent event) {
-        i = 0;
         EmbedBuilder builder = EmbedUtils.defaultEmbed().setTitle("명령어 리스트:");
-        final int count = 10;
-        if(page == 0) {
-            x = 0;
-        } else if(page == 1){
-            x = 0;
-        } else {
-            x = (page - 1) * count;
-        }
-        final int y = x + count + 1;
-        j = 0;
 
         Commands.forEach(iCommand -> {
-            i++;
-            if((x < i) && (j < count)) {
-                if (!iCommand.getSmallHelp().equals("")) {
-                    j++;
-                    builder.addField(
-                            "`" + iCommand.getInvoke() + "`\n",
-                            iCommand.getSmallHelp(),
-                            false
-                    );
-                    if ((page < 5) && (j == count)) {
-                        builder.appendDescription("다음 명령어: " + getInvoke() + " " + (y / count + 1));
-                    }
-                }
-            }
+            builder.addField(
+                    "`" + iCommand.getInvoke() + "`\n",
+                    iCommand.getSmallHelp(),
+                    false
+            );
         });
-        //TODO: Make a permission check to see if the bot can send embeds if not, send plain text
         event.getChannel().sendMessage(builder.build()).queue();
     }
 

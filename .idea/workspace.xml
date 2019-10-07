@@ -2,7 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="cdb961d0-c07c-4030-9401-b0386cab9ae1" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/SCP079/Commands/HackCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/SCP079/Commands/HackCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/SCP079/Commands/HelpCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/SCP079/Commands/HelpCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/SCP079/Commands/imforCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/SCP079/Commands/imforCommand.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/SCP079/Listener/getHoryuBanList.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/SCP079/Listener/getHoryuBanList.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -258,6 +261,7 @@
       <workItem from="1569889139390" duration="2437000" />
       <workItem from="1569971993030" duration="245000" />
       <workItem from="1569972260853" duration="337000" />
+      <workItem from="1570425678625" duration="1008000" />
     </task>
     <servers />
   </component>

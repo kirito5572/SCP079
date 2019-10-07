@@ -29,6 +29,7 @@ public class getHoryuBanList extends ListenerAdapter {
         TimerTask job = new TimerTask() {
             @Override
             public void run() {
+                boolean youngminSend = false;
                 String temp = get();
                 String[] data = temp.split("},");
                 String lastmessage;
@@ -80,6 +81,7 @@ public class getHoryuBanList extends ListenerAdapter {
                         timeTemp = timeTemp / 30L;
                         maindata[5] = timeTemp + "월";
                     } if(timeTemp > 11L) {
+                        youngminSend = true;
                         timeTemp = timeTemp / 12L;
                         maindata[5] = timeTemp + "년";
                     } if(timeTemp > 50L) {
@@ -98,7 +100,7 @@ public class getHoryuBanList extends ListenerAdapter {
                         .addField("제재 기간", maindata[5] + "(" + time[0] + "분)", false)
                         .addField("제재 담당 서버", "호류 SCP 서버", false);
                 //testsend(builder, event);
-                send(builder, event);
+                send(builder, event, youngminSend);
             }
         };
         Timer jobScheduler = new Timer();
@@ -170,7 +172,7 @@ public class getHoryuBanList extends ListenerAdapter {
 
         return returnData;
     }
-    private void send(EmbedBuilder builder, ReadyEvent event) {
+    private void send(EmbedBuilder builder, ReadyEvent event, boolean youngminSend) {
         try {
             String greenServer = "600010501266866186";
             String greenServerChat = "617908612064346122";
@@ -244,6 +246,26 @@ public class getHoryuBanList extends ListenerAdapter {
         } catch (Exception ignored) {
         }
         */
+        try {
+            String ArtServer = "614348538222215188";
+            String ArtServerChat = "629135900059631647";
+            event.getJDA().getGuildById(ArtServer).getTextChannelById(ArtServerChat).sendMessage(builder.build()).queue();
+        } catch (Exception ignored) {
+        }
+        if(youngminSend) {
+            try {
+                String YoungminServer = "623316315620245544";
+                String YoungminServerChat = "623322259570032640";
+                event.getJDA().getGuildById(YoungminServer).getTextChannelById(YoungminServerChat).sendMessage(builder.build()).queue();
+            } catch (Exception ignored) {
+            }
+        }
+        try {
+            String VAServer = "614793325081526282";
+            String VAServerChat = "630336982140190730";
+            event.getJDA().getGuildById(VAServer).getTextChannelById(VAServerChat).sendMessage(builder.build()).queue();
+        } catch (Exception ignored) {
+        }
 
     }
     private void testsend(EmbedBuilder builder, ReadyEvent event) {
