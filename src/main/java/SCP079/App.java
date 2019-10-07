@@ -24,8 +24,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Random;
 
-import static SCP079.Objects.JDBC.JDBC_Connect;
-
 public class App {
     private String TOKEN;
     private static Date date;
@@ -61,7 +59,6 @@ public class App {
         Listener listener = new Listener(commandManager);
         getHoryuBanList getHoryuBanList = new getHoryuBanList();
 
-        JDBC_Connect();
 
         EmbedUtils.setEmbedBuilder(
                 () -> new EmbedBuilder()

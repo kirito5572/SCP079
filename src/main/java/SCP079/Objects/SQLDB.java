@@ -9,6 +9,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class SQLDB {
+    private static Connection connection;
     private static Statement statement;
     private static ResultSet resultSet;
     private static int caseID;
@@ -56,8 +57,7 @@ public class SQLDB {
         try {
             Class.forName(driverName);
 
-            Connection connection = DriverManager.getConnection(url, user, password);
-            statement = connection.createStatement();
+            connection = DriverManager.getConnection(url, user, password);
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
         }
@@ -72,18 +72,21 @@ public class SQLDB {
 
         System.out.println(queryString);
         try {
+            statement = connection.createStatement();
             statement.executeUpdate(queryString);
+            statement.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-    public static String[][] SQLdownload(String SteamID) throws SQLException {
+    static String[][] SQLdownload(String SteamID) throws SQLException {
         String[][] data = new String[5][7];
 
         String queryString = "SELECT * FROM Sanction_Information WHERE SteamID =\"" + SteamID +"\";";
 
-
+        statement = connection.createStatement();
         resultSet = statement.executeQuery(queryString);
+        statement.close();
         int i = 0;
         while (resultSet.next()) {
             data[i][0] = resultSet.getString("caseID");
