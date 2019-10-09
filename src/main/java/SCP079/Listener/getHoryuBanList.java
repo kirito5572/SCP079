@@ -22,7 +22,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class getHoryuBanList extends ListenerAdapter {
-    private static int caseNum = 217;
+    private static int caseNum = 285;
     @Override
     public void onReady(ReadyEvent event) {
         final String[] time = new String[1];
@@ -65,26 +65,27 @@ public class getHoryuBanList extends ListenerAdapter {
                     if(timeTemp == 0) {
                         maindata[5] = "영구";
                         time[0] = "99999999";
-                    } else if(timeTemp < 60L) {
+                    } if(timeTemp < 60) {
                         maindata[5] = timeTemp + "초";
-                    } if(timeTemp > 59L) {
-                        timeTemp = timeTemp / 60L;
+                        time[0] = "0";
+                    } if(timeTemp > 59) {
+                        timeTemp = timeTemp / 60;
                         time[0] = String.valueOf(timeTemp);
                         maindata[5] = timeTemp + "분";
-                    } if(timeTemp > 59L) {
-                        timeTemp = timeTemp / 60L;
+                    } if(timeTemp > 59) {
+                        timeTemp = timeTemp / 60;
                         maindata[5] = timeTemp + "시";
-                    } if(timeTemp > 23L) {
-                        timeTemp = timeTemp / 24L;
+                    } if(timeTemp > 23) {
+                        timeTemp = timeTemp / 24;
                         maindata[5] = timeTemp + "일";
-                    } if(timeTemp > 29L) {
-                        timeTemp = timeTemp / 30L;
+                    } if(timeTemp > 29) {
+                        timeTemp = timeTemp / 30;
                         maindata[5] = timeTemp + "월";
-                    } if(timeTemp > 11L) {
+                    } if(timeTemp > 11) {
                         youngminSend = true;
-                        timeTemp = timeTemp / 12L;
+                        timeTemp = timeTemp / 12;
                         maindata[5] = timeTemp + "년";
-                    } if(timeTemp > 50L) {
+                    } if(timeTemp > 50) {
                         maindata[5] = "50년 이상";
                     }
                 }
@@ -92,7 +93,7 @@ public class getHoryuBanList extends ListenerAdapter {
                 EmbedBuilder builder = EmbedUtils.defaultEmbed()
                         .setTitle("제재 정보 공유(호류서버)")
                         .setColor(Color.RED)
-                        .setFooter("API from scpsl.kr, API made by 호류#1234", "https://cdn.discordapp.com/attachments/563060742551633931/607216118859431966/HoryuServer_Logo_Final.gif")
+                        .setFooter("API from scpsl.kr, API made by 호류#7777", "https://cdn.discordapp.com/attachments/563060742551633931/607216118859431966/HoryuServer_Logo_Final.gif")
                         .addField("case", maindata[6], false)
                         .addField("제재 대상자", maindata[0], false)
                         .addField("스팀 ID", maindata[1], false)
