@@ -3,16 +3,16 @@ package SCP079;/*
  */
 
 import SCP079.Listener.Listener;
-import SCP079.Objects.SQLDB;
+import SCP079.Listener.activityChangeListener;
 import SCP079.Listener.getHoryuBanList;
 import SCP079.Objects.CommandManager;
+import SCP079.Objects.SQLDB;
 import me.duncte123.botcommons.messaging.EmbedUtils;
 import me.duncte123.botcommons.web.WebUtils;
-import net.dv8tion.jda.core.AccountType;
-import net.dv8tion.jda.core.EmbedBuilder;
-import net.dv8tion.jda.core.JDA;
-import net.dv8tion.jda.core.JDABuilder;
-import net.dv8tion.jda.core.entities.Game;
+import net.dv8tion.jda.api.AccountType;
+import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.JDA;
+import net.dv8tion.jda.api.JDABuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -58,6 +58,7 @@ public class App {
 
         Listener listener = new Listener(commandManager);
         getHoryuBanList getHoryuBanList = new getHoryuBanList();
+        activityChangeListener activityChangeListener = new activityChangeListener();
 
 
         EmbedUtils.setEmbedBuilder(
@@ -71,10 +72,7 @@ public class App {
             JDA jda = new JDABuilder(AccountType.BOT)
                     .setToken(TOKEN)
                     .setAutoReconnect(true)
-                    .addEventListener(listener)
-                    .addEventListener(getHoryuBanList)
-                    .setGame(Game.streaming("사용법: "
-                            + PREFIX + "명령어", "https://github.com/kirito5572/DiscordBOT"))
+                    .addEventListeners(listener, getHoryuBanList, activityChangeListener)
                     .build().awaitReady();
             logger.info("부팅완료");
         } catch (LoginException | InterruptedException e) {

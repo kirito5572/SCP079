@@ -4,8 +4,8 @@ import SCP079.App;
 import SCP079.Objects.ICommand;
 import com.jagrosh.jdautilities.commons.utils.FinderUtil;
 import me.duncte123.botcommons.messaging.EmbedUtils;
-import net.dv8tion.jda.core.entities.*;
-import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.entities.*;
+import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
@@ -66,8 +66,8 @@ public class UserInfoCommand implements ICommand {
                 .addField("유저이름#번호", String.format("%#s", user), false)
                 .addField("서버 표시 이름", member.getEffectiveName(), false)
                 .addField("유저 ID + 언급 멘션", String.format("%s (%s)", user.getId(), member.getAsMention()), false)
-                .addField("디스코드 가입 일자", user.getCreationTime().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME.withZone(ZoneId.systemDefault())), false)
-                .addField("서버 초대 일자", member.getJoinDate().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME.withZone(ZoneId.systemDefault())), false)
+                .addField("디스코드 가입 일자", member.getTimeCreated().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME.withZone(ZoneId.systemDefault())), false)
+                .addField("서버 초대 일자", member.getTimeJoined().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME.withZone(ZoneId.systemDefault())), false)
                 .addField("서버 부여 역할", serverRole.toString(), false)
                 .addField("온라인 상태", member.getOnlineStatus().name().toLowerCase().replaceAll("_", " "), false)
                 .addField("봇 여부", user.isBot() ? "예" : "아니요", false)

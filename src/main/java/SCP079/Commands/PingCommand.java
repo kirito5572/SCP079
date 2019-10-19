@@ -2,7 +2,7 @@ package SCP079.Commands;
 
 import SCP079.App;
 import SCP079.Objects.ICommand;
-import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
 import java.util.List;
 
@@ -10,7 +10,7 @@ public class PingCommand implements ICommand {
     @Override
     public void handle(List<String> args, GuildMessageReceivedEvent event) {
         event.getChannel().sendMessage("퐁!").queue((message) ->
-                message.editMessageFormat("결과: %sms", event.getJDA().getPing()).queue()
+                message.editMessageFormat("결과: %sms", event.getJDA().getGatewayPing()).queue()
         );
     }
 
