@@ -13,7 +13,6 @@ import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
 import java.awt.*;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static SCP079.Commands.HackCommand.server_Send;
 

@@ -13,6 +13,10 @@ public class SQLDB {
     private static Statement statement;
     private static ResultSet resultSet;
     private static int caseID;
+    private static String driverName;
+    private static String url;
+    private static String user;
+    private static String password;
     public SQLDB() {
         //init
         StringBuilder caseIDBuilder = new StringBuilder();
@@ -49,10 +53,10 @@ public class SQLDB {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        String driverName = "com.mysql.cj.jdbc.Driver";
-        String url = "jdbc:mysql://" + endPoint.toString() + "/mainDB?serverTimezone=UTC";
-        String user = "admin";
-        String password = SQLPassword.toString();
+        driverName = "com.mysql.cj.jdbc.Driver";
+        url = "jdbc:mysql://" + endPoint.toString() + "/mainDB?serverTimezone=UTC";
+        user = "admin";
+        password = SQLPassword.toString();
 
         try {
             Class.forName(driverName);
@@ -72,21 +76,28 @@ public class SQLDB {
 
         System.out.println(queryString);
         try {
+            Class.forName(driverName);
+
+            connection = DriverManager.getConnection(url, user, password);
             statement = connection.createStatement();
             statement.executeUpdate(queryString);
             statement.close();
+            connection.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-    static String[][] SQLdownload(String SteamID) throws SQLException {
+    static String[][] SQLdownload(String SteamID) throws SQLException, ClassNotFoundException {
         String[][] data = new String[5][7];
 
         String queryString = "SELECT * FROM Sanction_Information WHERE SteamID =\"" + SteamID +"\";";
+        Class.forName(driverName);
 
+        connection = DriverManager.getConnection(url, user, password);
         statement = connection.createStatement();
         resultSet = statement.executeQuery(queryString);
         statement.close();
+        connection.close();
         int i = 0;
         while (resultSet.next()) {
             data[i][0] = resultSet.getString("caseID");
@@ -112,7 +123,7 @@ public class SQLDB {
             writer.write(message);
             writer.flush();
 
-            if (writer != null) writer.close();
+            writer.close();
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -12,19 +12,23 @@ import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.HttpClientBuilder;
+import org.jetbrains.annotations.NotNull;
+
+import SCP079.Commands.*;
 
 import java.awt.*;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
 
 public class getHoryuBanList extends ListenerAdapter {
     private static int caseNum = 285;
     @Override
-    public void onReady(ReadyEvent event) {
+    public void onReady(@NotNull ReadyEvent event) {
         final String[] time = new String[1];
         TimerTask job = new TimerTask() {
             @Override
@@ -62,31 +66,43 @@ public class getHoryuBanList extends ListenerAdapter {
                     long temp2 = Long.parseLong(maindata[4], 10);
                     long timeTemp = temp1 - temp2;
                     timeTemp = timeTemp / 1000L;
-                    if(timeTemp == 0) {
+                    if(maindata[5].equals("0")) {
                         maindata[5] = "영구";
                         time[0] = "99999999";
-                    } if(timeTemp < 60) {
-                        maindata[5] = timeTemp + "초";
-                        time[0] = "0";
-                    } if(timeTemp > 59) {
-                        timeTemp = timeTemp / 60;
-                        time[0] = String.valueOf(timeTemp);
-                        maindata[5] = timeTemp + "분";
-                    } if(timeTemp > 59) {
-                        timeTemp = timeTemp / 60;
-                        maindata[5] = timeTemp + "시";
-                    } if(timeTemp > 23) {
-                        timeTemp = timeTemp / 24;
-                        maindata[5] = timeTemp + "일";
-                    } if(timeTemp > 29) {
-                        timeTemp = timeTemp / 30;
-                        maindata[5] = timeTemp + "월";
-                    } if(timeTemp > 11) {
-                        youngminSend = true;
-                        timeTemp = timeTemp / 12;
-                        maindata[5] = timeTemp + "년";
-                    } if(timeTemp > 50) {
-                        maindata[5] = "50년 이상";
+                    } else {
+                        if (timeTemp == 0) {
+                            maindata[5] = "영구";
+                            time[0] = "99999999";
+                        }
+                        if (timeTemp < 60) {
+                            maindata[5] = timeTemp + "초";
+                            time[0] = "0";
+                        }
+                        if (timeTemp > 59) {
+                            timeTemp = timeTemp / 60;
+                            time[0] = String.valueOf(timeTemp);
+                            maindata[5] = timeTemp + "분";
+                        }
+                        if (timeTemp > 59) {
+                            timeTemp = timeTemp / 60;
+                            maindata[5] = timeTemp + "시";
+                        }
+                        if (timeTemp > 23) {
+                            timeTemp = timeTemp / 24;
+                            maindata[5] = timeTemp + "일";
+                        }
+                        if (timeTemp > 29) {
+                            timeTemp = timeTemp / 30;
+                            maindata[5] = timeTemp + "월";
+                        }
+                        if (timeTemp > 11) {
+                            youngminSend = true;
+                            timeTemp = timeTemp / 12;
+                            maindata[5] = timeTemp + "년";
+                        }
+                        if (timeTemp > 50) {
+                            maindata[5] = "50년 이상";
+                        }
                     }
                 }
 
@@ -102,6 +118,7 @@ public class getHoryuBanList extends ListenerAdapter {
                         .addField("제재 담당 서버", "호류 SCP 서버", false);
                 //testsend(builder, event);
                 send(builder, event, youngminSend);
+                HackCommand.simaAutoSend("563045452774244361", maindata[0], maindata[1], "26297460", "핵 사용", event.getJDA());
             }
         };
         Timer jobScheduler = new Timer();
@@ -177,7 +194,7 @@ public class getHoryuBanList extends ListenerAdapter {
         try {
             String greenServer = "600010501266866186";
             String greenServerChat = "617908612064346122";
-            event.getJDA().getGuildById(greenServer).getTextChannelById(greenServerChat).sendMessage(builder.build()).queue();
+            Objects.requireNonNull(Objects.requireNonNull(event.getJDA().getGuildById(greenServer)).getTextChannelById(greenServerChat)).sendMessage(builder.build()).queue();
         } catch (Exception ignored) {
         }
         /*try {
@@ -191,52 +208,52 @@ public class getHoryuBanList extends ListenerAdapter {
         try {
             String carDogeServer = "609985979167670272";
             String carDogeServerChat = "617938587102478337";
-            event.getJDA().getGuildById(carDogeServer).getTextChannelById(carDogeServerChat).sendMessage(builder.build()).queue();
+            Objects.requireNonNull(Objects.requireNonNull(event.getJDA().getGuildById(carDogeServer)).getTextChannelById(carDogeServerChat)).sendMessage(builder.build()).queue();
         } catch (Exception ignored) {
         }
         try {
             String gariaServer = "585437712639590423";
             String gariaServerChat = "617973738582966292";
-            event.getJDA().getGuildById(gariaServer).getTextChannelById(gariaServerChat).sendMessage(builder.build()).queue();
+            Objects.requireNonNull(Objects.requireNonNull(event.getJDA().getGuildById(gariaServer)).getTextChannelById(gariaServerChat)).sendMessage(builder.build()).queue();
         } catch (Exception ignored) {
         }
         try {
             String simaServer = "582091661266386944";
             String simaServerChat = "595597485238648833";
             String simaServerChat2 = "598126633588883457";
-            event.getJDA().getGuildById(simaServer).getTextChannelById(simaServerChat).sendMessage(builder.build()).queue();
-            event.getJDA().getGuildById(simaServer).getTextChannelById(simaServerChat2).sendMessage(builder.build()).queue();
+            Objects.requireNonNull(Objects.requireNonNull(event.getJDA().getGuildById(simaServer)).getTextChannelById(simaServerChat)).sendMessage(builder.build()).queue();
+            Objects.requireNonNull(Objects.requireNonNull(event.getJDA().getGuildById(simaServer)).getTextChannelById(simaServerChat2)).sendMessage(builder.build()).queue();
         } catch (Exception ignored) {
         }
         try {
             String dokdoServer = "581835684986486785";
             String dokdoServerChat = "618411407742074880";
-            event.getJDA().getGuildById(dokdoServer).getTextChannelById(dokdoServerChat).sendMessage(builder.build()).queue();
+            Objects.requireNonNull(Objects.requireNonNull(event.getJDA().getGuildById(dokdoServer)).getTextChannelById(dokdoServerChat)).sendMessage(builder.build()).queue();
         } catch (Exception ignored) {
         }
         try {
             String snoServer = "570659322007126029";
             String snoServerChat = "620125504246382592";
-            event.getJDA().getGuildById(snoServer).getTextChannelById(snoServerChat).sendMessage(builder.build()).queue();
+            Objects.requireNonNull(Objects.requireNonNull(event.getJDA().getGuildById(snoServer)).getTextChannelById(snoServerChat)).sendMessage(builder.build()).queue();
         } catch (Exception ignored) {
         }
         try {
             String SNJServer = "531777289684254731";
             String SNJServerChat = "623105335514759168";
-            event.getJDA().getGuildById(SNJServer).getTextChannelById(SNJServerChat).sendMessage(builder.build()).queue();
+            Objects.requireNonNull(Objects.requireNonNull(event.getJDA().getGuildById(SNJServer)).getTextChannelById(SNJServerChat)).sendMessage(builder.build()).queue();
         } catch (Exception ignored) {
         }
         try {
             String ClassDServer = "614348538222215188";
             String ClassDServerChat = "629135900059631647";
-            event.getJDA().getGuildById(ClassDServer).getTextChannelById(ClassDServerChat).sendMessage(builder.build()).queue();
+            Objects.requireNonNull(Objects.requireNonNull(event.getJDA().getGuildById(ClassDServer)).getTextChannelById(ClassDServerChat)).sendMessage(builder.build()).queue();
         } catch (Exception ignored) {
 
         }
         try {
             String ArtServer = "614348538222215188";
             String ArtServerChat = "629135900059631647";
-            event.getJDA().getGuildById(ArtServer).getTextChannelById(ArtServerChat).sendMessage(builder.build()).queue();
+            Objects.requireNonNull(Objects.requireNonNull(event.getJDA().getGuildById(ArtServer)).getTextChannelById(ArtServerChat)).sendMessage(builder.build()).queue();
         } catch (Exception ignored) {
         }
         /*
@@ -250,21 +267,21 @@ public class getHoryuBanList extends ListenerAdapter {
         try {
             String ArtServer = "614348538222215188";
             String ArtServerChat = "629135900059631647";
-            event.getJDA().getGuildById(ArtServer).getTextChannelById(ArtServerChat).sendMessage(builder.build()).queue();
+            Objects.requireNonNull(Objects.requireNonNull(event.getJDA().getGuildById(ArtServer)).getTextChannelById(ArtServerChat)).sendMessage(builder.build()).queue();
         } catch (Exception ignored) {
         }
         if(youngminSend) {
             try {
                 String YoungminServer = "623316315620245544";
                 String YoungminServerChat = "623322259570032640";
-                event.getJDA().getGuildById(YoungminServer).getTextChannelById(YoungminServerChat).sendMessage(builder.build()).queue();
+                Objects.requireNonNull(Objects.requireNonNull(event.getJDA().getGuildById(YoungminServer)).getTextChannelById(YoungminServerChat)).sendMessage(builder.build()).queue();
             } catch (Exception ignored) {
             }
         }
         try {
             String VAServer = "614793325081526282";
             String VAServerChat = "630336982140190730";
-            event.getJDA().getGuildById(VAServer).getTextChannelById(VAServerChat).sendMessage(builder.build()).queue();
+            Objects.requireNonNull(Objects.requireNonNull(event.getJDA().getGuildById(VAServer)).getTextChannelById(VAServerChat)).sendMessage(builder.build()).queue();
         } catch (Exception ignored) {
         }
 
@@ -273,7 +290,7 @@ public class getHoryuBanList extends ListenerAdapter {
         try {
             String greenServer = "600010501266866186";
             String greenServerChat = "617908612064346122";
-            event.getJDA().getGuildById(greenServer).getTextChannelById(greenServerChat).sendMessage(builder.build()).queue();
+            Objects.requireNonNull(Objects.requireNonNull(event.getJDA().getGuildById(greenServer)).getTextChannelById(greenServerChat)).sendMessage(builder.build()).queue();
         } catch (Exception ignored) {
         }
     }

@@ -56,13 +56,11 @@ public class HelpCommand implements ICommand {
     private void generateAndSendEmbed(GuildMessageReceivedEvent event) {
         EmbedBuilder builder = EmbedUtils.defaultEmbed().setTitle("명령어 리스트:");
 
-        Commands.forEach(iCommand -> {
-            builder.addField(
-                    "`" + iCommand.getInvoke() + "`\n",
-                    iCommand.getSmallHelp(),
-                    false
-            );
-        });
+        Commands.forEach(iCommand -> builder.addField(
+                "`" + iCommand.getInvoke() + "`\n",
+                iCommand.getSmallHelp(),
+                false
+        ));
         event.getChannel().sendMessage(builder.build()).queue();
     }
 

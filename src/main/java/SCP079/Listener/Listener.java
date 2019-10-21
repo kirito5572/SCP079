@@ -1,7 +1,7 @@
 package SCP079.Listener;
 
 import SCP079.App;
-import SCP079.Commands.HackCommand;
+import SCP079.Commands.*;
 import SCP079.Constants;
 import SCP079.Objects.CommandManager;
 import me.duncte123.botcommons.messaging.EmbedUtils;
@@ -12,11 +12,13 @@ import net.dv8tion.jda.api.events.ReadyEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.FileReader;
+import java.util.Objects;
 
 public class Listener extends ListenerAdapter {
     private final CommandManager manager;
@@ -56,7 +58,7 @@ public class Listener extends ListenerAdapter {
     }
 
     @Override
-    public void onGuildMessageReceived(GuildMessageReceivedEvent event) {
+    public void onGuildMessageReceived(@NotNull GuildMessageReceivedEvent event) {
         StringBuilder IDreader = new StringBuilder();
         StringBuilder IDreader1 = new StringBuilder();
         try {
@@ -96,7 +98,7 @@ public class Listener extends ListenerAdapter {
         if(event.getAuthor().isBot()) {
             boolean flag = true;
             try {
-                if (event.getMember().getUser().getId().equals("607585394237636629")) {
+                if (Objects.requireNonNull(event.getMember()).getUser().getId().equals("607585394237636629")) {
                     if (event.getGuild().getId().equals("600010501266866186")) {
                         if (event.getChannel().getId().equals("600012818879741963")) {
                             flag = false;
@@ -143,7 +145,7 @@ public class Listener extends ListenerAdapter {
                         .setDescription("이용에 불편을 드려 죄송합니다.");
                 HackCommand.server_Send(event.getGuild().getId(), builder, event, true);
             } else {
-                event.getJDA().getGuildById("600010501266866186").getTextChannelById("600010501266866188").sendMessage(event.getJDA().getSelfUser().getAsMention() + " 업데이트틀 위해 1분간 사용이 불가능합니다.").queue();
+                Objects.requireNonNull(Objects.requireNonNull(event.getJDA().getGuildById("600010501266866186")).getTextChannelById("600010501266866188")).sendMessage(event.getJDA().getSelfUser().getAsMention() + " 업데이트틀 위해 1분간 사용이 불가능합니다.").queue();
             }
             new Thread(() -> {
                 try {

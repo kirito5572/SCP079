@@ -2,34 +2,27 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="cdb961d0-c07c-4030-9401-b0386cab9ae1" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.gradle/5.2.1/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.2.1/executionHistory/executionHistory.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/5.2.1/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.2.1/executionHistory/executionHistory.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/resources/logback.xml" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/resources/logback.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/SCP079/App.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/SCP079/App.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/SCP079/Commands/ConnectServerCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/SCP079/Commands/ConnectServerCommand.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/SCP079/Commands/DBSearchCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/SCP079/Commands/DBSearchCommand.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/SCP079/Commands/DiscordCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/SCP079/Commands/DiscordCommand.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/SCP079/Commands/HackCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/SCP079/Commands/HackCommand.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/SCP079/Commands/HelpCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/SCP079/Commands/HelpCommand.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/SCP079/Commands/PingCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/SCP079/Commands/PingCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/SCP079/Commands/TestCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/SCP079/Commands/TestCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/SCP079/Commands/UnbanCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/SCP079/Commands/UnbanCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/SCP079/Commands/UserInfoCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/SCP079/Commands/UserInfoCommand.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/SCP079/Commands/VersionCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/SCP079/Commands/VersionCommand.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/SCP079/Commands/imforCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/SCP079/Commands/imforCommand.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/SCP079/Listener/Listener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/SCP079/Listener/Listener.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/SCP079/Listener/getHoryuBanList.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/SCP079/Listener/getHoryuBanList.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/SCP079/Objects/CommandManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/SCP079/Objects/CommandManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/SCP079/Objects/ICommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/SCP079/Objects/ICommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/logback.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/logback.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/SCP079/Objects/SQLDB.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/SCP079/Objects/SQLDB.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/SCP079/Objects/getHoryuSearch.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/SCP079/Objects/getHoryuSearch.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="CodeInsightWorkspaceSettings">
+    <option name="optimizeImportsOnTheFly" value="true" />
   </component>
   <component name="CodeStyleSettingsInfer">
     <option name="done" value="true" />
@@ -100,8 +93,8 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyClassDialog.RECENTS_KEY">
-      <recent name="SCP079.Commands" />
       <recent name="SCP079.Listener" />
+      <recent name="SCP079.Commands" />
       <recent name="SCP079.Objects" />
       <recent name="SCP079" />
     </key>
@@ -283,7 +276,8 @@
       <workItem from="1570663902119" duration="871000" />
       <workItem from="1570877621256" duration="603000" />
       <workItem from="1571010481440" duration="122000" />
-      <workItem from="1571471659163" duration="1308000" />
+      <workItem from="1571471659163" duration="2502000" />
+      <workItem from="1571699566765" duration="2234000" />
     </task>
     <servers />
   </component>

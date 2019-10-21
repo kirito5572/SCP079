@@ -9,15 +9,15 @@ import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Objects;
 
 import static SCP079.Objects.getHoryuSearch.Search;
 import static SCP079.Objects.getSteamID.SteamID;
 
 public class DBSearchCommand implements ICommand {
-    private static String[][] data;
     @Override
     public void handle(List<String> args, GuildMessageReceivedEvent event) {
-        if(!(event.getMember().hasPermission(Permission.MANAGE_CHANNEL) || event.getMember().hasPermission(Permission.MANAGE_PERMISSIONS) ||
+        if(!(Objects.requireNonNull(event.getMember()).hasPermission(Permission.MANAGE_CHANNEL) || event.getMember().hasPermission(Permission.MANAGE_PERMISSIONS) ||
                 event.getMember().hasPermission(Permission.MANAGE_ROLES) || event.getMember().hasPermission(Permission.MANAGE_SERVER) ||
                 event.getMember().hasPermission(Permission.MESSAGE_MANAGE))) {
 
@@ -29,16 +29,16 @@ public class DBSearchCommand implements ICommand {
         if(SteamData[0].equals("no")) {
             event.getChannel().sendMessage("스팀 ID가 올바르지 않습니다.").queue();
         }
+        String[][] data;
         try {
             data = Search(args.get(0));
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
             event.getChannel().sendMessage("에러가 발생했습니다.").queue();
 
             return;
         }
-        int i = 0;
-        int temp;
+        int i;
         try {
             i = Integer.parseInt(args.get(1)) - 1;
         } catch (Exception e) {

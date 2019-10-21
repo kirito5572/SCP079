@@ -12,6 +12,7 @@ import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
 import java.awt.*;
 import java.util.List;
+import java.util.Objects;
 
 public class imforCommand implements ICommand {
     @Override
@@ -19,7 +20,7 @@ public class imforCommand implements ICommand {
         String serverID = event.getGuild().getId();
         boolean youngminSend = false;
 
-        if(!(event.getMember().hasPermission(Permission.ADMINISTRATOR) || event.getMember().hasPermission(Permission.MANAGE_ROLES) ||
+        if(!(Objects.requireNonNull(event.getMember()).hasPermission(Permission.ADMINISTRATOR) || event.getMember().hasPermission(Permission.MANAGE_ROLES) ||
                 event.getMember().hasPermission(Permission.MESSAGE_MANAGE) || event.getMember().hasPermission(Permission.MANAGE_CHANNEL) ||
                 event.getMember().hasPermission(Permission.MANAGE_PERMISSIONS))) {
             event.getChannel().sendMessage("당신은 이 명령어를 쓸 권한이 없습니다.").queue();
@@ -165,7 +166,7 @@ public class imforCommand implements ICommand {
         if(returns[2].equals("nosteam")) {
             builder.addField("중요", "이 유저는 스팀 프로필을 등록한 적 없는 유저입니다.", false);
         }
-        HackCommand.simaAutoSend(serverID, NickName, ID, time, reasonFinal, event);
+        HackCommand.simaAutoSend(serverID, NickName, ID, time, reasonFinal, event.getJDA());
 
         HackCommand.server_Send(serverID, builder, event, youngminSend);
 

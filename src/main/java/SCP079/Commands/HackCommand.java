@@ -6,17 +6,18 @@ import SCP079.Objects.ICommand;
 import SCP079.Objects.getSteamID;
 import me.duncte123.botcommons.messaging.EmbedUtils;
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
 import java.awt.*;
 import java.util.List;
+import java.util.Objects;
 
 public class HackCommand implements ICommand {
-    private String serverID;
     @Override
     public void handle(List<String> args, GuildMessageReceivedEvent event) {
-        if(!(event.getMember().hasPermission(Permission.ADMINISTRATOR) || event.getMember().hasPermission(Permission.MANAGE_ROLES) ||
+        if(!(Objects.requireNonNull(event.getMember()).hasPermission(Permission.ADMINISTRATOR) || event.getMember().hasPermission(Permission.MANAGE_ROLES) ||
                 event.getMember().hasPermission(Permission.MESSAGE_MANAGE) || event.getMember().hasPermission(Permission.MANAGE_CHANNEL) ||
                 event.getMember().hasPermission(Permission.MANAGE_PERMISSIONS))) {
             event.getChannel().sendMessage("당신은 이 명령어를 쓸 권한이 없습니다.").queue();
@@ -24,7 +25,7 @@ public class HackCommand implements ICommand {
             return;
         }
 
-        serverID = event.getGuild().getId();
+        String serverID = event.getGuild().getId();
 
         if(args.isEmpty()) {
             event.getChannel().sendMessage("인수 부족 '" + App.getPREFIX() + "명령어" +
@@ -93,7 +94,7 @@ public class HackCommand implements ICommand {
             builder.addField("중요", "이 유저는 스팀 프로필을 등록한 적 없는 유저입니다.", false);
         }
 
-        simaAutoSend(serverID, NickName, ID, "26297460", "핵 사용", event);
+        simaAutoSend(serverID, NickName, ID, "26297460", "핵 사용", event.getJDA());
         server_Send(serverID, builder, event, true);
 
     }
@@ -119,7 +120,7 @@ public class HackCommand implements ICommand {
             String greenServer = "600010501266866186";
             if(!serverID.equals(greenServer)) {
                 String greenServerChat = "617908612064346122";
-                event.getJDA().getGuildById(greenServer).getTextChannelById(greenServerChat).sendMessage(builder.build()).queue();
+                Objects.requireNonNull(Objects.requireNonNull(event.getJDA().getGuildById(greenServer)).getTextChannelById(greenServerChat)).sendMessage(builder.build()).queue();
             }
         } catch (Exception e) {
             
@@ -134,22 +135,12 @@ public class HackCommand implements ICommand {
         } catch (Exception e) {
             e.printStackTrace();
             event.getChannel().sendMessage("TL서버 전송 실패").queue();
-        }
-        try {
-            String gariaServer = "585437712639590423";
-            if(!serverID.equals(gariaServer)) {
-                String gariaServerChat = "617973738582966292";
-                event.getJDA().getGuildById(gariaServer).getTextChannelById(gariaServerChat).sendMessage(builder.build()).queue();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            event.getChannel().sendMessage("가리아서버 전송 실패").queue();
         }*/
         try {
             String carDogeServer = "609985979167670272";
             if(!serverID.equals(carDogeServer)) {
                 String carDogeServerChat = "617938587102478337";
-                event.getJDA().getGuildById(carDogeServer).getTextChannelById(carDogeServerChat).sendMessage(builder.build()).queue();
+                Objects.requireNonNull(Objects.requireNonNull(event.getJDA().getGuildById(carDogeServer)).getTextChannelById(carDogeServerChat)).sendMessage(builder.build()).queue();
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -160,8 +151,8 @@ public class HackCommand implements ICommand {
             if(!serverID.equals(simaServer)) {
                 String simaServerChat = "595597485238648833";
                 String simaServerChat2 = "598126633588883457";
-                event.getJDA().getGuildById(simaServer).getTextChannelById(simaServerChat).sendMessage(builder.build()).queue();
-                event.getJDA().getGuildById(simaServer).getTextChannelById(simaServerChat2).sendMessage(builder.build()).queue();
+                Objects.requireNonNull(Objects.requireNonNull(event.getJDA().getGuildById(simaServer)).getTextChannelById(simaServerChat)).sendMessage(builder.build()).queue();
+                Objects.requireNonNull(Objects.requireNonNull(event.getJDA().getGuildById(simaServer)).getTextChannelById(simaServerChat2)).sendMessage(builder.build()).queue();
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -171,7 +162,7 @@ public class HackCommand implements ICommand {
             String dokdoServer = "581835684986486785";
             if(!serverID.equals(dokdoServer)) {
                 String dokdoServerChat = "618411407742074880";
-                event.getJDA().getGuildById(dokdoServer).getTextChannelById(dokdoServerChat).sendMessage(builder.build()).queue();
+                Objects.requireNonNull(Objects.requireNonNull(event.getJDA().getGuildById(dokdoServer)).getTextChannelById(dokdoServerChat)).sendMessage(builder.build()).queue();
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -181,7 +172,7 @@ public class HackCommand implements ICommand {
             String snoServer = "570659322007126029";
             if(!serverID.equals(snoServer)) {
                 String snoServerChat = "620125504246382592";
-                event.getJDA().getGuildById(snoServer).getTextChannelById(snoServerChat).sendMessage(builder.build()).queue();
+                Objects.requireNonNull(Objects.requireNonNull(event.getJDA().getGuildById(snoServer)).getTextChannelById(snoServerChat)).sendMessage(builder.build()).queue();
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -191,7 +182,7 @@ public class HackCommand implements ICommand {
             String horyuServer = "563045452774244361";
             if(!serverID.equals(horyuServer)) {
                 String horyuServerChat = "622691793661853706";
-                event.getJDA().getGuildById(horyuServer).getTextChannelById(horyuServerChat).sendMessage(builder.build()).queue();
+                Objects.requireNonNull(Objects.requireNonNull(event.getJDA().getGuildById(horyuServer)).getTextChannelById(horyuServerChat)).sendMessage(builder.build()).queue();
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -201,7 +192,7 @@ public class HackCommand implements ICommand {
             String SNJServer = "531777289684254731";
             if(!serverID.equals(SNJServer)) {
                 String SNJServerChat = "623105335514759168";
-                event.getJDA().getGuildById(SNJServer).getTextChannelById(SNJServerChat).sendMessage(builder.build()).queue();
+                Objects.requireNonNull(Objects.requireNonNull(event.getJDA().getGuildById(SNJServer)).getTextChannelById(SNJServerChat)).sendMessage(builder.build()).queue();
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -211,7 +202,7 @@ public class HackCommand implements ICommand {
             String ClassDServer = "614348538222215188";
             if(!serverID.equals(ClassDServer)) {
                 String ClassDServerChat = "629135900059631647";
-                event.getJDA().getGuildById(ClassDServer).getTextChannelById(ClassDServerChat).sendMessage(builder.build()).queue();
+                Objects.requireNonNull(Objects.requireNonNull(event.getJDA().getGuildById(ClassDServer)).getTextChannelById(ClassDServerChat)).sendMessage(builder.build()).queue();
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -221,7 +212,7 @@ public class HackCommand implements ICommand {
             String ArtServer = "614348538222215188";
             if(!serverID.equals(ArtServer)) {
                 String ArtServerChat = "629135900059631647";
-                event.getJDA().getGuildById(ArtServer).getTextChannelById(ArtServerChat).sendMessage(builder.build()).queue();
+                Objects.requireNonNull(Objects.requireNonNull(event.getJDA().getGuildById(ArtServer)).getTextChannelById(ArtServerChat)).sendMessage(builder.build()).queue();
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -232,7 +223,7 @@ public class HackCommand implements ICommand {
                 String YoungminServer = "623316315620245544";
                 if (!serverID.equals(YoungminServer)) {
                     String YoungminServerChat = "623322259570032640";
-                    event.getJDA().getGuildById(YoungminServer).getTextChannelById(YoungminServerChat).sendMessage(builder.build()).queue();
+                    Objects.requireNonNull(Objects.requireNonNull(event.getJDA().getGuildById(YoungminServer)).getTextChannelById(YoungminServerChat)).sendMessage(builder.build()).queue();
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -243,7 +234,7 @@ public class HackCommand implements ICommand {
             String VAServer = "614793325081526282";
             if(!serverID.equals(VAServer)) {
                 String VAServerChat = "630336982140190730";
-                event.getJDA().getGuildById(VAServer).getTextChannelById(VAServerChat).sendMessage(builder.build()).queue();
+                Objects.requireNonNull(Objects.requireNonNull(event.getJDA().getGuildById(VAServer)).getTextChannelById(VAServerChat)).sendMessage(builder.build()).queue();
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -251,20 +242,21 @@ public class HackCommand implements ICommand {
         }
         event.getChannel().sendMessage("전송이 완료되었습니다.").queue();
     }
-    public static void simaAutoSend(String serverID, String Nickname, String ID, String time, String reason, GuildMessageReceivedEvent event) {
+    public static void simaAutoSend(String serverID, String Nickname, String ID, String time, String reason, JDA jda) {
         try {
             String simaServer = "582091661266386944";
             String simaServerChat = "595597485238648833";
             String simaServerChat2 = "598126633588883457";
             String simaAutoBanChat = "595597485238648833";
-            event.getJDA().getGuildById(simaServer).getTextChannelById(simaAutoBanChat).sendMessage("+oban " + Nickname + " " + ID + " " + time).queue();
-            event.getJDA().getGuildById(simaServer).getTextChannelById(simaServerChat).sendMessage(Nickname + "(" + ID + ") 가 " + time + "분의 제재가 수신되어 자동 처리 되었습니다.\n" +
-                        "사유: " + reason).queue();
-            event.getJDA().getGuildById(simaServer).getTextChannelById(simaServerChat2).sendMessage(Nickname + "(" + ID + ") 가 " + time + "분의 제재가 수신되어 자동 처리 되었습니다.\n" +
-                    "사유: " + reason).queue();
+            Objects.requireNonNull(Objects.requireNonNull(jda.getGuildById(simaServer)).getTextChannelById(simaAutoBanChat)).sendMessage("+oban " + Nickname + " " + ID + " " + time).queue();
+            Objects.requireNonNull(Objects.requireNonNull(jda.getGuildById(simaServer)).getTextChannelById(simaServerChat)).sendMessage(Nickname + "(" + ID + ") 가 " + time + "분의 제재가 수신되어 자동 처리 되었습니다.\n" +
+                        "사유: " + reason + "\n" +
+                    "수신된 서버: " + Objects.requireNonNull(jda.getGuildById(serverID)).getName()).queue();
+            Objects.requireNonNull(Objects.requireNonNull(jda.getGuildById(simaServer)).getTextChannelById(simaServerChat2)).sendMessage(Nickname + "(" + ID + ") 가 " + time + "분의 제재가 수신되어 자동 처리 되었습니다.\n" +
+                    "사유: " + reason + "\n" +
+                    "수신된 서버: " + Objects.requireNonNull(jda.getGuildById(serverID)).getName()).queue();
         } catch (Exception e) {
             e.printStackTrace();
-            event.getChannel().sendMessage("시마서버 전송 실패").queue();
         }
     }
 }

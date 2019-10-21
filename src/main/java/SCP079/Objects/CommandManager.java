@@ -30,12 +30,12 @@ public class CommandManager {
         if(!commands.containsKey(command.getInvoke())) {
             commands.put(command.getInvoke(), command);
         }
-        sleep(10);
+        sleep();
     }
 
-    private void sleep(int time) {
+    private void sleep() {
         try {
-            Thread.sleep(time);
+            Thread.sleep(10);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
