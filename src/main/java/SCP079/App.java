@@ -22,6 +22,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Objects;
 import java.util.Random;
 
 public class App {
@@ -60,16 +61,11 @@ public class App {
         getHoryuBanList getHoryuBanList = new getHoryuBanList();
         activityChangeListener activityChangeListener = new activityChangeListener();
 
-
-        EmbedUtils.setEmbedBuilder(
-                () -> new EmbedBuilder()
-                        .setColor(getRandomColor())
-                        .setFooter("Made By kirito5572#5572",null)
-        );
+        JDA jda;
 
         try {
             logger.info("부팅");
-            JDA jda = new JDABuilder(AccountType.BOT)
+            jda = new JDABuilder(AccountType.BOT)
                     .setToken(TOKEN)
                     .setAutoReconnect(true)
                     .addEventListeners(listener, getHoryuBanList, activityChangeListener)
@@ -77,7 +73,13 @@ public class App {
             logger.info("부팅완료");
         } catch (LoginException | InterruptedException e) {
             e.printStackTrace();
+            return;
         }
+        EmbedUtils.setEmbedBuilder(
+                () -> new EmbedBuilder()
+                        .setColor(getRandomColor())
+                        .setFooter("Made By kirito5572#5572", Objects.requireNonNull(jda.getUserById("284508374924787713")).getAvatarUrl())
+        );
 
 
     }
