@@ -13,6 +13,7 @@ import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import java.awt.*;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 
 public class HackCommand implements ICommand {
     @Override
@@ -96,6 +97,7 @@ public class HackCommand implements ICommand {
 
         simaAutoSend(serverID, NickName, ID, "26297460", "핵 사용", event.getJDA());
         server_Send(serverID, builder, event, true);
+        greenAutoBan(ID, "핵 사용", event.getJDA());
 
     }
 
@@ -255,6 +257,13 @@ public class HackCommand implements ICommand {
             Objects.requireNonNull(Objects.requireNonNull(jda.getGuildById(simaServer)).getTextChannelById(simaServerChat2)).sendMessage(Nickname + "(" + ID + ") 가 " + time + "분의 제재가 수신되어 자동 처리 되었습니다.\n" +
                     "사유: " + reason + "\n" +
                     "수신된 서버: " + Objects.requireNonNull(jda.getGuildById(serverID)).getName()).queue();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    public static void greenAutoBan(String ID, String reason, JDA jda) {
+        try {
+            Objects.requireNonNull(Objects.requireNonNull(jda.getGuildById("600010501266866186")).getTextChannelById("600012818879741963")).sendMessage("&서버밴 " + ID + " 영구 " + reason + "(제재 공유)").complete().delete().queueAfter(3, TimeUnit.SECONDS);
         } catch (Exception e) {
             e.printStackTrace();
         }

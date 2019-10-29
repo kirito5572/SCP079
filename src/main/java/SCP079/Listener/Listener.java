@@ -98,7 +98,7 @@ public class Listener extends ListenerAdapter {
         if(event.getAuthor().isBot()) {
             boolean flag = true;
             try {
-                if (Objects.requireNonNull(event.getMember()).getUser().getId().equals("607585394237636629")) {
+                if (Objects.requireNonNull(event.getMember()).getUser().getId().equals("592987181186940931")) {
                     if (event.getGuild().getId().equals("600010501266866186")) {
                         if (event.getChannel().getId().equals("600012818879741963")) {
                             flag = false;
