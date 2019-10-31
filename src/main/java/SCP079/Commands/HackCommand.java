@@ -211,7 +211,7 @@ public class HackCommand implements ICommand {
             event.getChannel().sendMessage("Class-D서버 전송 실패").queue();
         }
         try {
-            String ArtServer = "614348538222215188";
+            String ArtServer = "619746711992270869";
             if(!serverID.equals(ArtServer)) {
                 String ArtServerChat = "629167608180113458";
                 Objects.requireNonNull(Objects.requireNonNull(event.getJDA().getGuildById(ArtServer)).getTextChannelById(ArtServerChat)).sendMessage(builder.build()).queue();
