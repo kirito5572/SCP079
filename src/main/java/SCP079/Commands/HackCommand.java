@@ -128,16 +128,6 @@ public class HackCommand implements ICommand {
             
             event.getChannel().sendMessage("그린서버 전송 실패").queue();
         }
-        /*try {
-            String tlServer = "551022729441312779";
-            if(!serverID.equals(tlServer)) {
-                String tlServerChat = "617924927944785931";
-                event.getJDA().getGuildById(tlServer).getTextChannelById(tlServerChat).sendMessage(builder.build()).queue();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            event.getChannel().sendMessage("TL서버 전송 실패").queue();
-        }*/
         try {
             String carDogeServer = "609985979167670272";
             if(!serverID.equals(carDogeServer)) {
@@ -241,6 +231,16 @@ public class HackCommand implements ICommand {
         } catch (Exception e) {
             e.printStackTrace();
             event.getChannel().sendMessage("브아서버 전송 실패").queue();
+        }
+        try {
+            String HSSServer = "553932158436376586";
+            if(!serverID.equals(HSSServer)) {
+                String HSSServerChat = "641953563299282944";
+                Objects.requireNonNull(Objects.requireNonNull(event.getJDA().getGuildById(HSSServer)).getTextChannelById(HSSServerChat)).sendMessage(builder.build()).queue();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            event.getChannel().sendMessage("감자서버 전송 실패").queue();
         }
         event.getChannel().sendMessage("전송이 완료되었습니다.").queue();
     }

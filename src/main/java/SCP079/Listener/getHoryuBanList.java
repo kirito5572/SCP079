@@ -197,14 +197,6 @@ public class getHoryuBanList extends ListenerAdapter {
             Objects.requireNonNull(Objects.requireNonNull(event.getJDA().getGuildById(greenServer)).getTextChannelById(greenServerChat)).sendMessage(builder.build()).queue();
         } catch (Exception ignored) {
         }
-        /*try {
-            String tlServer = "551022729441312779";
-            if(!serverID.equals(tlServer)) {
-                String tlServerChat = "617924927944785931";
-                event.getJDA().getGuildById(tlServer).getTextChannelById(tlServerChat).sendMessage(builder.build()).queue();
-            }
-        } catch (Exception ignored) {
-        }*/
         try {
             String carDogeServer = "609985979167670272";
             String carDogeServerChat = "617938587102478337";
@@ -256,17 +248,9 @@ public class getHoryuBanList extends ListenerAdapter {
             Objects.requireNonNull(Objects.requireNonNull(event.getJDA().getGuildById(ArtServer)).getTextChannelById(ArtServerChat)).sendMessage(builder.build()).queue();
         } catch (Exception ignored) {
         }
-        /*
         try {
-            String SCP079Server = "614348538222215188";
-            String SCP079ServerChat = "628922311927398400";
-            event.getJDA().getGuildById(SCP079Server).getTextChannelById(SCP079ServerChat).sendMessage(builder.build()).queue();
-        } catch (Exception ignored) {
-        }
-        */
-        try {
-            String ArtServer = "614348538222215188";
-            String ArtServerChat = "629135900059631647";
+            String ArtServer = "619746711992270869";
+            String ArtServerChat = "629167608180113458";
             Objects.requireNonNull(Objects.requireNonNull(event.getJDA().getGuildById(ArtServer)).getTextChannelById(ArtServerChat)).sendMessage(builder.build()).queue();
         } catch (Exception ignored) {
         }
@@ -284,7 +268,12 @@ public class getHoryuBanList extends ListenerAdapter {
             Objects.requireNonNull(Objects.requireNonNull(event.getJDA().getGuildById(VAServer)).getTextChannelById(VAServerChat)).sendMessage(builder.build()).queue();
         } catch (Exception ignored) {
         }
-
+        try {
+            String HSSServer = "553932158436376586";
+            String HSSServerChat = "641953563299282944";
+            Objects.requireNonNull(Objects.requireNonNull(event.getJDA().getGuildById(HSSServer)).getTextChannelById(HSSServerChat)).sendMessage(builder.build()).queue();
+        } catch (Exception ignored) {
+        }
     }
     private void testsend(EmbedBuilder builder, ReadyEvent event) {
         try {

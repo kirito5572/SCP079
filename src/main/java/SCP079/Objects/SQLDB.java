@@ -87,8 +87,11 @@ public class SQLDB {
             e.printStackTrace();
         }
     }
-    static String[][] SQLdownload(String SteamID) throws SQLException, ClassNotFoundException {
-        String[][] data = new String[5][7];
+    public static String[] SQLdownload(String SteamID) throws SQLException, ClassNotFoundException {
+        String[] data = new String[] {
+                null, null, null, null, null,
+                null, null, null, null, null
+        };
 
         String queryString = "SELECT * FROM Sanction_Information WHERE SteamID =\"" + SteamID +"\";";
         Class.forName(driverName);
@@ -100,13 +103,8 @@ public class SQLDB {
         connection.close();
         int i = 0;
         while (resultSet.next()) {
-            data[i][0] = resultSet.getString("caseID");
-            data[i][1] = resultSet.getString("SteamID");
-            data[i][2] = resultSet.getString("sanctionTime");
-            data[i][3] = resultSet.getString("endTime");
-            data[i][4] = resultSet.getString("reason");
-            data[i][5] = resultSet.getString("sendServer");
-            data[i][6] = resultSet.getString("serverID");
+            i++;
+            data[i] = resultSet.getString("caseID");
         }
         return data;
     }
@@ -127,5 +125,28 @@ public class SQLDB {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+    public static String[] SQLdownload(int caseID) throws SQLException, ClassNotFoundException {
+        String[] data = new String[7];
+
+        String queryString = "SELECT * FROM Sanction_Information WHERE caseID =\"" + caseID +"\";";
+        Class.forName(driverName);
+
+        connection = DriverManager.getConnection(url, user, password);
+        statement = connection.createStatement();
+        resultSet = statement.executeQuery(queryString);
+        statement.close();
+        connection.close();
+        int i = 0;
+        while (resultSet.next()) {
+            data[0] = resultSet.getString("caseID");
+            data[1] = resultSet.getString("SteamID");
+            data[2] = resultSet.getString("sanctionTime");
+            data[3] = resultSet.getString("endTime");
+            data[4] = resultSet.getString("reason");
+            data[5] = resultSet.getString("sendServer");
+            data[6] = resultSet.getString("serverID");
+        }
+        return data;
     }
 }

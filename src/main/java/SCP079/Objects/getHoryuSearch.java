@@ -48,7 +48,7 @@ public class getHoryuSearch {
     }
     public static String[][] Search(String SteamID) throws SQLException, ClassNotFoundException {
         String[][] HoryuData = get_Infor(SteamID);
-        String[][] DBData = SQLDB.SQLdownload(SteamID);
+        String[][] DBData = new String[5][2];//SQLDB.SQLdownload(SteamID);
         String[][] Data = new String[HoryuData.length + DBData.length][7];
         int j = 0, k = 0;
         for(int i = 0; i < (HoryuData.length + DBData.length); i++) {

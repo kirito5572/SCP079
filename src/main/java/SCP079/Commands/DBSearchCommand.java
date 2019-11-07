@@ -2,6 +2,7 @@ package SCP079.Commands;
 
 import SCP079.App;
 import SCP079.Objects.ICommand;
+import SCP079.Objects.SQLDB;
 import me.duncte123.botcommons.messaging.EmbedUtils;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
@@ -11,7 +12,6 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Objects;
 
-import static SCP079.Objects.getHoryuSearch.Search;
 import static SCP079.Objects.getSteamID.SteamID;
 
 public class DBSearchCommand implements ICommand {
@@ -29,56 +29,67 @@ public class DBSearchCommand implements ICommand {
         if(SteamData[0].equals("no")) {
             event.getChannel().sendMessage("스팀 ID가 올바르지 않습니다.").queue();
         }
-        String[][] data;
-        try {
-            data = Search(args.get(0));
-        } catch (SQLException | ClassNotFoundException e) {
-            e.printStackTrace();
-            event.getChannel().sendMessage("에러가 발생했습니다.").queue();
+        String[] data;
+        boolean flag = false;
+        if(args.get(2) != null) {
+            if(args.get(2).startsWith("-c")) {
+                try {
+                    data = SQLDB.SQLdownload(Integer.parseInt(args.get(3)));
+                    flag = true;
+                } catch (SQLException | ClassNotFoundException e) {
+                    e.printStackTrace();
+                    event.getChannel().sendMessage("에러가 발생했습니다.").queue();
 
-            return;
-        }
-        int i;
-        try {
-            i = Integer.parseInt(args.get(1)) - 1;
-        } catch (Exception e) {
-            event.getChannel().sendMessage("숫자를 입력해주세요").queue();
-
-            return;
-        }
-        if(data[0][0] == null) {
-            event.getChannel().sendMessage("제재 기록이 없습니다.").queue();
-
-            return;
-        }
-        try {
-            if(i != 0) {
-                if (data[i][0].equals(data[i - 1][0])) {
-                    event.getChannel().sendMessage(App.getPREFIX() + getInvoke() + args.get(0) + "를 입력해주세요").queue();
+                    return;
+                }
+            } else {
+                try {
+                    data = SQLDB.SQLdownload(args.get(0));
+                } catch (SQLException | ClassNotFoundException e) {
+                    e.printStackTrace();
+                    event.getChannel().sendMessage("에러가 발생했습니다.").queue();
 
                     return;
                 }
             }
-        } catch (Exception ignored) {
+        } else {
+            try {
+                data = SQLDB.SQLdownload(args.get(0));
+            } catch (SQLException | ClassNotFoundException e) {
+                e.printStackTrace();
+                event.getChannel().sendMessage("에러가 발생했습니다.").queue();
 
-        }
-        boolean flag = false;
-        if(i < 4) {
-            if (data[i + 1][0] != null) {
-                flag = true;
+                return;
             }
         }
-        EmbedBuilder builder = EmbedUtils.defaultEmbed()
-                .setTitle("검색된 제재 정보")
-                .addField("caseID", data[i][0], false)
-                .addField("스팀 ID", data[i][1], false)
-                .addField("DB 기록 시간", data[i][2], false)
-                .addField("제재 기간", data[i][3], false)
-                .addField("이유", data[i][4], false)
-                .addField("등록 서버", data[i][5], false)
-                .addField("서버 ID", data[i][6], false);
+        if(data[0] == null) {
+            event.getChannel().sendMessage("제재 기록이 없습니다.").queue();
+
+            return;
+        }
+        EmbedBuilder builder = EmbedUtils.defaultEmbed();
         if(flag) {
-            builder.appendDescription(App.getPREFIX() + " " + getInvoke() + " " + args.get(0) + " " + i + 1);
+            builder.setTitle("검색된 제재 정보")
+                    .addField("caseID", data[0], false)
+                    .addField("스팀 ID", data[1], false)
+                    .addField("DB 기록 시간", data[2], false)
+                    .addField("제재 기간", data[3], false)
+                    .addField("이유", data[4], false)
+                    .addField("등록 서버", data[5], false)
+                    .addField("서버 ID", data[6], false);
+        } else {
+            StringBuilder stringBuilder = new StringBuilder();
+            int j = 0;
+            for(int i = 0; i < 10; i++) {
+                if(data[i] != null) {
+                    j++;
+                    stringBuilder.append(data[i]).append(",");
+                }
+            }
+            builder.setTitle("검색된 제재 정보")
+                    .addField("SteamID", args.get(0), false)
+                    .addField("검색된 제재 건수", String.valueOf(j), false)
+                    .addField("CaseID", stringBuilder.toString().substring(0, stringBuilder.toString().length() - 2), false);
         }
 
         event.getChannel().sendMessage(builder.build()).queue();
