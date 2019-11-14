@@ -28,7 +28,7 @@ import java.util.Random;
 
 public class App {
     private String TOKEN;
-    private static boolean TESTMODE = true;
+    private static boolean TESTMODE = false;
     private static Date date;
     private static String Time;
     private static String PREFIX;
