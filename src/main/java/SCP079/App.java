@@ -13,6 +13,7 @@ import net.dv8tion.jda.api.AccountType;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
+import net.dv8tion.jda.api.entities.Activity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,6 +28,7 @@ import java.util.Random;
 
 public class App {
     private String TOKEN;
+    private static boolean TESTMODE = true;
     private static Date date;
     private static String Time;
     private static String PREFIX;
@@ -38,20 +40,37 @@ public class App {
         Time = format1.format(date);
         SQLDB sqldb = new SQLDB();
         CommandManager commandManager = new CommandManager();
-        StringBuilder TOKENreader = new StringBuilder();
-        try {
-            File file = new File("C:\\DiscordServerBotSecrets\\SCP-079\\TOKEN.txt");
-            FileReader fileReader = new FileReader(file);
-            int singalCh;
-            while((singalCh = fileReader.read()) != -1) {
-                TOKENreader.append((char) singalCh);
+        if(TESTMODE) {
+            StringBuilder TOKENreader = new StringBuilder();
+            try {
+                File file = new File("C:\\DiscordServerBotSecrets\\SCP-079\\TOKEN_DEBUG.txt");
+                FileReader fileReader = new FileReader(file);
+                int singalCh;
+                while ((singalCh = fileReader.read()) != -1) {
+                    TOKENreader.append((char) singalCh);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
 
-        TOKEN = TOKENreader.toString();
-        PREFIX = Constants.PREFIX;
+            TOKEN = TOKENreader.toString();
+            PREFIX = "$!";
+        } else {
+            StringBuilder TOKENreader = new StringBuilder();
+            try {
+                File file = new File("C:\\DiscordServerBotSecrets\\SCP-079\\TOKEN.txt");
+                FileReader fileReader = new FileReader(file);
+                int singalCh;
+                while ((singalCh = fileReader.read()) != -1) {
+                    TOKENreader.append((char) singalCh);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            TOKEN = TOKENreader.toString();
+            PREFIX = Constants.PREFIX;
+        }
 
         Logger logger = LoggerFactory.getLogger(App.class);
 
@@ -63,23 +82,44 @@ public class App {
 
         JDA jda;
 
-        try {
-            logger.info("부팅");
-            jda = new JDABuilder(AccountType.BOT)
-                    .setToken(TOKEN)
-                    .setAutoReconnect(true)
-                    .addEventListeners(listener, getHoryuBanList, activityChangeListener)
-                    .build().awaitReady();
-            logger.info("부팅완료");
-        } catch (LoginException | InterruptedException e) {
-            e.printStackTrace();
-            return;
+        if(TESTMODE) {
+            try {
+                logger.info("테스트 부팅");
+                jda = new JDABuilder(AccountType.BOT)
+                        .setToken(TOKEN)
+                        .setAutoReconnect(true)
+                        .addEventListeners(listener)
+                        .build().awaitReady();
+                logger.info("테스트 부팅완료");
+                jda.getPresence().setActivity(Activity.playing("디버깅 모드"));
+            } catch (LoginException | InterruptedException e) {
+                e.printStackTrace();
+                return;
+            }
+            EmbedUtils.setEmbedBuilder(
+                    () -> new EmbedBuilder()
+                            .setColor(getRandomColor())
+                            .setFooter("테스트 모드")
+            );
+        } else {
+            try {
+                logger.info("부팅");
+                jda = new JDABuilder(AccountType.BOT)
+                        .setToken(TOKEN)
+                        .setAutoReconnect(true)
+                        .addEventListeners(listener, getHoryuBanList, activityChangeListener)
+                        .build().awaitReady();
+                logger.info("부팅완료");
+            } catch (LoginException | InterruptedException e) {
+                e.printStackTrace();
+                return;
+            }
+            EmbedUtils.setEmbedBuilder(
+                    () -> new EmbedBuilder()
+                            .setColor(getRandomColor())
+                            .setFooter("Made By kirito5572#5572", Objects.requireNonNull(jda.getUserById("284508374924787713")).getAvatarUrl())
+            );
         }
-        EmbedUtils.setEmbedBuilder(
-                () -> new EmbedBuilder()
-                        .setColor(getRandomColor())
-                        .setFooter("Made By kirito5572#5572", Objects.requireNonNull(jda.getUserById("284508374924787713")).getAvatarUrl())
-        );
 
 
     }

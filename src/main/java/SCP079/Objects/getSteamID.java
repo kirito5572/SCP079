@@ -9,38 +9,44 @@ public class getSteamID {
         final boolean[] steamno = {false};
         final String[] NickName = new String[1];
         final String[] finalID = new String[1];
-        WebUtils.ins.scrapeWebPage("https://steamcommunity.com/profiles/" + ID + "/?xml=1").async((document -> {
-            String a1 = "";
-            boolean pass = false;
-            try {
-                a1 = document.getElementsByTag("profile").first().toString();
-            } catch (Exception e) {
-                pass = true;
-                flag[0] = false;
-                NickName[0] = "";
-                finalID[0] = "";
-                returns[2] = "nosteam";
-            }
-            if(!pass) {
-                String a2 = a1;
+        try {
+            WebUtils.ins.scrapeWebPage("https://steamcommunity.com/profiles/" + ID + "/?xml=1").async((document -> {
+                String a1 = "";
+                boolean pass = false;
                 try {
-                    a1 = a1.substring(a1.indexOf("<steamid64>") + 14, a1.indexOf("</steamid64>") - 2);
-                    a2 = a2.substring(a2.indexOf("<steamid>"));
-                    a2 = a2.substring(a2.indexOf("![CDATA[") + 8, a2.indexOf("]]>"));
-                    for (; a2.contains(" "); ) {
-                        a2 = a2.replaceFirst(" ", "");
-                    }
-                    NickName[0] = a2;
-                    finalID[0] = a1;
-
+                    a1 = document.getElementsByTag("profile").first().toString();
                 } catch (Exception e) {
-                    e.printStackTrace();
-
-                    returns[0] = "error";
+                    pass = true;
+                    flag[0] = false;
+                    NickName[0] = "";
+                    finalID[0] = "";
+                    returns[2] = "nosteam";
                 }
-                flag[0] = false;
-            }
-        }));
+                if (!pass) {
+                    String a2 = a1;
+                    try {
+                        a1 = a1.substring(a1.indexOf("<steamid64>") + 14, a1.indexOf("</steamid64>") - 2);
+                        a2 = a2.substring(a2.indexOf("<steamid>"));
+                        a2 = a2.substring(a2.indexOf("![CDATA[") + 8, a2.indexOf("]]>"));
+                        for (; a2.contains(" "); ) {
+                            a2 = a2.replaceFirst(" ", "");
+                        }
+                        NickName[0] = a2;
+                        finalID[0] = a1;
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+
+                        returns[0] = "error";
+                    }
+                    flag[0] = false;
+                }
+            }));
+        } catch (Exception e) {
+            e.printStackTrace();
+            returns[0] = "";
+            flag[0] = false;
+        }
         while(flag[0]) {
             try {
                 Thread.sleep(1);

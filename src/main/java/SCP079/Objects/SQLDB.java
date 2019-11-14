@@ -70,7 +70,7 @@ public class SQLDB {
         caseIDup();
 
         Date date = new Date();
-        SimpleDateFormat dayTime = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        SimpleDateFormat dayTime = new SimpleDateFormat("yyyy-MM-dd kk:mm:ss");
         String sanctionTime = dayTime.format(date);
         String queryString = "INSERT INTO Sanction_Information VALUE (\"" + caseID + "\",\""+ SteamID + "\", \"" + sanctionTime + "\", \"" + time + "\", \"" + reason + "\", \"" + server + "\" , \"" + serverID + "\"" + ");";
 
@@ -99,13 +99,13 @@ public class SQLDB {
         connection = DriverManager.getConnection(url, user, password);
         statement = connection.createStatement();
         resultSet = statement.executeQuery(queryString);
-        statement.close();
-        connection.close();
         int i = 0;
         while (resultSet.next()) {
-            i++;
             data[i] = resultSet.getString("caseID");
+            i++;
         }
+        statement.close();
+        connection.close();
         return data;
     }
     private static void caseIDup() {
@@ -135,8 +135,6 @@ public class SQLDB {
         connection = DriverManager.getConnection(url, user, password);
         statement = connection.createStatement();
         resultSet = statement.executeQuery(queryString);
-        statement.close();
-        connection.close();
         int i = 0;
         while (resultSet.next()) {
             data[0] = resultSet.getString("caseID");
@@ -147,6 +145,8 @@ public class SQLDB {
             data[5] = resultSet.getString("sendServer");
             data[6] = resultSet.getString("serverID");
         }
+        statement.close();
+        connection.close();
         return data;
     }
 }

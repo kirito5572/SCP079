@@ -2,7 +2,7 @@ package SCP079.Commands;
 
 import SCP079.App;
 import SCP079.Objects.ICommand;
-import SCP079.Objects.SQLDB;
+import SCP079.Objects.getHoryuSearch;
 import me.duncte123.botcommons.messaging.EmbedUtils;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
@@ -31,20 +31,19 @@ public class DBSearchCommand implements ICommand {
         }
         String[] data;
         boolean flag = false;
-        if(args.get(2) != null) {
-            if(args.get(2).startsWith("-c")) {
-                try {
-                    data = SQLDB.SQLdownload(Integer.parseInt(args.get(3)));
-                    flag = true;
-                } catch (SQLException | ClassNotFoundException e) {
-                    e.printStackTrace();
-                    event.getChannel().sendMessage("에러가 발생했습니다.").queue();
+        if(args.size() > 1) {
+            if(args.get(1).startsWith("-c")) {
+                if(args.size() == 2) {
+                    event.getChannel().sendMessage("뒤에 Case ID를 붙혀주세요 ").queue();
 
                     return;
                 }
+                data = getHoryuSearch.Search(args.get(0), args.get(2));
+                flag = true;
+
             } else {
                 try {
-                    data = SQLDB.SQLdownload(args.get(0));
+                    data = getHoryuSearch.Search(args.get(0));
                 } catch (SQLException | ClassNotFoundException e) {
                     e.printStackTrace();
                     event.getChannel().sendMessage("에러가 발생했습니다.").queue();
@@ -54,7 +53,7 @@ public class DBSearchCommand implements ICommand {
             }
         } else {
             try {
-                data = SQLDB.SQLdownload(args.get(0));
+                data = getHoryuSearch.Search(args.get(0));
             } catch (SQLException | ClassNotFoundException e) {
                 e.printStackTrace();
                 event.getChannel().sendMessage("에러가 발생했습니다.").queue();
@@ -89,7 +88,7 @@ public class DBSearchCommand implements ICommand {
             builder.setTitle("검색된 제재 정보")
                     .addField("SteamID", args.get(0), false)
                     .addField("검색된 제재 건수", String.valueOf(j), false)
-                    .addField("CaseID", stringBuilder.toString().substring(0, stringBuilder.toString().length() - 2), false);
+                    .addField("CaseID", stringBuilder.toString().substring(0, stringBuilder.toString().length() - 1), false);
         }
 
         event.getChannel().sendMessage(builder.build()).queue();

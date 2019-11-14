@@ -1,8 +1,7 @@
 package SCP079.Listener;
 
 import SCP079.App;
-import SCP079.Commands.*;
-import SCP079.Constants;
+import SCP079.Commands.HackCommand;
 import SCP079.Objects.CommandManager;
 import me.duncte123.botcommons.messaging.EmbedUtils;
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -116,7 +115,7 @@ public class Listener extends ListenerAdapter {
             return;
         }
 
-        if (event.getMessage().getContentRaw().startsWith(Constants.PREFIX)) {
+        if (event.getMessage().getContentRaw().startsWith(App.getPREFIX())) {
             manager.handleCommand(event);
         }
     }

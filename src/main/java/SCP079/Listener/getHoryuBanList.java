@@ -55,53 +55,56 @@ public class getHoryuBanList extends ListenerAdapter {
                         return;
                     }
                 }
-                String[] maindata = splitString(message);
-                if(caseNum < Integer.parseInt(maindata[6])) {
-                    caseNum = Integer.parseInt(maindata[6]);
+                String[] mainData = splitString(message);
+                if(caseNum < Integer.parseInt(mainData[6])) {
+                    caseNum = Integer.parseInt(mainData[6]);
                 } else {
                     return;
                 }
-                if(!maindata[5].equals("없음")) {
-                    long temp1 = Long.parseLong(maindata[5], 10);
-                    long temp2 = Long.parseLong(maindata[4], 10);
+                if(mainData[2].contains("AUTOMATRON REASON")) {
+                    return;
+                }
+                if(!mainData[5].equals("없음")) {
+                    long temp1 = Long.parseLong(mainData[5], 10);
+                    long temp2 = Long.parseLong(mainData[4], 10);
                     long timeTemp = temp1 - temp2;
                     timeTemp = timeTemp / 1000L;
-                    if(maindata[5].equals("0")) {
-                        maindata[5] = "영구";
+                    if(mainData[5].equals("0")) {
+                        mainData[5] = "영구";
                         time[0] = "99999999";
                     } else {
-                        if (timeTemp == 0) {
-                            maindata[5] = "영구";
+                        if (timeTemp < 10) {
+                            mainData[5] = "영구";
                             time[0] = "99999999";
                         }
                         if (timeTemp < 60) {
-                            maindata[5] = timeTemp + "초";
+                            mainData[5] = timeTemp + "초";
                             time[0] = "0";
                         }
                         if (timeTemp > 59) {
                             timeTemp = timeTemp / 60;
                             time[0] = String.valueOf(timeTemp);
-                            maindata[5] = timeTemp + "분";
+                            mainData[5] = timeTemp + "분";
                         }
                         if (timeTemp > 59) {
                             timeTemp = timeTemp / 60;
-                            maindata[5] = timeTemp + "시";
+                            mainData[5] = timeTemp + "시";
                         }
                         if (timeTemp > 23) {
                             timeTemp = timeTemp / 24;
-                            maindata[5] = timeTemp + "일";
+                            mainData[5] = timeTemp + "일";
                         }
                         if (timeTemp > 29) {
                             timeTemp = timeTemp / 30;
-                            maindata[5] = timeTemp + "월";
+                            mainData[5] = timeTemp + "월";
                         }
                         if (timeTemp > 11) {
                             youngminSend = true;
                             timeTemp = timeTemp / 12;
-                            maindata[5] = timeTemp + "년";
+                            mainData[5] = timeTemp + "년";
                         }
                         if (timeTemp > 50) {
-                            maindata[5] = "50년 이상";
+                            mainData[5] = "50년 이상";
                         }
                     }
                 }
@@ -110,15 +113,15 @@ public class getHoryuBanList extends ListenerAdapter {
                         .setTitle("제재 정보 공유(호류서버)")
                         .setColor(Color.RED)
                         .setFooter("API from scpsl.kr, API made by 호류#7777", "https://cdn.discordapp.com/attachments/563060742551633931/607216118859431966/HoryuServer_Logo_Final.gif")
-                        .addField("case", maindata[6], false)
-                        .addField("제재 대상자", maindata[0], false)
-                        .addField("스팀 ID", maindata[1], false)
-                        .addField("제재 사유", maindata[2], false)
-                        .addField("제재 기간", maindata[5] + "(" + time[0] + "분)", false)
+                        .addField("case", mainData[6], false)
+                        .addField("제재 대상자", mainData[0], false)
+                        .addField("스팀 ID", mainData[1], false)
+                        .addField("제재 사유", mainData[2], false)
+                        .addField("제재 기간", mainData[5] + "(" + time[0] + "분)", false)
                         .addField("제재 담당 서버", "호류 SCP 서버", false);
                 //testsend(builder, event);
                 send(builder, event, youngminSend);
-                HackCommand.simaAutoSend("563045452774244361", maindata[0], maindata[1], time[0], maindata[2], event.getJDA());
+                HackCommand.simaAutoSend("563045452774244361", mainData[0], mainData[1], time[0], mainData[2], event.getJDA());
             }
         };
         Timer jobScheduler = new Timer();
