@@ -25,7 +25,12 @@ public class DBSearchCommand implements ICommand {
             return;
         }
         //Validate Steam ID
+        if(args.size() == 0) {
+            event.getChannel().sendMessage("SteamID를 입력해주세요.").queue();
+            return;
+        }
         String[] SteamData = SteamID(args.get(0));
+
         if(SteamData[0].equals("no")) {
             event.getChannel().sendMessage("스팀 ID가 올바르지 않습니다.").queue();
         }

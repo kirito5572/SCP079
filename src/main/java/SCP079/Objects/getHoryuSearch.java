@@ -78,9 +78,10 @@ public class getHoryuSearch {
     public static String[] Search(String SteamID) throws SQLException, ClassNotFoundException {
         String[] HoryuData = get_Infor(SteamID);
         String[] DBData = SQLDB.SQLdownload(SteamID);
-        String[] Data = new String[HoryuData.length + DBData.length];
-        int j = 0, k = 0;
-        for(int i = 0; i < (HoryuData.length + DBData.length); i++) {
+        String[] GreenData = SQLDB.GreenDBDownload(SteamID);
+        String[] Data = new String[HoryuData.length + DBData.length + GreenData.length];
+        int j = 0, k = 0, g = 0;
+        for(int i = 0; i < (HoryuData.length + DBData.length + GreenData.length); i++) {
             if(j < HoryuData.length) {
                 if(HoryuData[j] != null) {
                     Data[i] = "h" + HoryuData[j];
@@ -91,7 +92,12 @@ public class getHoryuSearch {
                 if(DBData[k] != null) {
                     Data[i] = DBData[k];
                     k++;
-                    System.out.println(Data[i]);
+                }
+            }
+            if(g < GreenData.length) {
+                if(GreenData[g] != null) {
+                    Data[i] = "g" + GreenData[g];
+                    g++;
                 }
             }
         }
@@ -101,6 +107,12 @@ public class getHoryuSearch {
         String[] data = new String[7];
         if(caseID.startsWith("h")) { //식별자: 호류
             data = get_Infor(Integer.parseInt(caseID.replaceFirst("h", "")), steamID);
+        } else if(caseID.startsWith("g")) {
+            try {
+                data = SQLDB.GreenDBDownload(Integer.parseInt(caseID.replaceFirst("g", "")), steamID);
+            } catch (ClassNotFoundException | SQLException e) {
+                e.printStackTrace();
+            }
         } else { //식별자: 자체 DB
             try {
                 data = SQLDB.SQLdownload(Integer.parseInt(caseID));

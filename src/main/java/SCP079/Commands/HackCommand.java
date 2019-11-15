@@ -242,6 +242,16 @@ public class HackCommand implements ICommand {
             e.printStackTrace();
             event.getChannel().sendMessage("감자서버 전송 실패").queue();
         }
+        try {
+            String SCP079Server = "616601689327140908";
+            if(!serverID.equals(SCP079Server)) {
+                String SCP079ServerChat = "632817086745411594";
+                Objects.requireNonNull(Objects.requireNonNull(event.getJDA().getGuildById(SCP079Server)).getTextChannelById(SCP079ServerChat)).sendMessage(builder.build()).queue();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            event.getChannel().sendMessage("SCP-079서버 전송 실패").queue();
+        }
         event.getChannel().sendMessage("전송이 완료되었습니다.").queue();
     }
     public static void simaAutoSend(String serverID, String Nickname, String ID, String time, String reason, JDA jda) {

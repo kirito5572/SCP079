@@ -277,6 +277,12 @@ public class getHoryuBanList extends ListenerAdapter {
             Objects.requireNonNull(Objects.requireNonNull(event.getJDA().getGuildById(HSSServer)).getTextChannelById(HSSServerChat)).sendMessage(builder.build()).queue();
         } catch (Exception ignored) {
         }
+        try {
+            String SCP079Server = "616601689327140908";
+            String SCP079ServerChat = "632817086745411594";
+            Objects.requireNonNull(Objects.requireNonNull(event.getJDA().getGuildById(SCP079Server)).getTextChannelById(SCP079ServerChat)).sendMessage(builder.build()).queue();
+        } catch (Exception ignored) {
+        }
     }
     private void testsend(EmbedBuilder builder, ReadyEvent event) {
         try {
