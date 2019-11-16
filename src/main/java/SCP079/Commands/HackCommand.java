@@ -210,18 +210,6 @@ public class HackCommand implements ICommand {
             e.printStackTrace();
             event.getChannel().sendMessage("아트서버 전송 실패").queue();
         }
-        if(youngminSend) {
-            try {
-                String YoungminServer = "623316315620245544";
-                if (!serverID.equals(YoungminServer)) {
-                    String YoungminServerChat = "623322259570032640";
-                    Objects.requireNonNull(Objects.requireNonNull(event.getJDA().getGuildById(YoungminServer)).getTextChannelById(YoungminServerChat)).sendMessage(builder.build()).queue();
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-                event.getChannel().sendMessage("영민서버 전송 실패").queue();
-            }
-        }
         try {
             String VAServer = "614793325081526282";
             if(!serverID.equals(VAServer)) {

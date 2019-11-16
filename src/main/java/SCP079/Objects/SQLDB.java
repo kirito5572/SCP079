@@ -69,6 +69,9 @@ public class SQLDB {
         }
     }
     public static void SQLupload(String SteamID, String time, String reason, String server, String serverID) {
+        if(serverID.equals("600010501266866186")) {
+            return;
+        }
         caseIDup();
 
         Date date = new Date();
