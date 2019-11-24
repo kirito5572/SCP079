@@ -1,18 +1,23 @@
 package SCP079.Commands;
 
 import SCP079.App;
-import SCP079.Objects.SQLDB;
 import SCP079.Objects.ICommand;
+import SCP079.Objects.SQLDB;
 import SCP079.Objects.getSteamID;
+import SCP079.Objects.linkConfirm;
 import me.duncte123.botcommons.messaging.EmbedUtils;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
+import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.exceptions.ErrorResponseException;
 
 import java.awt.*;
 import java.util.List;
 import java.util.Objects;
+
+import static SCP079.Commands.HackCommand.test;
 
 public class imforCommand implements ICommand {
     @Override
@@ -30,13 +35,16 @@ public class imforCommand implements ICommand {
         TextChannel channel = event.getChannel();
 
         if(args.isEmpty()) {
-            event.getChannel().sendMessage("인수 부족 '" + App.getPREFIX() + "명령어" +
-                    getInvoke() + "'").queue();
+            event.getChannel().sendMessage("인수 부족 " + App.getPREFIX() + "명령어`" +
+                    getInvoke() + "`").queue();
             return;
         }
         String SteamID;
         String time, rawtime;
         StringBuilder reason;
+        String ip = null;
+        String chattingId = null;
+        String link = null;
 
         try {
             SteamID = args.get(0);
@@ -121,9 +129,40 @@ public class imforCommand implements ICommand {
             return;
         }
         reason = new StringBuilder();
+        boolean reasonFlag = true;
+        System.out.println(args.size());
         try {
-            for(int i = 2; i <= args.size(); i++) {
-                reason.append(args.get(i)).append(" ");
+            for(int i = 2; i < args.size(); i++) {
+                if(args.get(i).startsWith("-ip")) {
+                    reasonFlag = false;
+                    if(i + 1 != args.size()) {
+                        ip = args.get(i + 1);
+                    } else {
+                        event.getChannel().sendMessage("ip가 비었습니다.").queue();
+                        return;
+                    }
+                }
+                if(args.get(i).startsWith("-chat")) {
+                    reasonFlag = false;
+                    if(args.get(i + 1) != null) {
+                        chattingId = args.get(i + 1);
+                    } else {
+                        event.getChannel().sendMessage("채팅 ID가 비었습니다.").queue();
+                        return;
+                    }
+                }
+                if(args.get(i).startsWith("-link")) {
+                    reasonFlag = false;
+                    if(args.get(i + 1) != null) {
+                        link = args.get(i + 1);
+                    } else {
+                        event.getChannel().sendMessage("링크가 없습니다.").queue();
+                        return;
+                    }
+                }
+                if(reasonFlag) {
+                    reason.append(args.get(i)).append(" ");
+                }
             }
         } catch (Exception e) {
             if(reason.toString().equals("")) {
@@ -131,6 +170,7 @@ public class imforCommand implements ICommand {
 
                 return;
             }
+            e.printStackTrace();
         }
         String reasonFinal = String.join(" ", reason.toString());
 
@@ -145,6 +185,17 @@ public class imforCommand implements ICommand {
             event.getChannel().sendMessage("그런 ID는 존재 하지 않습니다.").queue();
 
             return;
+        }
+        if(!validIP(ip)) {
+            event.getChannel().sendMessage("존재하지 않는 IP주소가 입력되었습니다.").queue();
+            return;
+        }
+        if(link != null) {
+            if (!linkConfirm.isLink(link)) {
+                event.getChannel().sendMessage("해당 링크는 없는 링크인것 같습니다. 접속할 수 없습니다.").queue();
+
+                return;
+            }
         }
         String NickName = returns[0];
         String ID = returns[1];
@@ -166,9 +217,46 @@ public class imforCommand implements ICommand {
         if(returns[2].equals("nosteam")) {
             builder.addField("중요", "이 유저는 스팀 프로필을 등록한 적 없는 유저입니다.", false);
         }
-        HackCommand.simaAutoSend(serverID, NickName, ID, time, reasonFinal, event.getJDA());
+        if(ip != null) {
+            builder.addField("IP", ip, false);
+        }
+        if(link != null) {
+            builder.addField("증거 자료(외부 링크)", "[외부 링크 이동](" + link + ")", false);
+        }
+        if(chattingId != null) {
+            List<TextChannel> textChannels = event.getGuild().getTextChannels();
+            boolean error = true;
+            for (TextChannel textChannel : textChannels) {
+                Message message;
+                try {
+                    message = textChannel.retrieveMessageById(chattingId).complete();
+                    error = false;
+                } catch (IllegalArgumentException e) {
+                    event.getChannel().sendMessage("채팅 ID 양식에 유효 하지 않은 입력이 감지 되었습니다.").queue();
+                    return;
+                } catch (ErrorResponseException e1) {
+                    continue;
+                }
+                try {
+                    if(message != null) {
+                        builder.addField("신고 내역", "[메세지 이동](" + message.getJumpUrl() + ")",false);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            if(error) {
+                event.getChannel().sendMessage("유효하지 않은 채널 ID가 입력되었습니다.").queue();
+                return;
+            }
+        }
+        if(App.isTESTMODE()) {
+            test(builder, event);
+        } else {
+            HackCommand.simaAutoSend(serverID, NickName, ID, time, reasonFinal, event.getJDA());
 
-        HackCommand.server_Send(serverID, builder, event, youngminSend);
+            HackCommand.server_Send(serverID, builder, event, youngminSend);
+        }
 
     }
 
@@ -187,5 +275,28 @@ public class imforCommand implements ICommand {
     @Override
     public String getSmallHelp() {
         return "SCP 서버간 제재자 공유";
+    }
+
+    private static boolean validIP (String ip) {
+        try {
+            if ( ip == null || ip.isEmpty() ) {
+                return false;
+            }
+
+            String[] parts = ip.split( "\\." );
+            if ( parts.length != 4 ) {
+                return false;
+            }
+
+            for ( String s : parts ) {
+                int i = Integer.parseInt( s );
+                if ( (i < 0) || (i > 255) ) {
+                    return false;
+                }
+            }
+            return !ip.endsWith(".");
+        } catch (NumberFormatException nfe) {
+            return false;
+        }
     }
 }

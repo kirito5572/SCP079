@@ -94,10 +94,13 @@ public class HackCommand implements ICommand {
         if(returns[2].equals("nosteam")) {
             builder.addField("중요", "이 유저는 스팀 프로필을 등록한 적 없는 유저입니다.", false);
         }
-
-        simaAutoSend(serverID, NickName, ID, "26297460", "핵 사용", event.getJDA());
-        server_Send(serverID, builder, event, true);
-        greenAutoBan(ID, "핵 사용", event.getJDA());
+        if(App.isTESTMODE()) {
+            test(builder, event);
+        } else {
+            simaAutoSend(serverID, NickName, ID, "26297460", "핵 사용", event.getJDA());
+            server_Send(serverID, builder, event, true);
+            greenAutoBan(ID, "핵 사용", event.getJDA());
+        }
 
     }
 
@@ -265,5 +268,8 @@ public class HackCommand implements ICommand {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+    public static void test(EmbedBuilder builder, GuildMessageReceivedEvent event) {
+        Objects.requireNonNull(event.getJDA().getGuilds().get(0).getTextChannelById("593991995433680924")).sendMessage(builder.build()).queue();
     }
 }

@@ -147,4 +147,8 @@ public class App {
     public static Date getDate() {
         return date;
     }
+
+    public static boolean isTESTMODE() {
+        return TESTMODE;
+    }
 }
