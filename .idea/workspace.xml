@@ -2,11 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="cdb961d0-c07c-4030-9401-b0386cab9ae1" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/SCP079/Objects/linkConfirm.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/SCP079/App.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/SCP079/App.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/SCP079/Commands/HackCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/SCP079/Commands/HackCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/SCP079/Commands/VersionCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/SCP079/Commands/VersionCommand.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/SCP079/Commands/imforCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/SCP079/Commands/imforCommand.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -241,8 +238,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Gradle.SCP079 [uberJar]" />
         <item itemvalue="Gradle.SCP-079-2 [shadowJar]" />
+        <item itemvalue="Gradle.SCP079 [uberJar]" />
         <item itemvalue="Application.App" />
         <item itemvalue="Gradle.SCP079 [jar]" />
         <item itemvalue="Gradle.SCP-079-2 [dependencies]" />
@@ -326,7 +323,7 @@
       <workItem from="1573707118545" duration="6241000" />
       <workItem from="1573776159191" duration="13300000" />
       <workItem from="1574075752718" duration="781000" />
-      <workItem from="1574491283097" duration="12554000" />
+      <workItem from="1574491283097" duration="16486000" />
     </task>
     <servers />
   </component>

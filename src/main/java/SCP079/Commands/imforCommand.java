@@ -264,7 +264,11 @@ public class imforCommand implements ICommand {
     public String getHelp() {
         return "SCP 한국 서버들간 제재 정보 공유를 위한 커맨드입니다. \n" +
                 "사용법: `" + App.getPREFIX() + getInvoke() + " <Steam ID> <제재 기간> <사유> `\n" +
-                "제재기한 : m(min)/h(hour)/d(day)/M(month)/y(year)/영구(50y)";
+                "제재기한 : m(min)/h(hour)/d(day)/M(month)/y(year)/영구(50y)\n" +
+                "<추가 옵션>\n" +
+                "-ip <ip>\n" +
+                "-chat <디스코드 채팅 ID>\n" +
+                "-link <URL>";
     }
 
     @Override
@@ -277,7 +281,7 @@ public class imforCommand implements ICommand {
         return "SCP 서버간 제재자 공유";
     }
 
-    private static boolean validIP (String ip) {
+    static boolean validIP(String ip) {
         try {
             if ( ip == null || ip.isEmpty() ) {
                 return false;

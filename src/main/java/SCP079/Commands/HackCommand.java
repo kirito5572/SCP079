@@ -4,16 +4,22 @@ import SCP079.App;
 import SCP079.Objects.SQLDB;
 import SCP079.Objects.ICommand;
 import SCP079.Objects.getSteamID;
+import SCP079.Objects.linkConfirm;
 import me.duncte123.botcommons.messaging.EmbedUtils;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.Permission;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.exceptions.ErrorResponseException;
 
 import java.awt.*;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
+
+import static SCP079.Commands.imforCommand.validIP;
 
 public class HackCommand implements ICommand {
     @Override
@@ -44,25 +50,47 @@ public class HackCommand implements ICommand {
 
             return;
         }
-        try {
-            ipAddress = args.get(1);
+        String ip = null, chattingId = null, link = null, rank = null;
 
-        } catch (Exception e) {
-            event.getChannel().sendMessage("ip 주소가 입력되지 않았거나, 인수가 잘못 입력되었습니다.").queue();
-
-            return;
-        }
-        StringBuilder temp = new StringBuilder();
         try {
-            for(int i = 2; i < args.size(); i++) {
-                temp.append(args.get(i)).append(" ");
+            for(int i = 1; i < args.size(); i++) {
+                if(args.get(i).startsWith("-ip")) {
+                    if(i + 1 != args.size()) {
+                        ip = args.get(i + 1);
+                    } else {
+                        event.getChannel().sendMessage("ip가 비었습니다.").queue();
+                        return;
+                    }
+                }
+                if(args.get(i).startsWith("-chat")) {
+                    if(args.get(i + 1) != null) {
+                        chattingId = args.get(i + 1);
+                    } else {
+                        event.getChannel().sendMessage("채팅 ID가 비었습니다.").queue();
+                        return;
+                    }
+                }
+                if(args.get(i).startsWith("-link")) {
+                    if(args.get(i + 1) != null) {
+                        link = args.get(i + 1);
+                    } else {
+                        event.getChannel().sendMessage("링크가 없습니다.").queue();
+                        return;
+                    }
+                }
+                if(args.get(i).startsWith("-rank")) {
+                    if(args.get(i + 1) != null) {
+                        rank = args.get(i + 1);
+                    } else {
+                        event.getChannel().sendMessage("의심등급이 입력되지 않았습니다.").queue();
+                        return;
+                    }
+                }
             }
-            level = temp.toString();
         } catch (Exception e) {
-            event.getChannel().sendMessage("의심 등급이 입력되지 않았거나, 인수가 잘못 입력되었습니다.").queue();
-
-            return;
+            e.printStackTrace();
         }
+
 
         String[] returns = getSteamID.SteamID(SteamID);
 
@@ -76,6 +104,19 @@ public class HackCommand implements ICommand {
 
             return;
         }
+        if(ip != null) {
+            if (!validIP(ip)) {
+                event.getChannel().sendMessage("존재하지 않는 IP주소가 입력되었습니다.").queue();
+                return;
+            }
+        }
+        if(link != null) {
+            if (!linkConfirm.isLink(link)) {
+                event.getChannel().sendMessage("해당 링크는 없는 링크인것 같습니다. 접속할 수 없습니다.").queue();
+
+                return;
+            }
+        }
 
         String NickName = returns[0];
         String ID = returns[1];
@@ -84,11 +125,47 @@ public class HackCommand implements ICommand {
 
         EmbedBuilder builder = EmbedUtils.defaultEmbed()
                 .setTitle("공유된 제재 정보")
-                .setColor(Color.RED)
-                .addField("제재 대상자", NickName + "(" + ipAddress + ")", false)
-                .addField("스팀 ID", ID, false)
-                .addField("제재 사유", "핵 사용자", false)
-                .addField("의심 등급", level, false)
+                .setColor(Color.RED);
+        if(ip != null) {
+            builder.addField("제재 대상자", NickName + "(" + ip + ")", false);
+        } else {
+            builder.addField("제재 대상자", NickName, false);
+        }
+        builder.addField("스팀 ID", ID, false);
+        if(rank != null) {
+            builder.addField("의심 등급", rank, false);
+        }
+        if(link != null) {
+            builder.addField("증거 링크", "[링크 이동](" + link + ")", false);
+        }
+        if(chattingId != null) {
+            List<TextChannel> textChannels = event.getGuild().getTextChannels();
+            boolean error = true;
+            for (TextChannel textChannel : textChannels) {
+                Message message;
+                try {
+                    message = textChannel.retrieveMessageById(chattingId).complete();
+                    error = false;
+                } catch (IllegalArgumentException e) {
+                    event.getChannel().sendMessage("채팅 ID 양식에 유효 하지 않은 입력이 감지 되었습니다.").queue();
+                    return;
+                } catch (ErrorResponseException e1) {
+                    continue;
+                }
+                try {
+                    if(message != null) {
+                        builder.addField("신고 내역", "[메세지 이동](" + message.getJumpUrl() + ")",false);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            if(error) {
+                event.getChannel().sendMessage("유효하지 않은 채널 ID가 입력되었습니다.").queue();
+                return;
+            }
+        }
+        builder.addField("제재 사유", "핵 사용자", false)
                 .addField("제재 담당 서버", event.getGuild().getName(), false)
                 .addField("공유자", event.getMember().getAsMention(), false);
         if(returns[2].equals("nosteam")) {
@@ -107,7 +184,12 @@ public class HackCommand implements ICommand {
     @Override
     public String getHelp() {
         return "SCP 한국 서버들간 핵 정보 공유를 위한 커맨드입니다. \n" +
-                "사용법: `" + App.getPREFIX() + getInvoke() + " <Steam ID> <ip주소> <의심 정도>`";
+                "사용법: `" + App.getPREFIX() + getInvoke() + " <Steam ID> `\n" +
+                "<추가 옵션>\n" +
+                "-ip <ip>\n" +
+                "-chat <디스코드 채팅 ID>\n" +
+                "-link <URL>" +
+                "-rank <의심등급>";
     }
 
     @Override
