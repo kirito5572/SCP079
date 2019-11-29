@@ -3,8 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="cdb961d0-c07c-4030-9401-b0386cab9ae1" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/SCP079/Commands/HackCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/SCP079/Commands/HackCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/SCP079/Commands/PingCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/SCP079/Commands/PingCommand.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/SCP079/Listener/Listener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/SCP079/Listener/Listener.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -325,7 +323,7 @@
       <workItem from="1573776159191" duration="13300000" />
       <workItem from="1574075752718" duration="781000" />
       <workItem from="1574491283097" duration="16486000" />
-      <workItem from="1575027322261" duration="3627000" />
+      <workItem from="1575027322261" duration="4153000" />
     </task>
     <servers />
   </component>

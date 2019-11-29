@@ -120,6 +120,7 @@ public class Listener extends ListenerAdapter {
                 for(int i = 0; i < serverList.length; i++) {
                     if(event.getGuild().getId().equals(serverList[i])) {
                         if(!event.getChannel().getId().equals(channelList[i])) {
+                            System.out.println("여긴 봇 채팅방이 아닙니다!");
                             if(!(Objects.requireNonNull(event.getMember()).hasPermission(Permission.ADMINISTRATOR) || event.getMember().hasPermission(Permission.MANAGE_ROLES) ||
                                     event.getMember().hasPermission(Permission.MESSAGE_MANAGE) || event.getMember().hasPermission(Permission.MANAGE_CHANNEL) ||
                                     event.getMember().hasPermission(Permission.MANAGE_PERMISSIONS)) || event.getMember().hasPermission(Permission.MANAGE_SERVER)) {
