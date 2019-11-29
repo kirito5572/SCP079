@@ -132,7 +132,7 @@ public class Listener extends ListenerAdapter {
                             System.out.println("여긴 봇 채팅방이 아닙니다!");
                             if(!(Objects.requireNonNull(event.getMember()).hasPermission(Permission.ADMINISTRATOR) || event.getMember().hasPermission(Permission.MANAGE_ROLES) ||
                                     event.getMember().hasPermission(Permission.MESSAGE_MANAGE) || event.getMember().hasPermission(Permission.MANAGE_CHANNEL) ||
-                                    event.getMember().hasPermission(Permission.MANAGE_PERMISSIONS)) || event.getMember().hasPermission(Permission.MANAGE_SERVER)) {
+                                    event.getMember().hasPermission(Permission.MANAGE_PERMISSIONS) || event.getMember().hasPermission(Permission.MANAGE_SERVER))) {
                                 System.out.println("당신은 권한이 없습니다!");
                                 if(!event.getGuild().getId().equals("508913681279483913")) {
                                     return;
