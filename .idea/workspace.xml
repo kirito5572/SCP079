@@ -2,7 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="cdb961d0-c07c-4030-9401-b0386cab9ae1" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/src/main/java/SCP079/Listener/Listener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/SCP079/Listener/Listener.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/SCP079/Commands/DBSearchCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/SCP079/Commands/DBSearchCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/SCP079/Commands/DiscordCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/SCP079/Commands/DiscordCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/SCP079/Commands/UserInfoCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/SCP079/Commands/UserInfoCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/SCP079/Commands/VersionCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/SCP079/Commands/VersionCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/SCP079/Commands/imforCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/SCP079/Commands/imforCommand.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -322,7 +326,7 @@
       <workItem from="1573776159191" duration="13300000" />
       <workItem from="1574075752718" duration="781000" />
       <workItem from="1574491283097" duration="16486000" />
-      <workItem from="1575027322261" duration="4454000" />
+      <workItem from="1575027322261" duration="5060000" />
     </task>
     <servers />
   </component>

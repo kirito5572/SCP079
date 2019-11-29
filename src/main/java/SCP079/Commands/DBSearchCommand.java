@@ -17,11 +17,11 @@ import static SCP079.Objects.getSteamID.SteamID;
 public class DBSearchCommand implements ICommand {
     @Override
     public void handle(List<String> args, GuildMessageReceivedEvent event) {
-        if(!(Objects.requireNonNull(event.getMember()).hasPermission(Permission.MANAGE_CHANNEL) || event.getMember().hasPermission(Permission.MANAGE_PERMISSIONS) ||
-                event.getMember().hasPermission(Permission.MANAGE_ROLES) || event.getMember().hasPermission(Permission.MANAGE_SERVER) ||
-                event.getMember().hasPermission(Permission.MESSAGE_MANAGE))) {
+        if(!(Objects.requireNonNull(event.getMember()).hasPermission(Permission.ADMINISTRATOR) || event.getMember().hasPermission(Permission.MANAGE_ROLES) ||
+                event.getMember().hasPermission(Permission.MESSAGE_MANAGE) || event.getMember().hasPermission(Permission.MANAGE_CHANNEL) ||
+                event.getMember().hasPermission(Permission.MANAGE_PERMISSIONS) || event.getMember().hasPermission(Permission.MANAGE_SERVER))) {
+            event.getChannel().sendMessage("당신은 이 명령어를 쓸 권한이 없습니다.").queue();
 
-            event.getChannel().sendMessage("당신은 이 명령어를 사용할 수 없습니다.").queue();
             return;
         }
         //Validate Steam ID
