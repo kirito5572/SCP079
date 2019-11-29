@@ -9,8 +9,9 @@ import java.util.List;
 public class PingCommand implements ICommand {
     @Override
     public void handle(List<String> args, GuildMessageReceivedEvent event) {
+        int ping = event.getJDA().getRestPing().complete().intValue();
         event.getChannel().sendMessage("퐁!").queue((message) ->
-                message.editMessageFormat("결과: 봇: %sms\n API: %sms", event.getJDA().getGatewayPing(), event.getJDA().getRestPing()).queue()
+                message.editMessageFormat("Gateway Ping: %sms\nRest Ping: %sms", event.getJDA().getGatewayPing(), ping).queue()
         );
     }
 
