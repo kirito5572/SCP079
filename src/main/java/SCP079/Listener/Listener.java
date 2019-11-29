@@ -110,30 +110,6 @@ public class Listener extends ListenerAdapter {
             /*
             순서: 호류 / 그린 / 독도 / 스노 / HSS / 도지 / 시마 / 낙지 / 디클 / 브아 / 아트
              */
-            String[] serverList = new String[] {
-                    "563045452774244361", "600010501266866186", "581835684986486785", "570659322007126029", "553932158436376586", "609985979167670272", "582091661266386944", "531777289684254731", "614348538222215188", "614793325081526282", "619746711992270869", "616601689327140908"
-            };
-            String[] channelList = new String[] {
-                    "563205968608100352", "600012818879741963", "581836360051195915", "575423098149535744", "558651343330607125", "644203968628785165", "602391121573707807", "531788408603803658", "614743528928575527", "616927037185196042", "619747385806946332", "623823012428251155"
-            };
-            try {
-                for(int i = 0; i < serverList.length; i++) {
-                    if(event.getGuild().getId().equals(serverList[i])) {
-                        if(!event.getChannel().getId().equals(channelList[i])) {
-                            System.out.println("여긴 봇 채팅방이 아닙니다!");
-                            if(!(Objects.requireNonNull(event.getMember()).hasPermission(Permission.ADMINISTRATOR) || event.getMember().hasPermission(Permission.MANAGE_ROLES) ||
-                                    event.getMember().hasPermission(Permission.MESSAGE_MANAGE) || event.getMember().hasPermission(Permission.MANAGE_CHANNEL) ||
-                                    event.getMember().hasPermission(Permission.MANAGE_PERMISSIONS)) || event.getMember().hasPermission(Permission.MANAGE_SERVER)) {
-                                if(event.getGuild().getId().equals("508913681279483913")) {
-                                    flag = false;
-                                }
-                            }
-                        }
-                    }
-                }
-            } catch (Exception e) {
-                event.getChannel().sendMessage(e.getMessage()).queue();
-            }
             if(flag) {
                 return;
             }
@@ -142,8 +118,32 @@ public class Listener extends ListenerAdapter {
 
             return;
         }
-
+        String[] serverList = new String[] {
+                "563045452774244361", "600010501266866186", "581835684986486785", "570659322007126029", "553932158436376586", "609985979167670272", "582091661266386944", "531777289684254731", "614348538222215188", "614793325081526282", "619746711992270869", "616601689327140908"
+        };
+        String[] channelList = new String[] {
+                "563205968608100352", "600012818879741963", "581836360051195915", "575423098149535744", "558651343330607125", "644203968628785165", "602391121573707807", "531788408603803658", "614743528928575527", "616927037185196042", "619747385806946332", "623823012428251155"
+        };
         if (event.getMessage().getContentRaw().startsWith(App.getPREFIX())) {
+            try {
+                for(int i = 0; i < serverList.length; i++) {
+                    if(event.getGuild().getId().equals(serverList[i])) {
+                        if(!event.getChannel().getId().equals(channelList[i])) {
+                            System.out.println("여긴 봇 채팅방이 아닙니다!");
+                            if(!(Objects.requireNonNull(event.getMember()).hasPermission(Permission.ADMINISTRATOR) || event.getMember().hasPermission(Permission.MANAGE_ROLES) ||
+                                    event.getMember().hasPermission(Permission.MESSAGE_MANAGE) || event.getMember().hasPermission(Permission.MANAGE_CHANNEL) ||
+                                    event.getMember().hasPermission(Permission.MANAGE_PERMISSIONS)) || event.getMember().hasPermission(Permission.MANAGE_SERVER)) {
+                                System.out.println("당신은 권한이 없습니다!");
+                                if(!event.getGuild().getId().equals("508913681279483913")) {
+                                    return;
+                                }
+                            }
+                        }
+                    }
+                }
+            } catch (Exception e) {
+                event.getChannel().sendMessage(e.getMessage()).queue();
+            }
             manager.handleCommand(event);
         }
     }
