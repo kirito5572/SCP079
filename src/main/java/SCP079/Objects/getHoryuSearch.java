@@ -22,7 +22,16 @@ public class getHoryuSearch {
                 null, null
         };
         JsonParser parser = new JsonParser();
-        JsonElement element = parser.parse(temp);
+        JsonElement element = null;
+        try {
+            element = parser.parse(temp);
+        } catch (Exception e) {
+            temp = get(SteamID);
+            if (temp.equals("error")) {
+                return new String[] {"error"};
+            }
+            element = parser.parse(temp);
+        }
         try {
             for(int i = 0; i < 7; i++) {
                 if(element.getAsJsonArray().size() > i) {
@@ -67,12 +76,11 @@ public class getHoryuSearch {
                 ResponseHandler<String> handler = new BasicResponseHandler();
                 return handler.handleResponse(response);
             } else {
-                return "response is error : " + response.getStatusLine().getStatusCode();
+                return "error";
             }
 
-
         } catch (Exception e){
-            return e.toString();
+            return "error";
         }
     }
     public static String[] Search(String SteamID) throws SQLException, ClassNotFoundException {

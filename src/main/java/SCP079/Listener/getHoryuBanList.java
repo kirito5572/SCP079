@@ -56,6 +56,9 @@ public class getHoryuBanList extends ListenerAdapter {
                     }
                 }
                 String[] mainData = splitString(message);
+                if (mainData[0].equals("error")) {
+                    return;
+                }
                 if(caseNum < Integer.parseInt(mainData[6])) {
                     caseNum = Integer.parseInt(mainData[6]);
                 } else {
@@ -172,11 +175,11 @@ public class getHoryuBanList extends ListenerAdapter {
         return message.toString();
     }
     private String[] splitString(String message) {
+        String[] returnData = new String[7];
+        message = message.substring(0, message.length() - 1);
+        //{"id":223,"name":"keum2912","steamId":76561198965054054,"time":1569663223000,"pardonTime":1570527223000,"reason":"문트롤"}]
+        JsonParser parser = new JsonParser();
         try {
-            String[] returnData = new String[7];
-            message = message.substring(0, message.length() - 1);
-            //{"id":223,"name":"keum2912","steamId":76561198965054054,"time":1569663223000,"pardonTime":1570527223000,"reason":"문트롤"}]
-            JsonParser parser = new JsonParser();
             JsonElement element = parser.parse(message);
             returnData[0] = element.getAsJsonObject().get("name").getAsString();        //CaseID
             returnData[1] = element.getAsJsonObject().get("steamId").getAsString();     //SteamID
@@ -193,6 +196,7 @@ public class getHoryuBanList extends ListenerAdapter {
             }
         } catch (Exception e) {
             e.printStackTrace();
+            return new String[] {"error"};
         }
 
         return returnData;

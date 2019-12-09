@@ -59,6 +59,10 @@ public class DBSearchCommand implements ICommand {
         } else {
             try {
                 data = getHoryuSearch.Search(args.get(0));
+                if (data[0].equals("error")) {
+                    event.getChannel().sendMessage("에러가 발생했습니다.").queue();
+                    return;
+                }
             } catch (SQLException | ClassNotFoundException e) {
                 e.printStackTrace();
                 event.getChannel().sendMessage("에러가 발생했습니다.").queue();
