@@ -172,23 +172,27 @@ public class getHoryuBanList extends ListenerAdapter {
         return message.toString();
     }
     private String[] splitString(String message) {
-        String[] returnData = new String[7];
-        message = message.substring(0, message.length() - 1);
-        //{"id":223,"name":"keum2912","steamId":76561198965054054,"time":1569663223000,"pardonTime":1570527223000,"reason":"문트롤"}]
-        JsonParser parser = new JsonParser();
-        JsonElement element = parser.parse(message);
-        returnData[0] = element.getAsJsonObject().get("name").getAsString();        //CaseID
-        returnData[1] = element.getAsJsonObject().get("steamId").getAsString();     //SteamID
-        returnData[2] = element.getAsJsonObject().get("reason").getAsString();      //reason
-        returnData[4] = element.getAsJsonObject().get("time").getAsString();        //time
-        returnData[5] = element.getAsJsonObject().get("pardonTime").getAsString();  //pardonTime;
-        returnData[6] = element.getAsJsonObject().get("id").getAsString();          //id
-        if(returnData[5].equals("null")) {
-            returnData[5] = "없음";
-        } else if(returnData[5].equals("0")) {
-            returnData[5] = returnData[4];
-        } else {
-            returnData[5] = element.getAsJsonObject().get("pardonTime").getAsString();
+        try {
+            String[] returnData = new String[7];
+            message = message.substring(0, message.length() - 1);
+            //{"id":223,"name":"keum2912","steamId":76561198965054054,"time":1569663223000,"pardonTime":1570527223000,"reason":"문트롤"}]
+            JsonParser parser = new JsonParser();
+            JsonElement element = parser.parse(message);
+            returnData[0] = element.getAsJsonObject().get("name").getAsString();        //CaseID
+            returnData[1] = element.getAsJsonObject().get("steamId").getAsString();     //SteamID
+            returnData[2] = element.getAsJsonObject().get("reason").getAsString();      //reason
+            returnData[4] = element.getAsJsonObject().get("time").getAsString();        //time
+            returnData[5] = element.getAsJsonObject().get("pardonTime").getAsString();  //pardonTime;
+            returnData[6] = element.getAsJsonObject().get("id").getAsString();          //id
+            if (returnData[5].equals("null")) {
+                returnData[5] = "없음";
+            } else if (returnData[5].equals("0")) {
+                returnData[5] = returnData[4];
+            } else {
+                returnData[5] = element.getAsJsonObject().get("pardonTime").getAsString();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
         return returnData;

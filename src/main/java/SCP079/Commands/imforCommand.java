@@ -130,12 +130,14 @@ public class imforCommand implements ICommand {
         }
         reason = new StringBuilder();
         boolean reasonFlag = true;
+        boolean ipFlag = false;
         System.out.println(args.size());
         try {
             for(int i = 2; i < args.size(); i++) {
                 if(args.get(i).startsWith("-ip")) {
                     reasonFlag = false;
                     if(i + 1 != args.size()) {
+                        ipFlag = true;
                         ip = args.get(i + 1);
                     } else {
                         event.getChannel().sendMessage("ip가 비었습니다.").queue();
@@ -186,9 +188,11 @@ public class imforCommand implements ICommand {
 
             return;
         }
-        if(!validIP(ip)) {
-            event.getChannel().sendMessage("존재하지 않는 IP주소가 입력되었습니다.").queue();
-            return;
+        if(ipFlag) {
+            if (!validIP(ip)) {
+                event.getChannel().sendMessage("존재하지 않는 IP주소가 입력되었습니다.").queue();
+                return;
+            }
         }
         if(link != null) {
             if (!linkConfirm.isLink(link)) {
