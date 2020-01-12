@@ -257,9 +257,8 @@ public class imforCommand implements ICommand {
         if(App.isTESTMODE()) {
             test(builder, event);
         } else {
-            HackCommand.simaAutoSend(serverID, NickName, ID, time, reasonFinal, event.getJDA());
 
-            HackCommand.server_Send(serverID, builder, event, youngminSend);
+            HackCommand.server_Send(serverID, builder, event.getJDA(), event.getChannel(), Integer.parseInt(time));
         }
 
     }

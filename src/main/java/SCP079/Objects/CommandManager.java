@@ -20,10 +20,10 @@ public class CommandManager {
         addCommand(new UnbanCommand());
         addCommand(new HackCommand());
         addCommand(new ConnectServerCommand());
-        addCommand(new DiscordCommand());
         addCommand(new TestCommand());
         addCommand(new DBSearchCommand());
         addCommand(new UserInfoCommand());
+        addCommand(new configCommand());
     }
 
     private void addCommand(ICommand command) {

@@ -1,23 +1,25 @@
 package SCP079.Commands;
 
 import SCP079.App;
-import SCP079.Objects.SQLDB;
 import SCP079.Objects.ICommand;
+import SCP079.Objects.SQLDB;
 import SCP079.Objects.getSteamID;
 import SCP079.Objects.linkConfirm;
 import me.duncte123.botcommons.messaging.EmbedUtils;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.Permission;
+import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.exceptions.ErrorResponseException;
 
 import java.awt.*;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.List;
 import java.util.Objects;
-import java.util.concurrent.TimeUnit;
 
 import static SCP079.Commands.imforCommand.validIP;
 
@@ -174,11 +176,8 @@ public class HackCommand implements ICommand {
         if(App.isTESTMODE()) {
             test(builder, event);
         } else {
-            simaAutoSend(serverID, NickName, ID, "26297460", "핵 사용", event.getJDA());
-            server_Send(serverID, builder, event, true);
-            greenAutoBan(ID, "핵 사용", event.getJDA());
+            server_Send(serverID, builder, event.getJDA(), event.getChannel(),99999999);
         }
-
     }
 
     @Override
@@ -201,6 +200,82 @@ public class HackCommand implements ICommand {
     public String getSmallHelp() {
         return "SCP 서버간 핵 유저 공유";
     }
+
+
+    public static void server_Send(String serverID, EmbedBuilder builder, JDA jda, TextChannel sendChannel, int servertime) {
+        int guildCount = jda.getGuilds().size();
+        String[] guildId = new String[guildCount];
+        String[] channelId = new String[guildCount];
+        String[] time = new String[guildCount];
+        int i = 0;
+        try {
+            String queryString = "SELECT * FROM `079_config`.recieve_channel";
+
+            Statement statement = SQLDB.getConnection().createStatement();
+            ResultSet resultSet = statement.executeQuery(queryString);
+            while (resultSet.next()) {
+                guildId[i] = resultSet.getString("guildId");
+                channelId[i] = resultSet.getString("channelId");
+                i++;
+            }
+            queryString = "SELECT * FROM `079_config`.receive_time";
+            resultSet = statement.executeQuery(queryString);
+            i = 0;
+            while (resultSet.next()) {
+                time[i] = resultSet.getString("time");
+                i++;
+            }
+            statement.close();
+            for(i = 0; i < guildId.length; i++) {
+                if(guildId[i] == null) {
+                    continue;
+                }
+                if(serverID.equals(guildId[i])) {
+                    continue;
+                }
+                if(servertime < Integer.parseInt(time[i])) {
+                    continue;
+                }
+                Guild guild;
+                TextChannel channel;
+                try {
+                    guild = jda.getGuildById(guildId[i]);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    sendChannel.sendMessage("에러\n" +
+                            "서버 ID명: " + guildId[i] + " 사유: 그런 서버가 존재하지 않음").queue();
+                    continue;
+                }
+                try {
+                    assert guild != null;
+                    channel = guild.getTextChannelById(channelId[i]);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    sendChannel.sendMessage("에러\n" +
+                            "채널 ID명: " + guildId[i] + " 사유: 서버에 채널이 존재하지 않음\n" +
+                            "발생한 서버:" + guild.getName()).queue();
+                    continue;
+                }
+                try {
+                    assert channel != null;
+                    channel.sendMessage(builder.build()).queue();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    sendChannel.sendMessage("에러\n" +
+                            "채널명: " + channel.getName() + " 사유: 채널은 존재하나 메세지를 보낼수 없음\n" +
+                            "발생한 서버:" + guild.getName()).queue();
+                }
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            sendChannel.sendMessage("제재 정보를 전송하던중 에러가 발생했습니다.").queue();
+            return;
+        }
+        sendChannel.sendMessage("전송이 완료되었습니다.").queue();
+    }
+
+    /*
 
     public static void server_Send(String serverID, EmbedBuilder builder, GuildMessageReceivedEvent event, boolean youngminSend) {
         try {
@@ -327,6 +402,8 @@ public class HackCommand implements ICommand {
         }
         event.getChannel().sendMessage("전송이 완료되었습니다.").queue();
     }
+
+
     public static void simaAutoSend(String serverID, String Nickname, String ID, String time, String reason, JDA jda) {
         try {
             String simaServer = "582091661266386944";
@@ -344,13 +421,7 @@ public class HackCommand implements ICommand {
             e.printStackTrace();
         }
     }
-    public static void greenAutoBan(String ID, String reason, JDA jda) {
-        try {
-            Objects.requireNonNull(Objects.requireNonNull(jda.getGuildById("600010501266866186")).getTextChannelById("600012818879741963")).sendMessage("&서버밴 " + ID + " 영구 " + reason + "(제재 공유)").complete().delete().queueAfter(3, TimeUnit.SECONDS);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+     */
     public static void test(EmbedBuilder builder, GuildMessageReceivedEvent event) {
         Objects.requireNonNull(event.getJDA().getGuilds().get(0).getTextChannelById("593991995433680924")).sendMessage(builder.build()).queue();
     }

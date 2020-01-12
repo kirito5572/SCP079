@@ -1,5 +1,6 @@
 package SCP079.Listener;
 
+import SCP079.Commands.HackCommand;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import me.duncte123.botcommons.messaging.EmbedUtils;
@@ -13,8 +14,6 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.jetbrains.annotations.NotNull;
-
-import SCP079.Commands.*;
 
 import java.awt.*;
 import java.io.File;
@@ -111,20 +110,35 @@ public class getHoryuBanList extends ListenerAdapter {
                         }
                     }
                 }
-
-                EmbedBuilder builder = EmbedUtils.defaultEmbed()
-                        .setTitle("제재 정보 공유(호류서버)")
-                        .setColor(Color.RED)
-                        .setFooter("API from scpsl.kr, API made by 호류#7777", "https://cdn.discordapp.com/attachments/563060742551633931/607216118859431966/HoryuServer_Logo_Final.gif")
-                        .addField("case", mainData[6], false)
-                        .addField("제재 대상자", mainData[0], false)
-                        .addField("스팀 ID", mainData[1], false)
-                        .addField("제재 사유", mainData[2], false)
-                        .addField("제재 기간", mainData[5] + "(" + time[0] + "분)", false)
-                        .addField("제재 담당 서버", "호류 SCP 서버", false);
+                String[] id_data = mainData[1].split("@");
+                EmbedBuilder builder;
+                if(id_data[1].equals("steam")) {
+                    builder = EmbedUtils.defaultEmbed()
+                            .setTitle("제재 정보 공유(호류서버)")
+                            .setColor(Color.RED)
+                            .setFooter("API from scpsl.kr, API made by 호류#7777", "https://cdn.discordapp.com/attachments/563060742551633931/607216118859431966/HoryuServer_Logo_Final.gif")
+                            .addField("case", mainData[6], false)
+                            .addField("제재 대상자", mainData[0], false)
+                            .addField("스팀 ID", id_data[0], false)
+                            .addField("제재 사유", mainData[2], false)
+                            .addField("제재 기간", mainData[5] + "(" + time[0] + "분)", false)
+                            .addField("제재 담당 서버", "호류 SCP 서버", false);
+                } else if(id_data[1].equals("discord")) {
+                    builder = EmbedUtils.defaultEmbed()
+                            .setTitle("제재 정보 공유(호류서버)")
+                            .setColor(Color.RED)
+                            .setFooter("API from scpsl.kr, API made by 호류#7777", "https://cdn.discordapp.com/attachments/563060742551633931/607216118859431966/HoryuServer_Logo_Final.gif")
+                            .addField("case", mainData[6], false)
+                            .addField("제재 대상자", "<@" + id_data[0] + ">", false)
+                            .addField("디스코드 ID", id_data[0], false)
+                            .addField("제재 사유", mainData[2], false)
+                            .addField("제재 기간", mainData[5] + "(" + time[0] + "분)", false)
+                            .addField("제재 담당 서버", "호류 SCP 서버", false);
+                } else {
+                    return;
+                }
                 //testsend(builder, event);
-                send(builder, event, youngminSend);
-                HackCommand.simaAutoSend("563045452774244361", mainData[0], mainData[1], time[0], mainData[2], event.getJDA());
+                HackCommand.server_Send("563045452774244361", builder, event.getJDA(), event.getJDA().getGuildById("665581943382999048").getTextChannelById("665581943382999051"), Integer.parseInt(time[0]));
             }
         };
         Timer jobScheduler = new Timer();
@@ -133,7 +147,7 @@ public class getHoryuBanList extends ListenerAdapter {
     private String get() {
         try {
             HttpClient client = HttpClientBuilder.create().build(); // HttpClient 생성
-            HttpGet getRequest = new HttpGet("https://scpsl.kr/api/block/steam"); //GET 메소드 URL 생성
+            HttpGet getRequest = new HttpGet("https://scpsl.kr/api/block/user"); //GET 메소드 URL 생성
 
             HttpResponse response = client.execute(getRequest);
 
@@ -177,12 +191,16 @@ public class getHoryuBanList extends ListenerAdapter {
     private String[] splitString(String message) {
         String[] returnData = new String[7];
         message = message.substring(0, message.length() - 1);
-        //{"id":223,"name":"keum2912","steamId":76561198965054054,"time":1569663223000,"pardonTime":1570527223000,"reason":"문트롤"}]
+        //{"id":223,"name":"keum2912","userId":76561198965054054@steam,"time":1569663223000,"pardonTime":1570527223000,"reason":"문트롤"}]
         JsonParser parser = new JsonParser();
         try {
+            if(message.contains("response is error")) {
+                System.out.println("error: " + message);
+                return new String[] {"error"};
+            }
             JsonElement element = parser.parse(message);
             returnData[0] = element.getAsJsonObject().get("name").getAsString();        //CaseID
-            returnData[1] = element.getAsJsonObject().get("steamId").getAsString();     //SteamID
+            returnData[1] = element.getAsJsonObject().get("userId").getAsString();     //UserID
             returnData[2] = element.getAsJsonObject().get("reason").getAsString();      //reason
             returnData[4] = element.getAsJsonObject().get("time").getAsString();        //time
             returnData[5] = element.getAsJsonObject().get("pardonTime").getAsString();  //pardonTime;
@@ -195,6 +213,7 @@ public class getHoryuBanList extends ListenerAdapter {
                 returnData[5] = element.getAsJsonObject().get("pardonTime").getAsString();
             }
         } catch (Exception e) {
+            System.out.println(message);
             e.printStackTrace();
             return new String[] {"error"};
         }

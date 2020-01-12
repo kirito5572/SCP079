@@ -15,7 +15,6 @@ public class SQLDB {
     private static int caseID;
     private static String driverName;
     private static String url;
-    private static String url2;
     private static String user;
     private static String password;
     public SQLDB() {
@@ -56,7 +55,6 @@ public class SQLDB {
         }
         driverName = "com.mysql.cj.jdbc.Driver";
         url = "jdbc:mysql://" + endPoint.toString() + "/mainDB?serverTimezone=UTC";
-        url2 = "jdbc:mysql://" + endPoint.toString() + "/ritobotDB?serverTimezone=UTC";
         user = "admin";
         password = SQLPassword.toString();
 
@@ -77,17 +75,15 @@ public class SQLDB {
         Date date = new Date();
         SimpleDateFormat dayTime = new SimpleDateFormat("yyyy-MM-dd kk:mm:ss");
         String sanctionTime = dayTime.format(date);
-        String queryString = "INSERT INTO Sanction_Information VALUE (\"" + caseID + "\",\""+ SteamID + "\", \"" + sanctionTime + "\", \"" + time + "\", \"" + reason + "\", \"" + server + "\" , \"" + serverID + "\"" + ");";
+        String queryString = "INSERT INTO mainDB.Sanction_Information VALUE (" + caseID + ","+ SteamID + ", '" + sanctionTime + "', '" + time + "', '" + reason + "', '" + server + "' , " + serverID;
 
         System.out.println(queryString);
         try {
             Class.forName(driverName);
 
-            connection = DriverManager.getConnection(url, user, password);
             statement = connection.createStatement();
             statement.executeUpdate(queryString);
             statement.close();
-            connection.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -98,10 +94,9 @@ public class SQLDB {
                 null, null, null, null, null
         };
 
-        String queryString = "SELECT * FROM Sanction_Information WHERE SteamID =\"" + SteamID +"\";";
+        String queryString = "SELECT * FROM mainDB.Sanction_Information WHERE SteamID =" + SteamID;
         Class.forName(driverName);
 
-        connection = DriverManager.getConnection(url, user, password);
         statement = connection.createStatement();
         resultSet = statement.executeQuery(queryString);
         int i = 0;
@@ -110,7 +105,6 @@ public class SQLDB {
             i++;
         }
         statement.close();
-        connection.close();
         return data;
     }
     private static void caseIDup() {
@@ -134,10 +128,9 @@ public class SQLDB {
     public static String[] SQLdownload(int caseID) throws SQLException, ClassNotFoundException {
         String[] data = new String[7];
 
-        String queryString = "SELECT * FROM Sanction_Information WHERE caseID =\"" + caseID +"\";";
+        String queryString = "SELECT * FROM mainDB.Sanction_Information WHERE caseID =" + caseID;
         Class.forName(driverName);
 
-        connection = DriverManager.getConnection(url, user, password);
         statement = connection.createStatement();
         resultSet = statement.executeQuery(queryString);
         while (resultSet.next()) {
@@ -150,7 +143,6 @@ public class SQLDB {
             data[6] = resultSet.getString("serverID");
         }
         statement.close();
-        connection.close();
         return data;
     }
     public static String[] GreenDBDownload(String steamID) throws ClassNotFoundException, SQLException {
@@ -159,10 +151,9 @@ public class SQLDB {
                 null, null, null, null, null
         };
 
-        String queryString = "SELECT * FROM Sanction_Infor WHERE SteamID =\"" + steamID +"\";";
+        String queryString = "SELECT * FROM ritobotDB.Sanction_Infor WHERE SteamID =" + steamID;
         Class.forName(driverName);
 
-        connection = DriverManager.getConnection(url2, user, password);
         statement = connection.createStatement();
         resultSet = statement.executeQuery(queryString);
         int i = 0;
@@ -171,7 +162,6 @@ public class SQLDB {
             i++;
         }
         statement.close();
-        connection.close();
         return data;
     }
     public static String[] GreenDBDownload(int caseID, String steamID) throws ClassNotFoundException, SQLException {
@@ -180,10 +170,9 @@ public class SQLDB {
                 null, null, null, null, null
         };
 
-        String queryString = "SELECT * FROM Sanction_Infor WHERE SteamID =\"" + steamID +"\";";
+        String queryString = "SELECT * FROM ritobotDB.Sanction_Infor WHERE SteamID =" + steamID;
         Class.forName(driverName);
 
-        connection = DriverManager.getConnection(url2, user, password);
         statement = connection.createStatement();
         resultSet = statement.executeQuery(queryString);
         while (resultSet.next()) {
@@ -199,7 +188,24 @@ public class SQLDB {
             }
         }
         statement.close();
-        connection.close();
         return data;
+    }
+
+    public static Connection getConnection() {
+        return connection;
+    }
+
+    public static void setConnection(Connection connection) {
+        SQLDB.connection = connection;
+    }
+
+    public static void reConnect() {
+        try {
+            Class.forName(driverName);
+
+            setConnection(DriverManager.getConnection(url, user, password));
+        } catch (ClassNotFoundException | SQLException e) {
+            e.printStackTrace();
+        }
     }
 }

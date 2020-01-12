@@ -1,10 +1,8 @@
 package SCP079.Listener;
 
 import SCP079.App;
-import SCP079.Commands.HackCommand;
 import SCP079.Objects.CommandManager;
-import me.duncte123.botcommons.messaging.EmbedUtils;
-import net.dv8tion.jda.api.EmbedBuilder;
+import SCP079.Objects.SQLDB;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.*;
@@ -18,7 +16,11 @@ import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.FileReader;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 
 public class Listener extends ListenerAdapter {
     private final CommandManager manager;
@@ -53,7 +55,39 @@ public class Listener extends ListenerAdapter {
                     "[서버: %s]  " +
                     "[채팅방: %s]", author, content, guild.getName(), textChannel.getName()));
         } else if (event.isFromType(ChannelType.PRIVATE)) {
-            logger.info(String.format("[PRIV]<%#s>: %s", author, content));
+            if (event.getAuthor().getId().equals(event.getJDA().getSelfUser().getId())) {
+                return;
+            }
+            if (content.equals("a")) {
+                event.getAuthor().openPrivateChannel().complete().sendMessage("이미지 등은 전송할 수 없습니다.").queue();
+            } else {
+                logger.warn(String.format("[PRIV]<%#s>: %s", author, content));
+                StringBuilder stringBuilder = new StringBuilder();
+                if (!message.getEmbeds().isEmpty()) {
+                    List<MessageEmbed> messageEmbedList = message.getEmbeds();
+                    for (MessageEmbed messageEmbed : messageEmbedList) {
+                        Objects.requireNonNull(event.getJDA().getUserById("284508374924787713")).openPrivateChannel().complete().sendMessage(messageEmbed).queue();
+                    }
+                }
+                if (!message.getAttachments().isEmpty()) {
+                    List<Message.Attachment> attachmentList = message.getAttachments();
+                    for (Message.Attachment attachment : attachmentList) {
+                        stringBuilder.append("전송된 파일: ").append(attachment.getUrl()).append("\n");
+                    }
+                }
+                if (!message.getEmotes().isEmpty()) {
+                    List<Emote> emoteList = message.getEmotes();
+                    for (Emote emote : emoteList) {
+                        stringBuilder.append("이모지명: ").append(emote.getName()).append(" 이모지 링크: ").append(emote.getImageUrl()).append("\n");
+                    }
+                }
+                if (stringBuilder.toString().length() > 0) {
+                    Objects.requireNonNull(event.getJDA().getUserById("284508374924787713")).openPrivateChannel().complete().sendMessage("<@" + author.getId() + ">로 부터 온 메세지: " + content + "\n" +
+                            "기타 첨부물:\n" + stringBuilder.toString()).queue();
+                } else {
+                    Objects.requireNonNull(event.getJDA().getUserById("284508374924787713")).openPrivateChannel().complete().sendMessage("<@" + author.getId() + ">로 부터 온 메세지: " + content).queue();
+                }
+            }
         }
     }
 
@@ -87,13 +121,6 @@ public class Listener extends ListenerAdapter {
             shutdown(event.getJDA(), event);
             return;
 
-        } else if(event.getMessage().getContentRaw().equalsIgnoreCase(App.getPREFIX() + "재시작") &&
-                (
-                        (event.getAuthor().getIdLong() == Long.decode(ID1)) ||
-                                (event.getAuthor().getIdLong() == Long.decode(ID2))
-                )) {
-            restart(event.getJDA(), event);
-            return;
         }
         if(event.getAuthor().isBot()) {
             boolean flag = true;
@@ -107,42 +134,48 @@ public class Listener extends ListenerAdapter {
                 }
             } catch (Exception ignored) {
             }
-            /*
-            순서: 호류 / 그린 / 독도 / 스노 / HSS / 도지 / 시마 / 낙지 / 디클 / 브아 / 아트
-             */
             if(flag) {
                 return;
             }
         }
-        if(event.getMessage().isWebhookMessage()) {
+        String[] guildId = new String[event.getJDA().getGuilds().size()];
+        String[] channelId = new String[event.getJDA().getGuilds().size()];
+        int i = 0;
+        try {
+            String queryString = "SELECT * FROM `079_config`.bot_channel";
 
+            Statement statement = SQLDB.getConnection().createStatement();
+            ResultSet resultSet = statement.executeQuery(queryString);
+            while (resultSet.next()) {
+                guildId[i] = resultSet.getString("guildId");
+                channelId[i] = resultSet.getString("channelId");
+                i++;
+            }
+            statement.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if(event.getMessage().isWebhookMessage()) {
             return;
         }
-        String[] serverList = new String[] {
-                "563045452774244361", "600010501266866186", "581835684986486785", "570659322007126029", "553932158436376586", "609985979167670272", "582091661266386944", "531777289684254731", "614348538222215188", "614793325081526282", "619746711992270869", "616601689327140908"
-        };
-        String[] channelList = new String[] {
-                "563205968608100352", "600012818879741963", "581836360051195915", "575423098149535744", "558651343330607125", "644203968628785165", "602391121573707807", "531788408603803658", "614743528928575527", "616927037185196042", "619747385806946332", "623823012428251155"
-        };
         if (event.getMessage().getContentRaw().startsWith(App.getPREFIX())) {
-            try {
-                for(int i = 0; i < serverList.length; i++) {
-                    if(event.getGuild().getId().equals(serverList[i])) {
-                        if(!event.getChannel().getId().equals(channelList[i])) {
-                            System.out.println("여긴 봇 채팅방이 아닙니다!");
-                            if(!(Objects.requireNonNull(event.getMember()).hasPermission(Permission.ADMINISTRATOR) || event.getMember().hasPermission(Permission.MANAGE_ROLES) ||
-                                    event.getMember().hasPermission(Permission.MESSAGE_MANAGE) || event.getMember().hasPermission(Permission.MANAGE_CHANNEL) ||
-                                    event.getMember().hasPermission(Permission.MANAGE_PERMISSIONS) || event.getMember().hasPermission(Permission.MANAGE_SERVER))) {
-                                System.out.println("당신은 권한이 없습니다!");
-                                if(!event.getGuild().getId().equals("508913681279483913")) {
-                                    return;
-                                }
-                            }
+            for (i = 0; i < guildId.length; i++) {
+                if (guildId[i] == null) {
+                    continue;
+                }
+                if (event.getGuild().getId().equals(guildId[i])) {
+                    if (channelId[i].equals("0")) {
+                        continue;
+                    }
+                    if (!event.getChannel().getId().equals(channelId[i])) {
+                        if (!(Objects.requireNonNull(event.getMember()).hasPermission(Permission.ADMINISTRATOR) || event.getMember().hasPermission(Permission.MANAGE_ROLES) ||
+                                event.getMember().hasPermission(Permission.MESSAGE_MANAGE) || event.getMember().hasPermission(Permission.MANAGE_CHANNEL) ||
+                                event.getMember().hasPermission(Permission.MANAGE_PERMISSIONS) || event.getMember().hasPermission(Permission.MANAGE_SERVER))) {
+                            event.getChannel().sendMessage(event.getMember().getAsMention() + ", 여긴 지정된 봇 채팅방이 아닙니다.").complete().delete().queueAfter(5, TimeUnit.SECONDS);
+                            return;
                         }
                     }
                 }
-            } catch (Exception e) {
-                event.getChannel().sendMessage(e.getMessage()).queue();
             }
             manager.handleCommand(event);
         }
@@ -157,32 +190,6 @@ public class Listener extends ListenerAdapter {
             }
             jda.shutdown();
             System.exit(0);
-        }).start();
-    }
-    private void restart(JDA jda, GuildMessageReceivedEvent event) {
-        new Thread(() -> {
-            String reason = event.getMessage().getContentRaw().substring((App.getPREFIX() + "재시작").length());
-            event.getMessage().delete().queue();
-            event.getChannel().sendMessage("종료 하는중....").queue();
-            if (event.getAuthor().getId().equals("284508374924787713")) {
-                EmbedBuilder builder = EmbedUtils.defaultEmbed()
-                        .setTitle("봇 재시작")
-                        .addField("재시작 목적", reason, false)
-                        .addField("점검 시간","최대 5분간", false)
-                        .setDescription("이용에 불편을 드려 죄송합니다.");
-                HackCommand.server_Send(event.getGuild().getId(), builder, event, true);
-            } else {
-                Objects.requireNonNull(Objects.requireNonNull(event.getJDA().getGuildById("600010501266866186")).getTextChannelById("600010501266866188")).sendMessage(event.getJDA().getSelfUser().getAsMention() + " 업데이트틀 위해 1분간 사용이 불가능합니다.").queue();
-            }
-            new Thread(() -> {
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                jda.shutdown();
-                System.exit(-1);
-            }).start();
         }).start();
     }
 

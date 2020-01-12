@@ -18,7 +18,7 @@ public class UnbanCommand implements ICommand {
         String serverID;
         if(!(Objects.requireNonNull(event.getMember()).hasPermission(Permission.ADMINISTRATOR) || event.getMember().hasPermission(Permission.MANAGE_ROLES) ||
                 event.getMember().hasPermission(Permission.MESSAGE_MANAGE) || event.getMember().hasPermission(Permission.MANAGE_CHANNEL) ||
-                event.getMember().hasPermission(Permission.MANAGE_PERMISSIONS))) {
+                event.getMember().hasPermission(Permission.MANAGE_PERMISSIONS) || event.getMember().hasPermission(Permission.MANAGE_SERVER))) {
             event.getChannel().sendMessage("당신은 이 명령어를 쓸 권한이 없습니다.").queue();
 
             return;
@@ -90,7 +90,7 @@ public class UnbanCommand implements ICommand {
                 .addField("제재 담당 서버", event.getGuild().getName(), false)
                 .addField("공유자", event.getMember().getAsMention(), false);
 
-        HackCommand.server_Send(serverID, builder, event, true);
+        HackCommand.server_Send(serverID, builder, event.getJDA(), event.getChannel(), 99999999);
     }
 
     @Override
@@ -101,7 +101,7 @@ public class UnbanCommand implements ICommand {
 
     @Override
     public String getInvoke() {
-        return "이의";
+        return "언밴";
     }
 
     @Override
