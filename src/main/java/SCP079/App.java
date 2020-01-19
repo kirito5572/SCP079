@@ -14,6 +14,7 @@ import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
+import net.dv8tion.jda.api.entities.TextChannel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,6 +34,7 @@ public class App {
     private static String Time;
     private static String PREFIX;
     private final Random random = new Random();
+    private static TextChannel logTextChannel;
 
     private App() {
         date = new Date();
@@ -110,6 +112,7 @@ public class App {
                         .addEventListeners(listener, getHoryuBanList, activityChangeListener)
                         .build().awaitReady();
                 logger.info("부팅완료");
+                logTextChannel = Objects.requireNonNull(jda.getGuildById("665581943382999048")).getTextChannelById("665581943382999051");
             } catch (LoginException | InterruptedException e) {
                 e.printStackTrace();
                 return;
@@ -150,5 +153,9 @@ public class App {
 
     public static boolean isTESTMODE() {
         return TESTMODE;
+    }
+
+    public static TextChannel getLogTextChannel() {
+        return logTextChannel;
     }
 }

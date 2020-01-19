@@ -1,5 +1,6 @@
 package SCP079.Listener;
 
+import SCP079.App;
 import SCP079.Commands.HackCommand;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
@@ -32,8 +33,12 @@ public class getHoryuBanList extends ListenerAdapter {
         TimerTask job = new TimerTask() {
             @Override
             public void run() {
-                boolean youngminSend = false;
                 String temp = get();
+                if(temp.contains("response is error :")) {
+                    App.getLogTextChannel().sendMessage("호류서버 제재자 목록을 불러오는 중 에러가 발생했습니다.\n" +
+                            temp).queue();
+                    return;
+                }
                 String[] data = temp.split("},");
                 String lastmessage;
                 try {
@@ -87,26 +92,25 @@ public class getHoryuBanList extends ListenerAdapter {
                             timeTemp = timeTemp / 60;
                             time[0] = String.valueOf(timeTemp);
                             mainData[5] = timeTemp + "분";
-                        }
-                        if (timeTemp > 59) {
-                            timeTemp = timeTemp / 60;
-                            mainData[5] = timeTemp + "시";
-                        }
-                        if (timeTemp > 23) {
-                            timeTemp = timeTemp / 24;
-                            mainData[5] = timeTemp + "일";
-                        }
-                        if (timeTemp > 29) {
-                            timeTemp = timeTemp / 30;
-                            mainData[5] = timeTemp + "월";
-                        }
-                        if (timeTemp > 11) {
-                            youngminSend = true;
-                            timeTemp = timeTemp / 12;
-                            mainData[5] = timeTemp + "년";
-                        }
-                        if (timeTemp > 50) {
-                            mainData[5] = "50년 이상";
+                            if (timeTemp > 59) {
+                                timeTemp = timeTemp / 60;
+                                mainData[5] = timeTemp + "시";
+                                if (timeTemp > 23) {
+                                    timeTemp = timeTemp / 24;
+                                    mainData[5] = timeTemp + "일";
+                                    if (timeTemp > 29) {
+                                        timeTemp = timeTemp / 30;
+                                        mainData[5] = timeTemp + "월";
+                                        if (timeTemp > 11) {
+                                            timeTemp = timeTemp / 12;
+                                            mainData[5] = timeTemp + "년";
+                                            if (timeTemp > 50) {
+                                                mainData[5] = "50년 이상";
+                                            }
+                                        }
+                                    }
+                                }
+                            }
                         }
                     }
                 }
@@ -138,7 +142,7 @@ public class getHoryuBanList extends ListenerAdapter {
                     return;
                 }
                 //testsend(builder, event);
-                HackCommand.server_Send("563045452774244361", builder, event.getJDA(), event.getJDA().getGuildById("665581943382999048").getTextChannelById("665581943382999051"), Integer.parseInt(time[0]));
+                HackCommand.server_Send("563045452774244361", builder, event.getJDA(), App.getLogTextChannel(), Integer.parseInt(time[0]));
             }
         };
         Timer jobScheduler = new Timer();
