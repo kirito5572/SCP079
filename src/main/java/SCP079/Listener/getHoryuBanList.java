@@ -34,7 +34,7 @@ public class getHoryuBanList extends ListenerAdapter {
             @Override
             public void run() {
                 String temp = get();
-                if(temp.contains("response is error :")) {
+                if(temp.contains("response is error")) {
                     App.getLogTextChannel().sendMessage("호류서버 제재자 목록을 불러오는 중 에러가 발생했습니다.\n" +
                             temp).queue();
                     return;
