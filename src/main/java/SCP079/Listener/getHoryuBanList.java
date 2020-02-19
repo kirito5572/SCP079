@@ -17,10 +17,7 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -113,6 +110,17 @@ public class getHoryuBanList extends ListenerAdapter {
                             }
                         }
                     }
+                }
+                try {
+                    FileReader reader = new FileReader("horyu_rule.json");
+                    JsonParser parser = new JsonParser();
+                    JsonElement element = parser.parse(reader);
+                    try {
+                        mainData[2] = element.getAsJsonObject().get(mainData[2]).getAsString();
+                    } catch (Exception ignored) {
+                    }
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
                 }
                 String[] id_data = mainData[1].split("@");
                 EmbedBuilder builder;
