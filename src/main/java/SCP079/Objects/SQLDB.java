@@ -75,7 +75,7 @@ public class SQLDB {
         Date date = new Date();
         SimpleDateFormat dayTime = new SimpleDateFormat("yyyy-MM-dd kk:mm:ss");
         String sanctionTime = dayTime.format(date);
-        String queryString = "INSERT INTO mainDB.Sanction_Information VALUE (" + caseID + ","+ SteamID + ", '" + sanctionTime + "', '" + time + "', '" + reason + "', '" + server + "' , " + serverID;
+        String queryString = "INSERT INTO mainDB.Sanction_Information VALUES (" + caseID + ","+ SteamID + ", '" + sanctionTime + "', '" + time + "', '" + reason + "', '" + server + "' , " + serverID + ");";
 
         System.out.println(queryString);
         try {

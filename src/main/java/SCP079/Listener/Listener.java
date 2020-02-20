@@ -82,10 +82,10 @@ public class Listener extends ListenerAdapter {
                     }
                 }
                 if (stringBuilder.toString().length() > 0) {
-                    Objects.requireNonNull(event.getJDA().getUserById("284508374924787713")).openPrivateChannel().complete().sendMessage("<@" + author.getId() + ">로 부터 온 메세지: " + content + "\n" +
+                    Objects.requireNonNull(event.getJDA().getUserById("284508374924787713")).openPrivateChannel().complete().sendMessage(author.getAsMention() + "로 부터 온 메세지: " + content + "\n" +
                             "기타 첨부물:\n" + stringBuilder.toString()).queue();
                 } else {
-                    Objects.requireNonNull(event.getJDA().getUserById("284508374924787713")).openPrivateChannel().complete().sendMessage("<@" + author.getId() + ">로 부터 온 메세지: " + content).queue();
+                    Objects.requireNonNull(event.getJDA().getUserById("284508374924787713")).openPrivateChannel().complete().sendMessage(author.getAsMention() + "로 부터 온 메세지: " + content).queue();
                 }
             }
         }

@@ -42,8 +42,6 @@ public class HackCommand implements ICommand {
             return;
         }
         String SteamID;
-        String ipAddress;
-        String level;
         try {
             SteamID = args.get(0);
 
@@ -269,139 +267,23 @@ public class HackCommand implements ICommand {
 
         } catch (Exception e) {
             e.printStackTrace();
-            sendChannel.sendMessage("제재 정보를 전송하던중 에러가 발생했습니다.").queue();
+            StringBuilder stringBuilder = new StringBuilder();
+            for(StackTraceElement stackTraceElement : e.getStackTrace()) {
+                stringBuilder.append(stackTraceElement.toString()).append("\n");
+            }
+            EmbedBuilder embedBuilder = EmbedUtils.defaultEmbed()
+                    .setTitle("에러 발생")
+                    .setDescription("제재 정보를 전송하던중 에러가 발생했습니다.")
+                    .addField("발생한 예외", e.getMessage(), false)
+                    .addField("StackTrace", stringBuilder.toString(), false);
+            sendChannel.sendMessage(embedBuilder.build()).complete();
+            Objects.requireNonNull(Objects.requireNonNull(jda.getGuildById("607303213602963643")).getTextChannelById("651387107662626846")).sendMessage(embedBuilder.build()).complete();
             return;
         }
         sendChannel.sendMessage("전송이 완료되었습니다.").queue();
     }
 
     /*
-
-    public static void server_Send(String serverID, EmbedBuilder builder, GuildMessageReceivedEvent event, boolean youngminSend) {
-        try {
-            String greenServer = "600010501266866186";
-            if(!serverID.equals(greenServer)) {
-                String greenServerChat = "617908612064346122";
-                Objects.requireNonNull(Objects.requireNonNull(event.getJDA().getGuildById(greenServer)).getTextChannelById(greenServerChat)).sendMessage(builder.build()).queue();
-            }
-        } catch (Exception e) {
-            
-            event.getChannel().sendMessage("그린서버 전송 실패").queue();
-        }
-        try {
-            String carDogeServer = "609985979167670272";
-            if(!serverID.equals(carDogeServer)) {
-                String carDogeServerChat = "644446489543835648";
-                Objects.requireNonNull(Objects.requireNonNull(event.getJDA().getGuildById(carDogeServer)).getTextChannelById(carDogeServerChat)).sendMessage(builder.build()).queue();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            event.getChannel().sendMessage("Doge서버 전송 실패").queue();
-        }
-        try {
-            String simaServer = "582091661266386944";
-            if(!serverID.equals(simaServer)) {
-                String simaServerChat = "595597485238648833";
-                String simaServerChat2 = "598126633588883457";
-                Objects.requireNonNull(Objects.requireNonNull(event.getJDA().getGuildById(simaServer)).getTextChannelById(simaServerChat)).sendMessage(builder.build()).queue();
-                Objects.requireNonNull(Objects.requireNonNull(event.getJDA().getGuildById(simaServer)).getTextChannelById(simaServerChat2)).sendMessage(builder.build()).queue();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            event.getChannel().sendMessage("시마서버 전송 실패").queue();
-        }
-        try {
-            String dokdoServer = "581835684986486785";
-            if(!serverID.equals(dokdoServer)) {
-                String dokdoServerChat = "618411407742074880";
-                Objects.requireNonNull(Objects.requireNonNull(event.getJDA().getGuildById(dokdoServer)).getTextChannelById(dokdoServerChat)).sendMessage(builder.build()).queue();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            event.getChannel().sendMessage("독도서버 전송 실패").queue();
-        }
-        try {
-            String snoServer = "570659322007126029";
-            if(!serverID.equals(snoServer)) {
-                String snoServerChat = "620125504246382592";
-                Objects.requireNonNull(Objects.requireNonNull(event.getJDA().getGuildById(snoServer)).getTextChannelById(snoServerChat)).sendMessage(builder.build()).queue();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            event.getChannel().sendMessage("스노서버 전송 실패").queue();
-        }
-        try {
-            String horyuServer = "563045452774244361";
-            if(!serverID.equals(horyuServer)) {
-                String horyuServerChat = "622691793661853706";
-                Objects.requireNonNull(Objects.requireNonNull(event.getJDA().getGuildById(horyuServer)).getTextChannelById(horyuServerChat)).sendMessage(builder.build()).queue();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            event.getChannel().sendMessage("호류서버 전송 실패").queue();
-        }
-        try {
-            String SNJServer = "531777289684254731";
-            if(!serverID.equals(SNJServer)) {
-                String SNJServerChat = "623105335514759168";
-                Objects.requireNonNull(Objects.requireNonNull(event.getJDA().getGuildById(SNJServer)).getTextChannelById(SNJServerChat)).sendMessage(builder.build()).queue();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            event.getChannel().sendMessage("SNJ서버 전송 실패").queue();
-        }
-        try {
-            String ClassDServer = "614348538222215188";
-            if(!serverID.equals(ClassDServer)) {
-                String ClassDServerChat = "629135900059631647";
-                Objects.requireNonNull(Objects.requireNonNull(event.getJDA().getGuildById(ClassDServer)).getTextChannelById(ClassDServerChat)).sendMessage(builder.build()).queue();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            event.getChannel().sendMessage("Class-D서버 전송 실패").queue();
-        }
-        try {
-            String ArtServer = "619746711992270869";
-            if(!serverID.equals(ArtServer)) {
-                String ArtServerChat = "629167608180113458";
-                Objects.requireNonNull(Objects.requireNonNull(event.getJDA().getGuildById(ArtServer)).getTextChannelById(ArtServerChat)).sendMessage(builder.build()).queue();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            event.getChannel().sendMessage("아트서버 전송 실패").queue();
-        }
-        try {
-            String VAServer = "614793325081526282";
-            if(!serverID.equals(VAServer)) {
-                String VAServerChat = "630336982140190730";
-                Objects.requireNonNull(Objects.requireNonNull(event.getJDA().getGuildById(VAServer)).getTextChannelById(VAServerChat)).sendMessage(builder.build()).queue();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            event.getChannel().sendMessage("브아서버 전송 실패").queue();
-        }
-        try {
-            String HSSServer = "553932158436376586";
-            if(!serverID.equals(HSSServer)) {
-                String HSSServerChat = "641953563299282944";
-                Objects.requireNonNull(Objects.requireNonNull(event.getJDA().getGuildById(HSSServer)).getTextChannelById(HSSServerChat)).sendMessage(builder.build()).queue();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            event.getChannel().sendMessage("감자서버 전송 실패").queue();
-        }
-        try {
-            String SCP079Server = "616601689327140908";
-            if(!serverID.equals(SCP079Server)) {
-                String SCP079ServerChat = "632817086745411594";
-                Objects.requireNonNull(Objects.requireNonNull(event.getJDA().getGuildById(SCP079Server)).getTextChannelById(SCP079ServerChat)).sendMessage(builder.build()).queue();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            event.getChannel().sendMessage("SCP-079서버 전송 실패").queue();
-        }
-        event.getChannel().sendMessage("전송이 완료되었습니다.").queue();
-    }
 
 
     public static void simaAutoSend(String serverID, String Nickname, String ID, String time, String reason, JDA jda) {
