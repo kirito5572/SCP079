@@ -1,25 +1,25 @@
 package SCP079.Commands;
 
 import SCP079.Objects.ICommand;
+import SCP079.Objects.IsKoreaSCPCoop;
 import SCP079.Objects.SQLDB;
 import me.duncte123.botcommons.messaging.EmbedUtils;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.List;
-import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 
 public class configCommand implements ICommand {
     @Override
     public void handle(List<String> args, GuildMessageReceivedEvent event) {
-        if(!Objects.requireNonNull(event.getMember()).hasPermission(Permission.ADMINISTRATOR)) {
-            if(!event.getAuthor().getId().equals("284508374924787713")) {
-                event.getChannel().sendMessage("당신은 이 명령어를 사용할 수 없습니다.").queue();
-                return;
-            }
+        if(IsKoreaSCPCoop.verification(event)) {
+            event.getChannel().sendMessage("당신은 이 명령어를 쓸 권한이 없습니다.\n" +
+                    " 이 명령어를 사용하기 위해서는 한코옵서버에서 서버장 또는 관리자 역할을 받아야 합니다.\n" +
+                    " 한코옵 링크: discord.gg/6JxCx72").complete().delete().queueAfter(7, TimeUnit.SECONDS);
+            return;
         }
         EmbedBuilder builder;
         if(args.isEmpty()) {

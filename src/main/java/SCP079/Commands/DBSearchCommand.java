@@ -2,28 +2,28 @@ package SCP079.Commands;
 
 import SCP079.App;
 import SCP079.Objects.ICommand;
+import SCP079.Objects.IsKoreaSCPCoop;
 import SCP079.Objects.getHoryuSearch;
 import me.duncte123.botcommons.messaging.EmbedUtils;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
 import java.sql.SQLException;
 import java.util.List;
-import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 
 import static SCP079.Objects.getSteamID.SteamID;
 
 public class DBSearchCommand implements ICommand {
     @Override
     public void handle(List<String> args, GuildMessageReceivedEvent event) {
-        if(!(Objects.requireNonNull(event.getMember()).hasPermission(Permission.ADMINISTRATOR) || event.getMember().hasPermission(Permission.MANAGE_ROLES) ||
-                event.getMember().hasPermission(Permission.MESSAGE_MANAGE) || event.getMember().hasPermission(Permission.MANAGE_CHANNEL) ||
-                event.getMember().hasPermission(Permission.MANAGE_PERMISSIONS) || event.getMember().hasPermission(Permission.MANAGE_SERVER))) {
-            event.getChannel().sendMessage("당신은 이 명령어를 쓸 권한이 없습니다.").queue();
-
+        if(IsKoreaSCPCoop.verification(event)) {
+            event.getChannel().sendMessage("당신은 이 명령어를 쓸 권한이 없습니다.\n" +
+                    " 이 명령어를 사용하기 위해서는 한코옵서버에서 서버장 또는 관리자 역할을 받아야 합니다.\n" +
+                    " 한코옵 링크: discord.gg/6JxCx72").complete().delete().queueAfter(7, TimeUnit.SECONDS);
             return;
         }
+
         //Validate Steam ID
         if(args.size() == 0) {
             event.getChannel().sendMessage("SteamID를 입력해주세요.").queue();

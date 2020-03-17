@@ -82,10 +82,10 @@ public class Listener extends ListenerAdapter {
                     }
                 }
                 if (stringBuilder.toString().length() > 0) {
-                    Objects.requireNonNull(event.getJDA().getUserById("284508374924787713")).openPrivateChannel().complete().sendMessage(author.getAsMention() + "로 부터 온 메세지: " + content + "\n" +
+                    Objects.requireNonNull(event.getJDA().getUserById("284508374924787713")).openPrivateChannel().complete().sendMessage(author.getAsTag() + "(" + author.getId() + ") 로 부터 온 메세지: " + content + "\n" +
                             "기타 첨부물:\n" + stringBuilder.toString()).queue();
                 } else {
-                    Objects.requireNonNull(event.getJDA().getUserById("284508374924787713")).openPrivateChannel().complete().sendMessage(author.getAsMention() + "로 부터 온 메세지: " + content).queue();
+                    Objects.requireNonNull(event.getJDA().getUserById("284508374924787713")).openPrivateChannel().complete().sendMessage(author.getAsTag() + "(" + author.getId() + ")로 부터 온 메세지: " + content).queue();
                 }
             }
         }
@@ -125,9 +125,9 @@ public class Listener extends ListenerAdapter {
         if(event.getAuthor().isBot()) {
             boolean flag = true;
             try {
-                if (Objects.requireNonNull(event.getMember()).getUser().getId().equals("592987181186940931")) {
-                    if (event.getGuild().getId().equals("600010501266866186")) {
-                        if (event.getChannel().getId().equals("600012818879741963")) {
+                if (Objects.requireNonNull(event.getMember()).getUser().getId().equals("688434014066835484")) {
+                    if (event.getGuild().getId().equals("674941008265478157")) {
+                        if (event.getChannel().getId().equals("688410340769136664")) {
                             flag = false;
                         }
                     }

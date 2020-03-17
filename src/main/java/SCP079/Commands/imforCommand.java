@@ -1,13 +1,12 @@
 package SCP079.Commands;
 
 import SCP079.App;
-import SCP079.Objects.ICommand;
-import SCP079.Objects.SQLDB;
-import SCP079.Objects.getSteamID;
-import SCP079.Objects.linkConfirm;
+import SCP079.Objects.*;
+import com.jagrosh.jdautilities.commons.utils.FinderUtil;
 import me.duncte123.botcommons.messaging.EmbedUtils;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.Permission;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
@@ -15,7 +14,7 @@ import net.dv8tion.jda.api.exceptions.ErrorResponseException;
 
 import java.awt.*;
 import java.util.List;
-import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 
 import static SCP079.Commands.HackCommand.test;
 
@@ -23,13 +22,11 @@ public class imforCommand implements ICommand {
     @Override
     public void handle(List<String> args, GuildMessageReceivedEvent event) {
         String serverID = event.getGuild().getId();
-        boolean youngminSend = false;
 
-        if(!(Objects.requireNonNull(event.getMember()).hasPermission(Permission.ADMINISTRATOR) || event.getMember().hasPermission(Permission.MANAGE_ROLES) ||
-                event.getMember().hasPermission(Permission.MESSAGE_MANAGE) || event.getMember().hasPermission(Permission.MANAGE_CHANNEL) ||
-                event.getMember().hasPermission(Permission.MANAGE_PERMISSIONS) || event.getMember().hasPermission(Permission.MANAGE_SERVER))) {
-            event.getChannel().sendMessage("당신은 이 명령어를 쓸 권한이 없습니다.").queue();
-
+        if(IsKoreaSCPCoop.verification(event)) {
+            event.getChannel().sendMessage("당신은 이 명령어를 쓸 권한이 없습니다.\n" +
+                    " 이 명령어를 사용하기 위해서는 한코옵서버에서 서버장 또는 관리자 역할을 받아야 합니다.\n" +
+                    " 한코옵 링크: discord.gg/6JxCx72").complete().delete().queueAfter(7, TimeUnit.SECONDS);
             return;
         }
         TextChannel channel = event.getChannel();
@@ -39,7 +36,11 @@ public class imforCommand implements ICommand {
                     getInvoke() + "`").queue();
             return;
         }
-        String SteamID;
+        String ID;
+        String steamId = null;
+        String discordId;
+        boolean isSteam = false;
+        Member member = null;
         String time, rawtime;
         StringBuilder reason;
         String ip = null;
@@ -47,10 +48,60 @@ public class imforCommand implements ICommand {
         String link = null;
 
         try {
-            SteamID = args.get(0);
+            ID = args.get(0);
+            boolean isrealSteamID = true;
+            System.out.println(ID.length());
+            if(ID.startsWith("76") && ID.length() == 17) {
+                for (int i = 0; i < ID.length(); i++) {
+                    char temp = ID.charAt(i);
+                    if (!Character.isDigit(temp)) {
+                        isrealSteamID = false;
+                    }
+                    isSteam = true;
+                    steamId = ID;
+                }
+                if (!isrealSteamID) {
+                    channel.sendMessage("스팀 ID가 올바르지 않습니다. 다시 확인해주세요.").queue();
+                    return;
+                }
+            } else {
+                if(ID.length() == 18) {
+                    try {
+                        boolean bypass = false;
+                        List<Member> foundMember = null;
+                        List<Guild> guilds = event.getJDA().getGuilds();
+                        for (Guild guild : guilds) {
+                            if(!bypass) {
+                                foundMember = FinderUtil.findMembers(ID, guild);
+                                if (!foundMember.isEmpty()) {
+                                    bypass = true;
+                                }
+                            }
+                            discordId = ID;
+                        }
+                        if(foundMember == null) {
+                            event.getChannel().sendMessage("'" + ID + "' 로 검색되는 ID를 봇이 검색 할 수 없습니다.").queue();
+                            return;
+                        }
+                        if(foundMember.isEmpty()) {
+                            event.getChannel().sendMessage("'" + ID + "' 로 검색되는 ID를 봇이 검색 할 수 없습니다.").queue();
+                            return;
+                        }
+                        member = foundMember.get(0);
+
+                    } catch (Exception e) {
+                        event.getChannel().sendMessage("해당 유저를 찾을수 없거나, 인수가 잘못 입력되었습니다.").queue();
+
+                        return;
+                    }
+                } else {
+                    event.getChannel().sendMessage("입력된 ID를 확인하여주십시오.").queue();
+                    return;
+                }
+            }
 
         } catch (Exception e) {
-            channel.sendMessage("Steam ID가 입력되지 않았거나, 인수가 잘못 입력되었습니다.").queue();
+            channel.sendMessage("Steam ID/Discord ID가 입력되지 않았거나, 인수가 잘못 입력되었습니다.").queue();
 
             return;
         }
@@ -111,7 +162,6 @@ public class imforCommand implements ICommand {
 
         } else if(time.contains("y")) {
             time = time.substring(0,time.indexOf("y"));
-            youngminSend = true;
             try {
                 temp1 = Integer.parseInt(time);
             } catch (Exception e) {
@@ -175,18 +225,20 @@ public class imforCommand implements ICommand {
             e.printStackTrace();
         }
         String reasonFinal = String.join(" ", reason.toString());
+        String[] returns = new String[0];
+        if(isSteam) {
+            returns = getSteamID.SteamID(steamId);
 
-        String[] returns = getSteamID.SteamID(SteamID);
+            if (returns[0].equals("error")) {
+                event.getChannel().sendMessage("스팀 ID 수신중 에러가 발생했습니다.").queue();
 
-        if(returns[0].equals("error")) {
-            event.getChannel().sendMessage("스팀 ID 수신중 에러가 발생했습니다.").queue();
+                return;
+            }
+            if (returns[0].equals("no")) {
+                event.getChannel().sendMessage("그런 ID는 존재 하지 않습니다.").queue();
 
-            return;
-        }
-        if (returns[0].equals("no")) {
-            event.getChannel().sendMessage("그런 ID는 존재 하지 않습니다.").queue();
-
-            return;
+                return;
+            }
         }
         if(ipFlag) {
             if (!validIP(ip)) {
@@ -201,8 +253,12 @@ public class imforCommand implements ICommand {
                 return;
             }
         }
-        String NickName = returns[0];
-        String ID = returns[1];
+        String NickName;
+        if(isSteam) {
+            NickName = returns[0];
+        } else {
+            NickName = member.getEffectiveName();
+        }
 
         NickName = NickName.replace(" ", "");
         NickName= NickName.replaceAll("\\p{Z}","");
@@ -212,14 +268,20 @@ public class imforCommand implements ICommand {
         EmbedBuilder builder = EmbedUtils.defaultEmbed()
                 .setTitle("공유된 제재 정보")
                 .setColor(Color.RED)
-                .addField("제재 대상자", NickName, false)
-                .addField("스팀 ID", ID, false)
-                .addField("제재 사유", reasonFinal, false)
+                .addField("제재 대상자", NickName, false);
+        if(isSteam) {
+            builder.addField("스팀 ID", ID, false);
+        } else {
+            builder.addField("디스코드 ID", ID, false);
+        }
+        builder.addField("제재 사유", reasonFinal, false)
                 .addField("제재 기간", rawtime + "(" + time + "분)", false)
                 .addField("제재 담당 서버", event.getGuild().getName(), false)
                 .addField("공유자", event.getMember().getAsMention(), false);
-        if(returns[2].equals("nosteam")) {
-            builder.addField("중요", "이 유저는 스팀 프로필을 등록한 적 없는 유저입니다.", false);
+        if(isSteam) {
+            if (returns[2].equals("nosteam")) {
+                builder.addField("중요", "이 유저는 스팀 프로필을 등록한 적 없는 유저입니다.", false);
+            }
         }
         if(ip != null) {
             builder.addField("IP", ip, false);
