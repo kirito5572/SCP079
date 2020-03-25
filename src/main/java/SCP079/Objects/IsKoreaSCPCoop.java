@@ -27,6 +27,9 @@ public class IsKoreaSCPCoop {
                 isExist = true;
             }
         }
+        if(event.getAuthor().getId().equals("688434014066835484")) {
+            isExist = true;
+        }
         return !isExist;
     }
 }
