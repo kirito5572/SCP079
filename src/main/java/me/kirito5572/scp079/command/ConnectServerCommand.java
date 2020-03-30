@@ -1,8 +1,8 @@
 package me.kirito5572.scp079.command;
 
+import me.duncte123.botcommons.messaging.EmbedUtils;
 import me.kirito5572.scp079.object.ICommand;
 import me.kirito5572.scp079.object.SQLDB;
-import me.duncte123.botcommons.messaging.EmbedUtils;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
@@ -24,7 +24,7 @@ public class ConnectServerCommand implements ICommand {
             try {
                 Statement statement = SQLDB.getConnection().createStatement();
                 ResultSet resultSet = statement.executeQuery("SELECT * FROM `079_config`.recieve_channel WHERE guildId=" + guild.getId());
-                if(resultSet.next()) {
+                if (resultSet.next()) {
                     config_complete = true;
                 }
                 statement.close();

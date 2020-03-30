@@ -17,6 +17,7 @@ public class SQLDB {
     private static String url;
     private static String user;
     private static String password;
+
     public SQLDB() {
         //init
         StringBuilder caseIDBuilder = new StringBuilder();
@@ -24,7 +25,7 @@ public class SQLDB {
             File file = new File("C:\\DiscordServerBotSecrets\\SCP-079\\caseID.txt");
             FileReader fileReader = new FileReader(file);
             int singalCh;
-            while((singalCh = fileReader.read()) != -1) {
+            while ((singalCh = fileReader.read()) != -1) {
                 caseIDBuilder.append((char) singalCh);
             }
         } catch (Exception e) {
@@ -36,7 +37,7 @@ public class SQLDB {
             File file = new File("C:\\DiscordServerBotSecrets\\SCP-079\\SQLPassword.txt");
             FileReader fileReader = new FileReader(file);
             int singalCh;
-            while((singalCh = fileReader.read()) != -1) {
+            while ((singalCh = fileReader.read()) != -1) {
                 SQLPassword.append((char) singalCh);
             }
         } catch (Exception e) {
@@ -47,7 +48,7 @@ public class SQLDB {
             File file = new File("C:\\DiscordServerBotSecrets\\SCP-079\\endPoint.txt");
             FileReader fileReader = new FileReader(file);
             int singalCh;
-            while((singalCh = fileReader.read()) != -1) {
+            while ((singalCh = fileReader.read()) != -1) {
                 endPoint.append((char) singalCh);
             }
         } catch (Exception e) {
@@ -66,8 +67,9 @@ public class SQLDB {
             e.printStackTrace();
         }
     }
+
     public static void SQLupload(String SteamID, String time, String reason, String server, String serverID) {
-        if(serverID.equals("600010501266866186")) {
+        if (serverID.equals("600010501266866186")) {
             return;
         }
         caseIDup();
@@ -75,7 +77,7 @@ public class SQLDB {
         Date date = new Date();
         SimpleDateFormat dayTime = new SimpleDateFormat("yyyy-MM-dd kk:mm:ss");
         String sanctionTime = dayTime.format(date);
-        String queryString = "INSERT INTO mainDB.Sanction_Information VALUES (" + caseID + ","+ SteamID + ", '" + sanctionTime + "', '" + time + "', '" + reason + "', '" + server + "' , " + serverID + ");";
+        String queryString = "INSERT INTO mainDB.Sanction_Information VALUES (" + caseID + "," + SteamID + ", '" + sanctionTime + "', '" + time + "', '" + reason + "', '" + server + "' , " + serverID + ");";
 
         System.out.println(queryString);
         try {
@@ -88,8 +90,9 @@ public class SQLDB {
             e.printStackTrace();
         }
     }
+
     public static String[] SQLdownload(String SteamID) throws SQLException, ClassNotFoundException {
-        String[] data = new String[] {
+        String[] data = new String[]{
                 null, null, null, null, null,
                 null, null, null, null, null
         };
@@ -107,6 +110,7 @@ public class SQLDB {
         statement.close();
         return data;
     }
+
     private static void caseIDup() {
         caseID++;
         try {
@@ -125,6 +129,7 @@ public class SQLDB {
             e.printStackTrace();
         }
     }
+
     public static String[] SQLdownload(int caseID) throws SQLException, ClassNotFoundException {
         String[] data = new String[7];
 
@@ -145,8 +150,9 @@ public class SQLDB {
         statement.close();
         return data;
     }
+
     public static String[] GreenDBDownload(String steamID) throws ClassNotFoundException, SQLException {
-        String[] data = new String[] {
+        String[] data = new String[]{
                 null, null, null, null, null,
                 null, null, null, null, null
         };
@@ -164,8 +170,9 @@ public class SQLDB {
         statement.close();
         return data;
     }
+
     public static String[] GreenDBDownload(int caseID, String steamID) throws ClassNotFoundException, SQLException {
-        String[] data = new String[] {
+        String[] data = new String[]{
                 null, null, null, null, null,
                 null, null, null, null, null
         };
@@ -177,7 +184,7 @@ public class SQLDB {
         resultSet = statement.executeQuery(queryString);
         while (resultSet.next()) {
             String a = resultSet.getString("caseID");
-            if(caseID == Integer.parseInt(a)) {
+            if (caseID == Integer.parseInt(a)) {
                 data[0] = a;
                 data[1] = resultSet.getString("SteamID");
                 data[2] = resultSet.getString("DBWriteTime");

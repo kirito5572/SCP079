@@ -14,20 +14,20 @@ public class IsKoreaSCPCoop {
         Guild hanCoOp = Objects.requireNonNull(event.getJDA().getGuildById("607303213602963643"));
         List<Member> memberList = hanCoOp.getMembers();
         List<Member> adminList = new ArrayList<>();
-        for(Member member : memberList) {
-            if(member.getRoles().contains(hanCoOp.getRoleById("607314941929586691"))) {
+        for (Member member : memberList) {
+            if (member.getRoles().contains(hanCoOp.getRoleById("607314941929586691"))) {
                 adminList.add(member);
             }
-            if(member.getRoles().contains(hanCoOp.getRoleById("607314967946854431"))) {
+            if (member.getRoles().contains(hanCoOp.getRoleById("607314967946854431"))) {
                 adminList.add(member);
             }
         }
-        for(Member member : adminList) {
-            if(member.getId().equals(event.getAuthor().getId())) {
+        for (Member member : adminList) {
+            if (member.getId().equals(event.getAuthor().getId())) {
                 isExist = true;
             }
         }
-        if(event.getAuthor().getId().equals("688434014066835484")) {
+        if (event.getAuthor().getId().equals("688434014066835484")) {
             isExist = true;
         }
         return !isExist;

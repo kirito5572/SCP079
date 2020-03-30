@@ -1,9 +1,9 @@
 package me.kirito5572.scp079.command;
 
+import me.duncte123.botcommons.messaging.EmbedUtils;
 import me.kirito5572.scp079.App;
 import me.kirito5572.scp079.object.CommandManager;
 import me.kirito5572.scp079.object.ICommand;
-import me.duncte123.botcommons.messaging.EmbedUtils;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
@@ -26,7 +26,7 @@ public class HelpCommand implements ICommand {
 
         String joined = String.join(" ", args);
 
-        if(!event.getGuild().getSelfMember().hasPermission(Permission.MESSAGE_EMBED_LINKS)) {
+        if (!event.getGuild().getSelfMember().hasPermission(Permission.MESSAGE_EMBED_LINKS)) {
             event.getChannel().sendMessage("봇이 임베디드 링크를 보낼 권한이 없습니다.").queue();
             event.getChannel().sendMessage("봇이 링크를 보낼 권한이 제대로 설정되어있는지 확인하여 주시기 바랍니다.\n" +
                     "비밀 채널의 경우, 링크 권한이 / 가 아닌 V 로 체크를 하셔야 합니다.").queue();
@@ -42,8 +42,8 @@ public class HelpCommand implements ICommand {
 
         ICommand command = manager.getCommand(joined);
 
-        if(command == null) {
-            event.getChannel().sendMessage( "`"+joined + "`는 존재하지 않는 명령어 입니다.\n" +
+        if (command == null) {
+            event.getChannel().sendMessage("`" + joined + "`는 존재하지 않는 명령어 입니다.\n" +
                     "`" + App.getPREFIX() + getInvoke() + "` 를 사용해 명령어 리스트를 확인하세요.").queue();
             return;
         }

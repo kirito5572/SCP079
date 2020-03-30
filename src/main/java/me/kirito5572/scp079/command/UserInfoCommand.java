@@ -1,10 +1,10 @@
 package me.kirito5572.scp079.command;
 
+import com.jagrosh.jdautilities.commons.utils.FinderUtil;
+import me.duncte123.botcommons.messaging.EmbedUtils;
 import me.kirito5572.scp079.App;
 import me.kirito5572.scp079.object.ICommand;
 import me.kirito5572.scp079.object.IsKoreaSCPCoop;
-import com.jagrosh.jdautilities.commons.utils.FinderUtil;
-import me.duncte123.botcommons.messaging.EmbedUtils;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
@@ -16,7 +16,7 @@ import java.util.concurrent.TimeUnit;
 public class UserInfoCommand implements ICommand {
     @Override
     public void handle(List<String> args, GuildMessageReceivedEvent event) {
-        if(IsKoreaSCPCoop.verification(event)) {
+        if (IsKoreaSCPCoop.verification(event)) {
             event.getChannel().sendMessage("당신은 이 명령어를 쓸 권한이 없습니다.\n" +
                     " 이 명령어를 사용하기 위해서는 한코옵서버에서 서버장 또는 관리자 역할을 받아야 합니다.\n" +
                     " 한코옵 링크: discord.gg/6JxCx72").complete().delete().queueAfter(7, TimeUnit.SECONDS);
@@ -25,7 +25,7 @@ public class UserInfoCommand implements ICommand {
         User user;
         Member member;
         Guild guildinfo = null;
-        if(args.isEmpty()) {
+        if (args.isEmpty()) {
             user = event.getMember().getUser();
             member = event.getMember();
         } else {
@@ -35,7 +35,7 @@ public class UserInfoCommand implements ICommand {
                 List<Member> foundMember = null;
                 List<Guild> guilds = event.getJDA().getGuilds();
                 for (Guild guild : guilds) {
-                    if(!bypass) {
+                    if (!bypass) {
                         foundMember = FinderUtil.findMembers(joined, guild);
                         if (!foundMember.isEmpty()) {
                             bypass = true;
@@ -43,11 +43,11 @@ public class UserInfoCommand implements ICommand {
                         }
                     }
                 }
-                if(foundMember == null) {
+                if (foundMember == null) {
                     event.getChannel().sendMessage("'" + joined + "' 라는 유저는 없습니다.").queue();
                     return;
                 }
-                if(foundMember.isEmpty()) {
+                if (foundMember.isEmpty()) {
                     event.getChannel().sendMessage("'" + joined + "' 라는 유저는 없습니다.").queue();
                     return;
                 }

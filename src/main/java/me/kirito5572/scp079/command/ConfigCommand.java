@@ -1,10 +1,10 @@
 package me.kirito5572.scp079.command;
 
+import com.jagrosh.jdautilities.commons.utils.FinderUtil;
+import me.duncte123.botcommons.messaging.EmbedUtils;
 import me.kirito5572.scp079.object.ICommand;
 import me.kirito5572.scp079.object.IsKoreaSCPCoop;
 import me.kirito5572.scp079.object.SQLDB;
-import com.jagrosh.jdautilities.commons.utils.FinderUtil;
-import me.duncte123.botcommons.messaging.EmbedUtils;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.entities.TextChannel;
@@ -18,14 +18,14 @@ import java.util.concurrent.TimeUnit;
 public class ConfigCommand implements ICommand {
     @Override
     public void handle(List<String> args, GuildMessageReceivedEvent event) {
-        if(IsKoreaSCPCoop.verification(event)) {
+        if (IsKoreaSCPCoop.verification(event)) {
             event.getChannel().sendMessage("당신은 이 명령어를 쓸 권한이 없습니다.\n" +
                     " 이 명령어를 사용하기 위해서는 한코옵서버에서 서버장 또는 관리자 역할을 받아야 합니다.\n" +
                     " 한코옵 링크: discord.gg/6JxCx72").complete().delete().queueAfter(7, TimeUnit.SECONDS);
             return;
         }
         EmbedBuilder builder;
-        if(args.isEmpty()) {
+        if (args.isEmpty()) {
             builder = EmbedUtils.defaultEmbed()
                     .setTitle("설정 사용법")
                     .addField("현재", "현재 등록된 옵션값을 불러옵니다.", false)
@@ -77,7 +77,7 @@ public class ConfigCommand implements ICommand {
                     try {
                         Statement statement = SQLDB.getConnection().createStatement();
                         ResultSet resultSet = statement.executeQuery("SELECT * FROM `079_config`.recieve_channel WHERE guildId=" + event.getGuild().getId());
-                        if(resultSet.next()) {
+                        if (resultSet.next()) {
                             event.getChannel().sendMessage("이미 등록되었습니다.").queue();
                             return;
                         }
@@ -101,10 +101,10 @@ public class ConfigCommand implements ICommand {
                                             "4. 제재 사유\n" +
                                             "5. 명령어가 실행된 서버의 이름과 ID", false)
                             .addField("등록된 정보의 조회/파기",
-                                    "등록된 정보의 조회/파기에 관련된 문의는 봇의 DM을 통하여 문의주시기 바랍니다.",false);
+                                    "등록된 정보의 조회/파기에 관련된 문의는 봇의 DM을 통하여 문의주시기 바랍니다.", false);
                     try {
                         Statement statement = SQLDB.getConnection().createStatement();
-                        statement.executeUpdate("INSERT INTO `079_config`.recieve_channel VALUES (" + event.getGuild().getId() + ", "+ event.getChannel().getId() + ");");
+                        statement.executeUpdate("INSERT INTO `079_config`.recieve_channel VALUES (" + event.getGuild().getId() + ", " + event.getChannel().getId() + ");");
                         statement.executeUpdate("INSERT INTO `079_config`.receive_time VALUES (" + event.getGuild().getId() + ", 0);");
                         statement.executeUpdate("INSERT INTO `079_config`.bot_channel VALUES (" + event.getGuild().getId() + ", 0);");
                         statement.executeUpdate("INSERT INTO `079_config`.filter_enable VALUES (" + event.getGuild().getId() + ", 0, 0, 0, 0);");
@@ -188,15 +188,15 @@ public class ConfigCommand implements ICommand {
                     }
                 case "필터링":
                     if (args.size() > 1) {
-                        if(args.get(1).equals("차단활성화")) {
+                        if (args.get(1).equals("차단활성화")) {
                             int enable = 0;
-                            if(args.size() < 3) {
+                            if (args.size() < 3) {
                                 event.getChannel().sendMessage("인수가 부족합니다.").queue();
                                 return;
                             }
                             if (args.get(2).equals("활성화")) {
                                 enable = 1;
-                            } else if(args.get(2).equals("비활성화")) {
+                            } else if (args.get(2).equals("비활성화")) {
                             } else {
                                 event.getChannel().sendMessage("활성화/비활성화 조건이여야 합니다.\n" +
                                         "입력된 조건:" + args.get(2)).queue();
@@ -210,19 +210,19 @@ public class ConfigCommand implements ICommand {
                                 e.printStackTrace();
                                 return;
                             }
-                        } else if(args.get(1).equals("차단채널알림")) {
+                        } else if (args.get(1).equals("차단채널알림")) {
                             String executeString;
-                            if(args.size() < 3) {
+                            if (args.size() < 3) {
                                 event.getChannel().sendMessage("인수가 부족합니다.").queue();
                                 return;
                             }
-                            if(args.get(2).equals("0")) {
+                            if (args.get(2).equals("0")) {
                                 executeString = "UPDATE `079_config`.filter_enable SET channelId=" + 0 + " WHERE guildId=" + event.getGuild().getId() + ";";
-                            } else if(args.get(2).equals("현재채널")) {
+                            } else if (args.get(2).equals("현재채널")) {
                                 executeString = "UPDATE `079_config`.filter_enable SET channelId=" + event.getChannel().getId() + " WHERE guildId=" + event.getGuild().getId() + ";";
                             } else {
                                 List<TextChannel> textChannelList = FinderUtil.findTextChannels(args.get(2), event.getJDA());
-                                if(textChannelList.isEmpty()) {
+                                if (textChannelList.isEmpty()) {
                                     event.getChannel().sendMessage("해당 채널을 검색 할 수 없습니다.").queue();
                                     return;
                                 } else {
@@ -239,9 +239,9 @@ public class ConfigCommand implements ICommand {
                                 e.printStackTrace();
                                 return;
                             }
-                        } else if(args.get(1).equals("뮤트")) {
+                        } else if (args.get(1).equals("뮤트")) {
                             int count;
-                            if(args.size() < 3) {
+                            if (args.size() < 3) {
                                 event.getChannel().sendMessage("인수가 부족합니다.").queue();
                                 return;
                             }
@@ -252,15 +252,15 @@ public class ConfigCommand implements ICommand {
                                 return;
                             }
                             String executeString;
-                            if(count == 0) {
+                            if (count == 0) {
                                 executeString = "UPDATE `079_config`.filter_enable SET mute=0, muterole=0 WHERE guildId=" + event.getGuild().getId() + ";";
                             } else {
-                                if(args.size() < 4) {
+                                if (args.size() < 4) {
                                     event.getChannel().sendMessage("인수가 부족합니다.").queue();
                                     return;
                                 }
                                 List<Role> roles = FinderUtil.findRoles(args.get(3), event.getGuild());
-                                if(roles.isEmpty()) {
+                                if (roles.isEmpty()) {
                                     event.getChannel().sendMessage("서버에서 역할을 찾을수 없습니다.").queue();
                                     return;
                                 }
@@ -276,9 +276,9 @@ public class ConfigCommand implements ICommand {
                                 e.printStackTrace();
                                 return;
                             }
-                        } else if(args.get(1).equals("킥")) {
+                        } else if (args.get(1).equals("킥")) {
 
-                        } else if(args.get(1).equals("밴")) {
+                        } else if (args.get(1).equals("밴")) {
 
                         } else {
 

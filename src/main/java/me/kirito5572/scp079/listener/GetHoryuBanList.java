@@ -1,10 +1,10 @@
 package me.kirito5572.scp079.listener;
 
-import me.kirito5572.scp079.App;
-import me.kirito5572.scp079.command.HackCommand;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import me.duncte123.botcommons.messaging.EmbedUtils;
+import me.kirito5572.scp079.App;
+import me.kirito5572.scp079.command.HackCommand;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.ReadyEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -24,6 +24,7 @@ import java.util.TimerTask;
 
 public class GetHoryuBanList extends ListenerAdapter {
     private static int caseNum = 285;
+
     @Override
     public void onReady(@NotNull ReadyEvent event) {
         final String[] time = new String[1];
@@ -31,7 +32,7 @@ public class GetHoryuBanList extends ListenerAdapter {
             @Override
             public void run() {
                 String temp = get();
-                if(temp.contains("response is error")) {
+                if (temp.contains("response is error")) {
                     App.getLogTextChannel().sendMessage("호류서버 제재자 목록을 불러오는 중 에러가 발생했습니다.\n" +
                             temp).queue();
                     return;
@@ -45,7 +46,7 @@ public class GetHoryuBanList extends ListenerAdapter {
                     return;
                 }
                 String message = data[data.length - 1];
-                if(lastmessage.equals(message)) {
+                if (lastmessage.equals(message)) {
 
                     return;
                 } else {
@@ -60,20 +61,20 @@ public class GetHoryuBanList extends ListenerAdapter {
                 if (mainData[0].equals("error")) {
                     return;
                 }
-                if(caseNum < Integer.parseInt(mainData[6])) {
+                if (caseNum < Integer.parseInt(mainData[6])) {
                     caseNum = Integer.parseInt(mainData[6]);
                 } else {
                     return;
                 }
-                if(mainData[2].contains("AUTOMATRON REASON")) {
+                if (mainData[2].contains("AUTOMATRON REASON")) {
                     return;
                 }
-                if(!mainData[5].equals("없음")) {
+                if (!mainData[5].equals("없음")) {
                     long temp1 = Long.parseLong(mainData[5], 10);
                     long temp2 = Long.parseLong(mainData[4], 10);
                     long timeTemp = temp1 - temp2;
                     timeTemp = timeTemp / 1000L;
-                    if(mainData[5].equals("0")) {
+                    if (mainData[5].equals("0")) {
                         mainData[5] = "영구";
                         time[0] = "99999999";
                     } else {
@@ -124,7 +125,7 @@ public class GetHoryuBanList extends ListenerAdapter {
                 }
                 String[] id_data = mainData[1].split("@");
                 EmbedBuilder builder;
-                if(id_data[1].equals("steam")) {
+                if (id_data[1].equals("steam")) {
                     builder = EmbedUtils.defaultEmbed()
                             .setTitle("제재 정보 공유(호류서버)")
                             .setColor(Color.RED)
@@ -135,7 +136,7 @@ public class GetHoryuBanList extends ListenerAdapter {
                             .addField("제재 사유", mainData[2], false)
                             .addField("제재 기간", mainData[5] + "(" + time[0] + "분)", false)
                             .addField("제재 담당 서버", "호류 SCP 서버", false);
-                } else if(id_data[1].equals("discord")) {
+                } else if (id_data[1].equals("discord")) {
                     builder = EmbedUtils.defaultEmbed()
                             .setTitle("제재 정보 공유(호류서버)")
                             .setColor(Color.RED)
@@ -156,6 +157,7 @@ public class GetHoryuBanList extends ListenerAdapter {
         Timer jobScheduler = new Timer();
         jobScheduler.scheduleAtFixedRate(job, 1000, 10000);
     }
+
     private String get() {
         try {
             HttpClient client = HttpClientBuilder.create().build(); // HttpClient 생성
@@ -171,11 +173,12 @@ public class GetHoryuBanList extends ListenerAdapter {
                 return "response is error : " + response.getStatusLine().getStatusCode();
             }
 
-        } catch (Exception e){
+        } catch (Exception e) {
             return e.toString();
         }
     }
-    private void filesave(String message) throws IOException{
+
+    private void filesave(String message) throws IOException {
 
         File file = new File("C:\\디스코드봇 파일들\\SCP079\\마지막제재.txt");
         FileWriter writer;
@@ -188,6 +191,7 @@ public class GetHoryuBanList extends ListenerAdapter {
         writer.close();
 
     }
+
     private String filereader() throws IOException {
         File file = new File("C:\\디스코드봇 파일들\\SCP079\\마지막제재.txt");
         FileReader reader;
@@ -195,20 +199,21 @@ public class GetHoryuBanList extends ListenerAdapter {
         reader = new FileReader(file);
         StringBuilder message = new StringBuilder();
         int chars;
-        while((chars = reader.read())!=-1){
-            message.append((char)chars);
+        while ((chars = reader.read()) != -1) {
+            message.append((char) chars);
         }
         return message.toString();
     }
+
     private String[] splitString(String message) {
         String[] returnData = new String[7];
         message = message.substring(0, message.length() - 1);
         //{"id":223,"name":"keum2912","userId":76561198965054054@steam,"time":1569663223000,"pardonTime":1570527223000,"reason":"문트롤"}]
         JsonParser parser = new JsonParser();
         try {
-            if(message.contains("response is error")) {
+            if (message.contains("response is error")) {
                 System.out.println("error: " + message);
-                return new String[] {"error"};
+                return new String[]{"error"};
             }
             JsonElement element = parser.parse(message);
             returnData[0] = element.getAsJsonObject().get("name").getAsString();        //CaseID
@@ -227,11 +232,12 @@ public class GetHoryuBanList extends ListenerAdapter {
         } catch (Exception e) {
             System.out.println(message);
             e.printStackTrace();
-            return new String[] {"error"};
+            return new String[]{"error"};
         }
 
         return returnData;
     }
+
     private void send(EmbedBuilder builder, ReadyEvent event, boolean youngminSend) {
         try {
             String greenServer = "600010501266866186";
@@ -296,7 +302,7 @@ public class GetHoryuBanList extends ListenerAdapter {
             Objects.requireNonNull(Objects.requireNonNull(event.getJDA().getGuildById(ArtServer)).getTextChannelById(ArtServerChat)).sendMessage(builder.build()).queue();
         } catch (Exception ignored) {
         }
-        if(youngminSend) {
+        if (youngminSend) {
             try {
                 String YoungminServer = "623316315620245544";
                 String YoungminServerChat = "623322259570032640";
@@ -323,6 +329,7 @@ public class GetHoryuBanList extends ListenerAdapter {
         } catch (Exception ignored) {
         }
     }
+
     private void testsend(EmbedBuilder builder, ReadyEvent event) {
         try {
             String greenServer = "600010501266866186";

@@ -1,10 +1,10 @@
 package me.kirito5572.scp079.command;
 
+import me.duncte123.botcommons.messaging.EmbedUtils;
 import me.kirito5572.scp079.App;
+import me.kirito5572.scp079.object.GetSteamID;
 import me.kirito5572.scp079.object.ICommand;
 import me.kirito5572.scp079.object.IsKoreaSCPCoop;
-import me.kirito5572.scp079.object.GetSteamID;
-import me.duncte123.botcommons.messaging.EmbedUtils;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
@@ -16,7 +16,7 @@ public class UnbanCommand implements ICommand {
     @Override
     public void handle(List<String> args, GuildMessageReceivedEvent event) {
         String serverID;
-        if(IsKoreaSCPCoop.verification(event)) {
+        if (IsKoreaSCPCoop.verification(event)) {
             event.getChannel().sendMessage("당신은 이 명령어를 쓸 권한이 없습니다.\n" +
                     " 이 명령어를 사용하기 위해서는 한코옵서버에서 서버장 또는 관리자 역할을 받아야 합니다.\n" +
                     " 한코옵 링크: discord.gg/6JxCx72").complete().delete().queueAfter(7, TimeUnit.SECONDS);
@@ -25,7 +25,7 @@ public class UnbanCommand implements ICommand {
 
         serverID = event.getGuild().getId();
 
-        if(args.isEmpty()) {
+        if (args.isEmpty()) {
             event.getChannel().sendMessage("인수 부족 '" + App.getPREFIX() + "명령어" +
                     getInvoke() + "'").queue();
             return;
@@ -51,11 +51,11 @@ public class UnbanCommand implements ICommand {
         }
         StringBuilder levelBuilder = new StringBuilder();
         try {
-            for(int i = 2; i <= args.size(); i++) {
+            for (int i = 2; i <= args.size(); i++) {
                 levelBuilder.append(args.get(i));
             }
         } catch (Exception e) {
-            if(levelBuilder.toString().equals("")) {
+            if (levelBuilder.toString().equals("")) {
                 event.getChannel().sendMessage("제재 감소 기간이 입력되지 않았습니다.").queue();
 
                 return;
@@ -67,7 +67,7 @@ public class UnbanCommand implements ICommand {
 
         String[] returns = GetSteamID.SteamID(SteamID);
 
-        if(returns[0].equals("error")) {
+        if (returns[0].equals("error")) {
             event.getChannel().sendMessage("스팀 ID가 잘못 입력되었거나, 그런 ID는 존재하지 않습니다.").queue();
 
             return;
@@ -77,7 +77,7 @@ public class UnbanCommand implements ICommand {
         String ID = returns[1];
 
         NickName = NickName.replace(" ", "");
-        NickName= NickName.replaceAll("\\p{Z}","");
+        NickName = NickName.replaceAll("\\p{Z}", "");
 
         EmbedBuilder builder = EmbedUtils.defaultEmbed()
                 .setTitle("공유된 제재 해제 정보")

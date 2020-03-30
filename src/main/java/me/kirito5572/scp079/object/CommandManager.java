@@ -27,7 +27,7 @@ public class CommandManager {
     }
 
     private void addCommand(ICommand command) {
-        if(!commands.containsKey(command.getInvoke())) {
+        if (!commands.containsKey(command.getInvoke())) {
             commands.put(command.getInvoke(), command);
         }
         sleep();
@@ -55,7 +55,7 @@ public class CommandManager {
                 "(?i)" + Pattern.quote(App.getPREFIX()), "").split("\\s+");
         final String invoke = split[0].toLowerCase();
 
-        if(commands.containsKey(invoke)) {
+        if (commands.containsKey(invoke)) {
             final List<String> args = Arrays.asList(split).subList(1, split.length);
 
             channel.sendTyping().queue();

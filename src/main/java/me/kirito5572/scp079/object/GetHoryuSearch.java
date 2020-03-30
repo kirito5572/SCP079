@@ -17,7 +17,7 @@ import java.util.Date;
 public class GetHoryuSearch {
     private static String[] get_Infor(String SteamID) {
         String temp = get(SteamID);
-        String[] returnData = new String[] {
+        String[] returnData = new String[]{
                 null, null, null, null, null,
                 null, null
         };
@@ -28,13 +28,13 @@ public class GetHoryuSearch {
         } catch (Exception e) {
             temp = get(SteamID);
             if (temp.equals("error")) {
-                return new String[] {"error"};
+                return new String[]{"error"};
             }
             element = parser.parse(temp);
         }
         try {
-            for(int i = 0; i < 7; i++) {
-                if(element.getAsJsonArray().size() > i) {
+            for (int i = 0; i < 7; i++) {
+                if (element.getAsJsonArray().size() > i) {
                     returnData[i] = element.getAsJsonArray().get(i).getAsJsonObject().get("id").getAsString();
                 }
             }
@@ -43,14 +43,15 @@ public class GetHoryuSearch {
         }
         return returnData;
     }
+
     private static String[] get_Infor(int caseID, String steamID) {
         String[] returnData = new String[7];
         String temp = get(steamID);
         JsonParser parser = new JsonParser();
         JsonElement element = parser.parse(temp);
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy/MM/dd kk:mm:ss");
-        for(int i = 0; i < element.getAsJsonArray().size(); i++) {
-            if(element.getAsJsonArray().get(i).getAsJsonObject().get("id").getAsInt() == caseID) {
+        for (int i = 0; i < element.getAsJsonArray().size(); i++) {
+            if (element.getAsJsonArray().get(i).getAsJsonObject().get("id").getAsInt() == caseID) {
                 JsonObject data = element.getAsJsonArray().get(i).getAsJsonObject();
                 Date date = new Date(data.get("time").getAsLong());
                 returnData[0] = data.get("id").getAsString();      //CaseID
@@ -64,6 +65,7 @@ public class GetHoryuSearch {
         }
         return returnData;
     }
+
     private static String get(String steamID) {
         try {
             HttpClient client = HttpClientBuilder.create().build(); // HttpClient 생성
@@ -79,31 +81,32 @@ public class GetHoryuSearch {
                 return "error";
             }
 
-        } catch (Exception e){
+        } catch (Exception e) {
             return "error";
         }
     }
+
     public static String[] Search(String SteamID) throws SQLException, ClassNotFoundException {
         String[] HoryuData = get_Infor(SteamID);
         String[] DBData = SQLDB.SQLdownload(SteamID);
         String[] GreenData = SQLDB.GreenDBDownload(SteamID);
         String[] Data = new String[HoryuData.length + DBData.length + GreenData.length];
         int j = 0, k = 0, g = 0;
-        for(int i = 0; i < (HoryuData.length + DBData.length + GreenData.length); i++) {
-            if(j < HoryuData.length) {
-                if(HoryuData[j] != null) {
+        for (int i = 0; i < (HoryuData.length + DBData.length + GreenData.length); i++) {
+            if (j < HoryuData.length) {
+                if (HoryuData[j] != null) {
                     Data[i] = "h" + HoryuData[j];
                     j++;
                 }
             }
-            if(k < DBData.length) {
-                if(DBData[k] != null) {
+            if (k < DBData.length) {
+                if (DBData[k] != null) {
                     Data[i] = DBData[k];
                     k++;
                 }
             }
-            if(g < GreenData.length) {
-                if(GreenData[g] != null) {
+            if (g < GreenData.length) {
+                if (GreenData[g] != null) {
                     Data[i] = "g" + GreenData[g];
                     g++;
                 }
@@ -111,11 +114,12 @@ public class GetHoryuSearch {
         }
         return Data;
     }
+
     public static String[] Search(String steamID, String caseID) {
         String[] data = new String[7];
-        if(caseID.startsWith("h")) { //식별자: 호류
+        if (caseID.startsWith("h")) { //식별자: 호류
             data = get_Infor(Integer.parseInt(caseID.replaceFirst("h", "")), steamID);
-        } else if(caseID.startsWith("g")) {
+        } else if (caseID.startsWith("g")) {
             try {
                 data = SQLDB.GreenDBDownload(Integer.parseInt(caseID.replaceFirst("g", "")), steamID);
             } catch (ClassNotFoundException | SQLException e) {

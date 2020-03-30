@@ -2,9 +2,9 @@ package me.kirito5572.scp079.command;
 
 import me.duncte123.botcommons.messaging.EmbedUtils;
 import me.kirito5572.scp079.App;
+import me.kirito5572.scp079.object.GetHoryuSearch;
 import me.kirito5572.scp079.object.ICommand;
 import me.kirito5572.scp079.object.IsKoreaSCPCoop;
-import me.kirito5572.scp079.object.GetHoryuSearch;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
@@ -17,7 +17,7 @@ import static me.kirito5572.scp079.object.GetSteamID.SteamID;
 public class DBSearchCommand implements ICommand {
     @Override
     public void handle(List<String> args, GuildMessageReceivedEvent event) {
-        if(IsKoreaSCPCoop.verification(event)) {
+        if (IsKoreaSCPCoop.verification(event)) {
             event.getChannel().sendMessage("당신은 이 명령어를 쓸 권한이 없습니다.\n" +
                     " 이 명령어를 사용하기 위해서는 한코옵서버에서 서버장 또는 관리자 역할을 받아야 합니다.\n" +
                     " 한코옵 링크: discord.gg/6JxCx72").complete().delete().queueAfter(7, TimeUnit.SECONDS);
@@ -25,20 +25,20 @@ public class DBSearchCommand implements ICommand {
         }
 
         //Validate Steam ID
-        if(args.size() == 0) {
+        if (args.size() == 0) {
             event.getChannel().sendMessage("SteamID를 입력해주세요.").queue();
             return;
         }
         String[] SteamData = SteamID(args.get(0));
 
-        if(SteamData[0].equals("no")) {
+        if (SteamData[0].equals("no")) {
             event.getChannel().sendMessage("스팀 ID가 올바르지 않습니다.").queue();
         }
         String[] data;
         boolean flag = false;
-        if(args.size() > 1) {
-            if(args.get(1).startsWith("-c")) {
-                if(args.size() == 2) {
+        if (args.size() > 1) {
+            if (args.get(1).startsWith("-c")) {
+                if (args.size() == 2) {
                     event.getChannel().sendMessage("뒤에 Case ID를 붙혀주세요 ").queue();
 
                     return;
@@ -70,13 +70,13 @@ public class DBSearchCommand implements ICommand {
                 return;
             }
         }
-        if(data[0] == null) {
+        if (data[0] == null) {
             event.getChannel().sendMessage("제재 기록이 없습니다.").queue();
 
             return;
         }
         EmbedBuilder builder = EmbedUtils.defaultEmbed();
-        if(flag) {
+        if (flag) {
             builder.setTitle("검색된 제재 정보")
                     .addField("caseID", data[0], false)
                     .addField("스팀 ID", data[1], false)
@@ -88,8 +88,8 @@ public class DBSearchCommand implements ICommand {
         } else {
             StringBuilder stringBuilder = new StringBuilder();
             int j = 0;
-            for(int i = 0; i < 10; i++) {
-                if(data[i] != null) {
+            for (int i = 0; i < 10; i++) {
+                if (data[i] != null) {
                     j++;
                     stringBuilder.append(data[i]).append(",");
                 }

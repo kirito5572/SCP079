@@ -23,12 +23,16 @@ import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 public class Listener extends ListenerAdapter {
+    private static String ID1;
     private final CommandManager manager;
     private final Logger logger = LoggerFactory.getLogger(Listener.class);
-    private static String ID1;
 
     public Listener(CommandManager manager) {
         this.manager = manager;
+    }
+
+    public static String getID1() {
+        return ID1;
     }
 
     @Override
@@ -101,10 +105,10 @@ public class Listener extends ListenerAdapter {
             FileReader fileReader = new FileReader(file);
             FileReader fileReader1 = new FileReader(file1);
             int singalCh, singalCh1;
-            while((singalCh = fileReader.read()) != -1) {
+            while ((singalCh = fileReader.read()) != -1) {
                 IDreader.append((char) singalCh);
             }
-            while((singalCh1 = fileReader1.read()) != -1) {
+            while ((singalCh1 = fileReader1.read()) != -1) {
                 IDreader1.append((char) singalCh1);
             }
         } catch (Exception e) {
@@ -122,7 +126,7 @@ public class Listener extends ListenerAdapter {
             return;
 
         }
-        if(event.getAuthor().isBot()) {
+        if (event.getAuthor().isBot()) {
             boolean flag = true;
             try {
                 if (Objects.requireNonNull(event.getMember()).getUser().getId().equals("688434014066835484")) {
@@ -134,7 +138,7 @@ public class Listener extends ListenerAdapter {
                 }
             } catch (Exception ignored) {
             }
-            if(flag) {
+            if (flag) {
                 return;
             }
         }
@@ -155,7 +159,7 @@ public class Listener extends ListenerAdapter {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        if(event.getMessage().isWebhookMessage()) {
+        if (event.getMessage().isWebhookMessage()) {
             return;
         }
         if (event.getMessage().getContentRaw().startsWith(App.getPREFIX())) {
@@ -180,6 +184,7 @@ public class Listener extends ListenerAdapter {
             manager.handleCommand(event);
         }
     }
+
     private void shutdown(JDA jda, GuildMessageReceivedEvent event) {
         new Thread(() -> {
             event.getChannel().sendMessage("봇이 종료됩니다.").queue();
@@ -191,10 +196,6 @@ public class Listener extends ListenerAdapter {
             jda.shutdown();
             System.exit(0);
         }).start();
-    }
-
-    public static String getID1() {
-        return ID1;
     }
 }
 

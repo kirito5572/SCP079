@@ -47,7 +47,7 @@ public class GetSteamID {
             returns[0] = "";
             flag[0] = false;
         }
-        while(flag[0]) {
+        while (flag[0]) {
             try {
                 Thread.sleep(1);
             } catch (InterruptedException e) {
@@ -58,7 +58,7 @@ public class GetSteamID {
         returns[1] = finalID[0];
         returns[2] = "steam";
 
-        if(returns[0].equals("")) {
+        if (returns[0].equals("")) {
             flag[1] = false;
             WebUtils.ins.scrapeWebPage("https://steamid.io/lookup/" + ID).async((document1 -> {
                 String a11 = document1.getElementsByTag("body").first().toString();
@@ -77,10 +77,10 @@ public class GetSteamID {
                     int c21 = a21.indexOf(" src=");
                     a11 = a11.substring(0, c11 - 7);
                     a21 = a21.substring(0, c21 - 1);
-                    for(; a11.contains(" ");) {
+                    for (; a11.contains(" "); ) {
                         a11 = a11.replaceFirst(" ", "");
                     }
-                    if(a11.equals("")) {
+                    if (a11.equals("")) {
                         steamno[0] = true;
                     }
                     returns[0] = a11;
@@ -97,14 +97,14 @@ public class GetSteamID {
         } else {
             flag[1] = true;
         }
-        while(!flag[1]) {
+        while (!flag[1]) {
             try {
                 Thread.sleep(1);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
-        if(steamno[0]) {
+        if (steamno[0]) {
             returns[0] = "no";
         }
         System.out.println(returns[0]);

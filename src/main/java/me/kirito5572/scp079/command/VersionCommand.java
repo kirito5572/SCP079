@@ -9,6 +9,10 @@ import java.util.List;
 public class VersionCommand implements ICommand {
     private static String version = "빌드 버젼 V 1.2.1";
 
+    public static String getVersion() {
+        return version;
+    }
+
     @Override
     public void handle(List<String> args, GuildMessageReceivedEvent event) {
         event.getChannel().sendMessage(version + " (" + App.getTime() + ")").queue();
@@ -28,9 +32,5 @@ public class VersionCommand implements ICommand {
     @Override
     public String getSmallHelp() {
         return "봇의 빌드 버젼을 알려줍니다";
-    }
-
-    public static String getVersion() {
-        return version;
     }
 }
