@@ -12,7 +12,7 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import javax.annotation.Nonnull;
 import java.util.*;
 
-public class activityChangeListener extends ListenerAdapter {
+public class ActivityChangeListener extends ListenerAdapter {
     private static JDA jda;
     private int i = 0;
     @Override

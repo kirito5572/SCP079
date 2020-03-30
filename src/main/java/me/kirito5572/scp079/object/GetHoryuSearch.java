@@ -14,7 +14,7 @@ import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class getHoryuSearch {
+public class GetHoryuSearch {
     private static String[] get_Infor(String SteamID) {
         String temp = get(SteamID);
         String[] returnData = new String[] {

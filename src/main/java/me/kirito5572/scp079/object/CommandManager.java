@@ -16,14 +16,14 @@ public class CommandManager {
         addCommand(new HelpCommand(this));
         addCommand(new PingCommand());
         addCommand(new VersionCommand());
-        addCommand(new imforCommand());
+        addCommand(new ImforCommand());
         addCommand(new UnbanCommand());
         addCommand(new HackCommand());
         addCommand(new ConnectServerCommand());
         addCommand(new TestCommand());
         addCommand(new DBSearchCommand());
         addCommand(new UserInfoCommand());
-        addCommand(new configCommand());
+        addCommand(new ConfigCommand());
     }
 
     private void addCommand(ICommand command) {

@@ -18,7 +18,7 @@ import java.util.concurrent.TimeUnit;
 
 import static me.kirito5572.scp079.command.HackCommand.test;
 
-public class imforCommand implements ICommand {
+public class ImforCommand implements ICommand {
     @Override
     public void handle(List<String> args, GuildMessageReceivedEvent event) {
         String serverID = event.getGuild().getId();
@@ -227,7 +227,7 @@ public class imforCommand implements ICommand {
         String reasonFinal = String.join(" ", reason.toString());
         String[] returns = new String[0];
         if(isSteam) {
-            returns = getSteamID.SteamID(steamId);
+            returns = GetSteamID.SteamID(steamId);
 
             if (returns[0].equals("error")) {
                 event.getChannel().sendMessage("스팀 ID 수신중 에러가 발생했습니다.").queue();

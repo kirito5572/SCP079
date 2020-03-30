@@ -4,7 +4,7 @@ import me.duncte123.botcommons.messaging.EmbedUtils;
 import me.kirito5572.scp079.App;
 import me.kirito5572.scp079.object.ICommand;
 import me.kirito5572.scp079.object.IsKoreaSCPCoop;
-import me.kirito5572.scp079.object.getHoryuSearch;
+import me.kirito5572.scp079.object.GetHoryuSearch;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
@@ -12,7 +12,7 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import static me.kirito5572.scp079.object.getSteamID.SteamID;
+import static me.kirito5572.scp079.object.GetSteamID.SteamID;
 
 public class DBSearchCommand implements ICommand {
     @Override
@@ -43,12 +43,12 @@ public class DBSearchCommand implements ICommand {
 
                     return;
                 }
-                data = getHoryuSearch.Search(args.get(0), args.get(2));
+                data = GetHoryuSearch.Search(args.get(0), args.get(2));
                 flag = true;
 
             } else {
                 try {
-                    data = getHoryuSearch.Search(args.get(0));
+                    data = GetHoryuSearch.Search(args.get(0));
                 } catch (SQLException | ClassNotFoundException e) {
                     e.printStackTrace();
                     event.getChannel().sendMessage("에러가 발생했습니다.").queue();
@@ -58,7 +58,7 @@ public class DBSearchCommand implements ICommand {
             }
         } else {
             try {
-                data = getHoryuSearch.Search(args.get(0));
+                data = GetHoryuSearch.Search(args.get(0));
                 if (data[0].equals("error")) {
                     event.getChannel().sendMessage("에러가 발생했습니다.").queue();
                     return;

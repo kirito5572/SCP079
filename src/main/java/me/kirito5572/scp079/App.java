@@ -3,8 +3,8 @@ package me.kirito5572.scp079;/*
  */
 
 import me.kirito5572.scp079.listener.Listener;
-import me.kirito5572.scp079.listener.activityChangeListener;
-import me.kirito5572.scp079.listener.getHoryuBanList;
+import me.kirito5572.scp079.listener.ActivityChangeListener;
+import me.kirito5572.scp079.listener.GetHoryuBanList;
 import me.kirito5572.scp079.object.CommandManager;
 import me.kirito5572.scp079.object.SQLDB;
 import me.duncte123.botcommons.messaging.EmbedUtils;
@@ -79,8 +79,8 @@ public class App {
         WebUtils.setUserAgent("Chrome 75.0.3770.100 kirito's discord bot/kirito5572#5572");
 
         Listener listener = new Listener(commandManager);
-        getHoryuBanList getHoryuBanList = new getHoryuBanList();
-        activityChangeListener activityChangeListener = new activityChangeListener();
+        GetHoryuBanList getHoryuBanList = new GetHoryuBanList();
+        ActivityChangeListener activityChangeListener = new ActivityChangeListener();
 
         JDA jda;
 

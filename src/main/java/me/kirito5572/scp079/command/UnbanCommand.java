@@ -3,7 +3,7 @@ package me.kirito5572.scp079.command;
 import me.kirito5572.scp079.App;
 import me.kirito5572.scp079.object.ICommand;
 import me.kirito5572.scp079.object.IsKoreaSCPCoop;
-import me.kirito5572.scp079.object.getSteamID;
+import me.kirito5572.scp079.object.GetSteamID;
 import me.duncte123.botcommons.messaging.EmbedUtils;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
@@ -65,7 +65,7 @@ public class UnbanCommand implements ICommand {
 
         String finalLevel = level;
 
-        String[] returns = getSteamID.SteamID(SteamID);
+        String[] returns = GetSteamID.SteamID(SteamID);
 
         if(returns[0].equals("error")) {
             event.getChannel().sendMessage("스팀 ID가 잘못 입력되었거나, 그런 ID는 존재하지 않습니다.").queue();

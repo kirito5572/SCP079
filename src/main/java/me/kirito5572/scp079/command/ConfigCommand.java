@@ -15,7 +15,7 @@ import java.sql.Statement;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-public class configCommand implements ICommand {
+public class ConfigCommand implements ICommand {
     @Override
     public void handle(List<String> args, GuildMessageReceivedEvent event) {
         if(IsKoreaSCPCoop.verification(event)) {

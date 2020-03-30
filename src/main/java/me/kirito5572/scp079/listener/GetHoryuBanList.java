@@ -22,7 +22,7 @@ import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class getHoryuBanList extends ListenerAdapter {
+public class GetHoryuBanList extends ListenerAdapter {
     private static int caseNum = 285;
     @Override
     public void onReady(@NotNull ReadyEvent event) {

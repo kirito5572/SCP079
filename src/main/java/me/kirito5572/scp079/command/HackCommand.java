@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
-import static me.kirito5572.scp079.command.imforCommand.validIP;
+import static me.kirito5572.scp079.command.ImforCommand.validIP;
 
 public class HackCommand implements ICommand {
     @Override
@@ -88,7 +88,7 @@ public class HackCommand implements ICommand {
         }
 
 
-        String[] returns = getSteamID.SteamID(SteamID);
+        String[] returns = GetSteamID.SteamID(SteamID);
 
         if(returns[0].equals("error")) {
             event.getChannel().sendMessage("스팀 ID 수신중 에러가 발생했습니다.").queue();

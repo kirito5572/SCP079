@@ -2,7 +2,7 @@ package me.kirito5572.scp079.object;
 
 import me.duncte123.botcommons.web.WebUtils;
 
-public class getSteamID {
+public class GetSteamID {
     public static String[] SteamID(String ID) {
         String[] returns = new String[3];
         final boolean[] flag = {true, true};
