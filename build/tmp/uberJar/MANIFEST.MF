@@ -1,4 +1,0 @@
-Manifest-Version: 1.0
-Title: rito-bot-shadowJar
-Main-Class: SCP079/App
-
