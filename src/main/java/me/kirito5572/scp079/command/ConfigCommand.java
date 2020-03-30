@@ -188,100 +188,164 @@ public class ConfigCommand implements ICommand {
                     }
                 case "필터링":
                     if (args.size() > 1) {
-                        if (args.get(1).equals("차단활성화")) {
-                            int enable = 0;
-                            if (args.size() < 3) {
-                                event.getChannel().sendMessage("인수가 부족합니다.").queue();
-                                return;
-                            }
-                            if (args.get(2).equals("활성화")) {
-                                enable = 1;
-                            } else if (args.get(2).equals("비활성화")) {
-                            } else {
-                                event.getChannel().sendMessage("활성화/비활성화 조건이여야 합니다.\n" +
-                                        "입력된 조건:" + args.get(2)).queue();
-                            }
-                            try {
-                                Statement statement = SQLDB.getConnection().createStatement();
-                                statement.executeUpdate("UPDATE `079_config`.filter_enable SET enable=" + enable + " WHERE guildId=" + event.getGuild().getId() + ";");
-                            } catch (Exception e) {
-                                SQLDB.reConnect();
-                                event.getChannel().sendMessage("에러가 발생했습니다.").queue();
-                                e.printStackTrace();
-                                return;
-                            }
-                        } else if (args.get(1).equals("차단채널알림")) {
-                            String executeString;
-                            if (args.size() < 3) {
-                                event.getChannel().sendMessage("인수가 부족합니다.").queue();
-                                return;
-                            }
-                            if (args.get(2).equals("0")) {
-                                executeString = "UPDATE `079_config`.filter_enable SET channelId=" + 0 + " WHERE guildId=" + event.getGuild().getId() + ";";
-                            } else if (args.get(2).equals("현재채널")) {
-                                executeString = "UPDATE `079_config`.filter_enable SET channelId=" + event.getChannel().getId() + " WHERE guildId=" + event.getGuild().getId() + ";";
-                            } else {
-                                List<TextChannel> textChannelList = FinderUtil.findTextChannels(args.get(2), event.getJDA());
-                                if (textChannelList.isEmpty()) {
-                                    event.getChannel().sendMessage("해당 채널을 검색 할 수 없습니다.").queue();
-                                    return;
-                                } else {
-                                    executeString = "UPDATE `079_config`.filter_enable SET channelId=" + textChannelList.get(0).getId() + " WHERE guildId=" + event.getGuild().getId() + ";";
-                                }
-                            }
-                            try {
-                                Statement statement = SQLDB.getConnection().createStatement();
-                                statement.executeUpdate(executeString);
-                                statement.close();
-                            } catch (Exception e) {
-                                SQLDB.reConnect();
-                                event.getChannel().sendMessage("에러가 발생했습니다.").queue();
-                                e.printStackTrace();
-                                return;
-                            }
-                        } else if (args.get(1).equals("뮤트")) {
-                            int count;
-                            if (args.size() < 3) {
-                                event.getChannel().sendMessage("인수가 부족합니다.").queue();
-                                return;
-                            }
-                            try {
-                                count = Integer.parseInt(args.get(2));
-                            } catch (Exception e) {
-                                event.getChannel().sendMessage("횟수에 숫자가 아닌게 입력되었습니다.").queue();
-                                return;
-                            }
-                            String executeString;
-                            if (count == 0) {
-                                executeString = "UPDATE `079_config`.filter_enable SET mute=0, muterole=0 WHERE guildId=" + event.getGuild().getId() + ";";
-                            } else {
-                                if (args.size() < 4) {
+                        switch (args.get(1)) {
+                            case "차단활성화":
+                                int enable = 0;
+                                if (args.size() < 3) {
                                     event.getChannel().sendMessage("인수가 부족합니다.").queue();
                                     return;
                                 }
-                                List<Role> roles = FinderUtil.findRoles(args.get(3), event.getGuild());
-                                if (roles.isEmpty()) {
-                                    event.getChannel().sendMessage("서버에서 역할을 찾을수 없습니다.").queue();
+                                if (args.get(2).equals("활성화")) {
+                                    enable = 1;
+                                } else if (args.get(2).equals("비활성화")) {
+                                } else {
+                                    event.getChannel().sendMessage("활성화/비활성화 조건이여야 합니다.\n" +
+                                            "입력된 조건:" + args.get(2)).queue();
+                                }
+                                try {
+                                    Statement statement = SQLDB.getConnection().createStatement();
+                                    statement.executeUpdate("UPDATE `079_config`.filter_enable SET enable=" + enable + " WHERE guildId=" + event.getGuild().getId() + ";");
+                                } catch (Exception e) {
+                                    SQLDB.reConnect();
+                                    event.getChannel().sendMessage("에러가 발생했습니다.").queue();
+                                    e.printStackTrace();
                                     return;
                                 }
-                                executeString = "UPDATE `079_config`.filter_enable SET mute=" + count + ", muterole= " + roles.get(0).getId() + " WHERE guildId=" + event.getGuild().getId() + ";";
+                                break;
+                            case "차단채널알림": {
+                                String executeString;
+                                if (args.size() < 3) {
+                                    event.getChannel().sendMessage("인수가 부족합니다.").queue();
+                                    return;
+                                }
+                                if (args.get(2).equals("0")) {
+                                    executeString = "UPDATE `079_config`.filter_enable SET channelId=" + 0 + " WHERE guildId=" + event.getGuild().getId() + ";";
+                                } else if (args.get(2).equals("현재채널")) {
+                                    executeString = "UPDATE `079_config`.filter_enable SET channelId=" + event.getChannel().getId() + " WHERE guildId=" + event.getGuild().getId() + ";";
+                                } else {
+                                    List<TextChannel> textChannelList = FinderUtil.findTextChannels(args.get(2), event.getJDA());
+                                    if (textChannelList.isEmpty()) {
+                                        event.getChannel().sendMessage("해당 채널을 검색 할 수 없습니다.").queue();
+                                        return;
+                                    } else {
+                                        executeString = "UPDATE `079_config`.filter_enable SET channelId=" + textChannelList.get(0).getId() + " WHERE guildId=" + event.getGuild().getId() + ";";
+                                    }
+                                }
+                                try {
+                                    Statement statement = SQLDB.getConnection().createStatement();
+                                    statement.executeUpdate(executeString);
+                                    statement.close();
+                                } catch (Exception e) {
+                                    SQLDB.reConnect();
+                                    event.getChannel().sendMessage("에러가 발생했습니다.").queue();
+                                    e.printStackTrace();
+                                    return;
+                                }
+                                break;
                             }
-                            try {
-                                Statement statement = SQLDB.getConnection().createStatement();
-                                statement.executeUpdate(executeString);
-                                statement.close();
-                            } catch (Exception e) {
-                                SQLDB.reConnect();
-                                event.getChannel().sendMessage("에러가 발생했습니다.").queue();
-                                e.printStackTrace();
-                                return;
+                            case "뮤트": {
+                                int count;
+                                if (args.size() < 3) {
+                                    event.getChannel().sendMessage("인수가 부족합니다.").queue();
+                                    return;
+                                }
+                                try {
+                                    count = Integer.parseInt(args.get(2));
+                                } catch (Exception e) {
+                                    event.getChannel().sendMessage("횟수에 숫자가 아닌게 입력되었습니다.").queue();
+                                    return;
+                                }
+                                String executeString;
+                                if (count == 0) {
+                                    executeString = "UPDATE `079_config`.filter_enable SET mute=0, muterole=0 WHERE guildId=" + event.getGuild().getId() + ";";
+                                } else {
+                                    if (args.size() < 4) {
+                                        event.getChannel().sendMessage("인수가 부족합니다.").queue();
+                                        return;
+                                    }
+                                    List<Role> roles = FinderUtil.findRoles(args.get(3), event.getGuild());
+                                    if (roles.isEmpty()) {
+                                        event.getChannel().sendMessage("서버에서 역할을 찾을수 없습니다.").queue();
+                                        return;
+                                    }
+                                    executeString = "UPDATE `079_config`.filter_enable SET mute=" + count + ", muterole= " + roles.get(0).getId() + " WHERE guildId=" + event.getGuild().getId() + ";";
+                                }
+                                try {
+                                    Statement statement = SQLDB.getConnection().createStatement();
+                                    statement.executeUpdate(executeString);
+                                    statement.close();
+                                } catch (Exception e) {
+                                    SQLDB.reConnect();
+                                    event.getChannel().sendMessage("에러가 발생했습니다.").queue();
+                                    e.printStackTrace();
+                                    return;
+                                }
+                                break;
                             }
-                        } else if (args.get(1).equals("킥")) {
-
-                        } else if (args.get(1).equals("밴")) {
-
-                        } else {
-
+                            case "킥": {
+                                int count;
+                                if (args.size() < 3) {
+                                    event.getChannel().sendMessage("인수가 부족합니다.").queue();
+                                    return;
+                                }
+                                try {
+                                    count = Integer.parseInt(args.get(2));
+                                } catch (Exception e) {
+                                    event.getChannel().sendMessage("횟수에 숫자가 아닌게 입력되었습니다.").queue();
+                                    return;
+                                }
+                                String executeString;
+                                if (count == 0) {
+                                    executeString = "UPDATE `079_config`.filter_enable SET kick=0 WHERE guildId=" + event.getGuild().getId() + ";";
+                                } else {
+                                    executeString = "UPDATE `079_config`.filter_enable SET kick=" + count + " WHERE guildId=" + event.getGuild().getId() + ";";
+                                }
+                                try {
+                                    Statement statement = SQLDB.getConnection().createStatement();
+                                    statement.executeUpdate(executeString);
+                                    statement.close();
+                                } catch (Exception e) {
+                                    SQLDB.reConnect();
+                                    event.getChannel().sendMessage("에러가 발생했습니다.").queue();
+                                    e.printStackTrace();
+                                    return;
+                                }
+                                break;
+                            }
+                            case "밴": {
+                                int count;
+                                if (args.size() < 3) {
+                                    event.getChannel().sendMessage("인수가 부족합니다.").queue();
+                                    return;
+                                }
+                                try {
+                                    count = Integer.parseInt(args.get(2));
+                                } catch (Exception e) {
+                                    event.getChannel().sendMessage("횟수에 숫자가 아닌게 입력되었습니다.").queue();
+                                    return;
+                                }
+                                String executeString;
+                                if (count == 0) {
+                                    executeString = "UPDATE `079_config`.filter_enable SET ban=0 WHERE guildId=" + event.getGuild().getId() + ";";
+                                } else {
+                                    executeString = "UPDATE `079_config`.filter_enable SET ban=" + count + " WHERE guildId=" + event.getGuild().getId() + ";";
+                                }
+                                try {
+                                    Statement statement = SQLDB.getConnection().createStatement();
+                                    statement.executeUpdate(executeString);
+                                    statement.close();
+                                } catch (Exception e) {
+                                    SQLDB.reConnect();
+                                    event.getChannel().sendMessage("에러가 발생했습니다.").queue();
+                                    e.printStackTrace();
+                                    return;
+                                }
+                                break;
+                            }
+                            default:
+                                event.getChannel().sendMessage("그런 설정 항목은 존재 하지 않습니다.\n" +
+                                        "`$$설정 필터링` 을 참고해주세요").queue();
+                                break;
                         }
                         return;
                     } else {
