@@ -1,8 +1,8 @@
-package SCP079.Listener;
+package me.kirito5572.scp079.listener;
 
-import SCP079.App;
-import SCP079.Objects.CommandManager;
-import SCP079.Objects.SQLDB;
+import me.kirito5572.scp079.App;
+import me.kirito5572.scp079.object.CommandManager;
+import me.kirito5572.scp079.object.SQLDB;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.*;

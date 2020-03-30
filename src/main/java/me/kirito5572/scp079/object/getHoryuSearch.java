@@ -1,4 +1,4 @@
-package SCP079.Objects;
+package me.kirito5572.scp079.object;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;

@@ -4,7 +4,7 @@ plugins {
     id'com.github.johnrengelman.shadow' version '4.0.2'
 }
 
-mainClassName = 'SCP079/App'
+mainClassName = 'me.kirito5572.scp079.App'
 group 'SCP-079'
 version '1.0'
 

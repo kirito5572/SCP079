@@ -1,9 +1,9 @@
-package SCP079.Commands;
+package me.kirito5572.scp079.command;
 
-import SCP079.App;
-import SCP079.Objects.ICommand;
-import SCP079.Objects.IsKoreaSCPCoop;
-import SCP079.Objects.getSteamID;
+import me.kirito5572.scp079.App;
+import me.kirito5572.scp079.object.ICommand;
+import me.kirito5572.scp079.object.IsKoreaSCPCoop;
+import me.kirito5572.scp079.object.getSteamID;
 import me.duncte123.botcommons.messaging.EmbedUtils;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;

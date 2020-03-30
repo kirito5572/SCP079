@@ -1,4 +1,4 @@
-package SCP079.Objects;
+package me.kirito5572.scp079.object;
 
 import java.io.File;
 import java.io.FileReader;

@@ -1,8 +1,8 @@
-package SCP079.Commands;
+package me.kirito5572.scp079.command;
 
-import SCP079.App;
-import SCP079.Objects.*;
+import me.kirito5572.scp079.App;
 import me.duncte123.botcommons.messaging.EmbedUtils;
+import me.kirito5572.scp079.object.*;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Guild;
@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
-import static SCP079.Commands.imforCommand.validIP;
+import static me.kirito5572.scp079.command.imforCommand.validIP;
 
 public class HackCommand implements ICommand {
     @Override

@@ -1,10 +1,10 @@
-package SCP079.Commands;
+package me.kirito5572.scp079.command;
 
-import SCP079.App;
-import SCP079.Objects.ICommand;
-import SCP079.Objects.IsKoreaSCPCoop;
-import SCP079.Objects.getHoryuSearch;
 import me.duncte123.botcommons.messaging.EmbedUtils;
+import me.kirito5572.scp079.App;
+import me.kirito5572.scp079.object.ICommand;
+import me.kirito5572.scp079.object.IsKoreaSCPCoop;
+import me.kirito5572.scp079.object.getHoryuSearch;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
@@ -12,7 +12,7 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import static SCP079.Objects.getSteamID.SteamID;
+import static me.kirito5572.scp079.object.getSteamID.SteamID;
 
 public class DBSearchCommand implements ICommand {
     @Override

@@ -1,4 +1,4 @@
-package SCP079;
+package me.kirito5572.scp079;
 
 public class Constants {
 

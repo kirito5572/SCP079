@@ -1,7 +1,7 @@
-package SCP079.Listener;
+package me.kirito5572.scp079.listener;
 
-import SCP079.App;
-import SCP079.Commands.HackCommand;
+import me.kirito5572.scp079.App;
+import me.kirito5572.scp079.command.HackCommand;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import me.duncte123.botcommons.messaging.EmbedUtils;

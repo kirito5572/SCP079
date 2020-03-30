@@ -1,4 +1,4 @@
-package SCP079.Objects;
+package me.kirito5572.scp079.object;
 
 public class UnixToTime {
     public static String UnixToTimeChange(Long time1, Long time2) {

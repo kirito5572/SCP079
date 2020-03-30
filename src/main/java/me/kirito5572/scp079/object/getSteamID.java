@@ -1,4 +1,4 @@
-package SCP079.Objects;
+package me.kirito5572.scp079.object;
 
 import me.duncte123.botcommons.web.WebUtils;
 

@@ -1,7 +1,7 @@
-package SCP079.Commands;
+package me.kirito5572.scp079.command;
 
-import SCP079.App;
-import SCP079.Objects.ICommand;
+import me.kirito5572.scp079.App;
+import me.kirito5572.scp079.object.ICommand;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
 import java.util.List;

@@ -1,7 +1,7 @@
-package SCP079.Listener;
+package me.kirito5572.scp079.listener;
 
-import SCP079.App;
-import SCP079.Commands.VersionCommand;
+import me.kirito5572.scp079.App;
+import me.kirito5572.scp079.command.VersionCommand;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.entities.Guild;

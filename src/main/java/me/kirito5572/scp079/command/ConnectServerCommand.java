@@ -1,7 +1,7 @@
-package SCP079.Commands;
+package me.kirito5572.scp079.command;
 
-import SCP079.Objects.ICommand;
-import SCP079.Objects.SQLDB;
+import me.kirito5572.scp079.object.ICommand;
+import me.kirito5572.scp079.object.SQLDB;
 import me.duncte123.botcommons.messaging.EmbedUtils;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Guild;

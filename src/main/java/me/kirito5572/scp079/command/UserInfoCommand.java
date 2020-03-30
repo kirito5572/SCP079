@@ -1,8 +1,8 @@
-package SCP079.Commands;
+package me.kirito5572.scp079.command;
 
-import SCP079.App;
-import SCP079.Objects.ICommand;
-import SCP079.Objects.IsKoreaSCPCoop;
+import me.kirito5572.scp079.App;
+import me.kirito5572.scp079.object.ICommand;
+import me.kirito5572.scp079.object.IsKoreaSCPCoop;
 import com.jagrosh.jdautilities.commons.utils.FinderUtil;
 import me.duncte123.botcommons.messaging.EmbedUtils;
 import net.dv8tion.jda.api.entities.*;
