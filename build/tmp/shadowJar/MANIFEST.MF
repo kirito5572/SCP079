@@ -1,4 +1,4 @@
 Manifest-Version: 1.0
-Title: rito-bot-shadowJar
+Title: scp-079
 Main-Class: SCP079/App
 

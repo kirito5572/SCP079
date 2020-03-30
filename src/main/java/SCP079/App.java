@@ -87,8 +87,7 @@ public class App {
         if(TESTMODE) {
             try {
                 logger.info("테스트 부팅");
-                jda = new JDABuilder(AccountType.BOT)
-                        .setToken(TOKEN)
+                jda = JDABuilder.createDefault(TOKEN)
                         .setAutoReconnect(true)
                         .addEventListeners(listener)
                         .build().awaitReady();
