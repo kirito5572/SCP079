@@ -1,4 +1,4 @@
 Manifest-Version: 1.0
 Title: scp-079
-Main-Class: SCP079/App
+Main-Class: me.kirito5572.scp079.App
 
