@@ -20,18 +20,6 @@ public class SQLDB {
 
     public SQLDB() {
         //init
-        StringBuilder caseIDBuilder = new StringBuilder();
-        try {
-            File file = new File("C:\\DiscordServerBotSecrets\\SCP-079\\caseID.txt");
-            FileReader fileReader = new FileReader(file);
-            int singalCh;
-            while ((singalCh = fileReader.read()) != -1) {
-                caseIDBuilder.append((char) singalCh);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        caseID = Integer.parseInt(caseIDBuilder.toString());
         StringBuilder SQLPassword = new StringBuilder();
         try {
             File file = new File("C:\\DiscordServerBotSecrets\\SCP-079\\SQLPassword.txt");
@@ -63,6 +51,11 @@ public class SQLDB {
             Class.forName(driverName);
 
             connection = DriverManager.getConnection(url, user, password);
+            statement = connection.createStatement();
+            resultSet = statement.executeQuery("SELECT * FROM `079_config`.last_caseID");
+            if(resultSet.next()) {
+                caseID = resultSet.getInt("caseID");
+            }
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
         }
@@ -114,18 +107,10 @@ public class SQLDB {
     private static void caseIDup() {
         caseID++;
         try {
-            String message = String.valueOf(caseID);
-
-            File file = new File("C:\\DiscordServerBotSecrets\\SCP-079\\caseID.txt");
-            FileWriter writer;
-
-
-            writer = new FileWriter(file, false);
-            writer.write(message);
-            writer.flush();
-
-            writer.close();
-        } catch (IOException e) {
+            statement = connection.createStatement();
+            statement.executeUpdate("UPDATE `079_config`.last_caseID SET caseID=" + caseID);
+            statement.close();
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }

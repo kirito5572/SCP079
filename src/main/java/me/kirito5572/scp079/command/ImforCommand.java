@@ -14,6 +14,7 @@ import net.dv8tion.jda.api.exceptions.ErrorResponseException;
 
 import java.awt.*;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 import static me.kirito5572.scp079.command.HackCommand.test;
@@ -300,7 +301,7 @@ public class ImforCommand implements ICommand {
         builder.addField("제재 사유", reasonFinal, false)
                 .addField("제재 기간", rawtime + "(" + time + "분)", false)
                 .addField("제재 담당 서버", event.getGuild().getName(), false)
-                .addField("공유자", event.getMember().getAsMention(), false);
+                .addField("공유자", Objects.requireNonNull(event.getMember()).getAsMention(), false);
         if (isSteam) {
             if (returns[2].equals("nosteam")) {
                 builder.addField("중요", "이 유저는 스팀 프로필을 등록한 적 없는 유저입니다.", false);

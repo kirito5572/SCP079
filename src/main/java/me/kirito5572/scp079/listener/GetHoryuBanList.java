@@ -5,6 +5,7 @@ import com.google.gson.JsonParser;
 import me.duncte123.botcommons.messaging.EmbedUtils;
 import me.kirito5572.scp079.App;
 import me.kirito5572.scp079.command.HackCommand;
+import me.kirito5572.scp079.object.SQLDB;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.ReadyEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -18,6 +19,8 @@ import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 import java.io.*;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -39,26 +42,18 @@ public class GetHoryuBanList extends ListenerAdapter {
                 }
                 String[] data = temp.split("},");
                 String lastmessage;
-                try {
-                    lastmessage = filereader();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    return;
-                }
+                lastmessage = filereader();
                 String message = data[data.length - 1];
                 if (lastmessage.equals(message)) {
-
                     return;
                 } else {
-                    try {
-                        filesave(message);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                        return;
-                    }
+                    filesave(message);
                 }
                 String[] mainData = splitString(message);
                 if (mainData[0].equals("error")) {
+                    return;
+                }
+                if (mainData[0].equals("no result return")) {
                     return;
                 }
                 if (caseNum < Integer.parseInt(mainData[6])) {
@@ -178,31 +173,27 @@ public class GetHoryuBanList extends ListenerAdapter {
         }
     }
 
-    private void filesave(String message) throws IOException {
-
-        File file = new File("C:\\디스코드봇 파일들\\SCP079\\마지막제재.txt");
-        FileWriter writer;
-
-
-        writer = new FileWriter(file, false);
-        writer.write(message);
-        writer.flush();
-
-        writer.close();
+    private void filesave(String message) {
+        try {
+            SQLDB.getConnection().createStatement().executeUpdate("UPDATE `079_config`.last_caseID SET horyu_last_temp=" + message + ";");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
     }
 
-    private String filereader() throws IOException {
-        File file = new File("C:\\디스코드봇 파일들\\SCP079\\마지막제재.txt");
-        FileReader reader;
-
-        reader = new FileReader(file);
-        StringBuilder message = new StringBuilder();
-        int chars;
-        while ((chars = reader.read()) != -1) {
-            message.append((char) chars);
+    private String filereader() {
+        try {
+            ResultSet resultSet = SQLDB.getConnection().createStatement().executeQuery("SELECT * FROM `079_config`.last_caseID;");
+            if(resultSet.next()) {
+                return resultSet.getString("horyu_last_temp");
+            } else {
+                return "no result return";
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return "error";
         }
-        return message.toString();
     }
 
     private String[] splitString(String message) {
