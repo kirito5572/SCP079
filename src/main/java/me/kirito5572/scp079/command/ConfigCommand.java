@@ -371,6 +371,15 @@ public class ConfigCommand implements ICommand {
         event.getChannel().sendMessage(builder.build()).queue();
     }
 
+    public void config_Reload() {
+        try {
+            Statement statement = SQLDB.getConnection().createStatement();
+        } catch (Exception e) {
+            SQLDB.reConnect();
+            config_Reload();
+        }
+    }
+
     @Override
     public String getHelp() {
         return "설정을 합니다.";
