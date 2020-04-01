@@ -2,20 +2,65 @@ package me.kirito5572.scp079.command;
 
 import com.jagrosh.jdautilities.commons.utils.FinderUtil;
 import me.duncte123.botcommons.messaging.EmbedUtils;
+import me.kirito5572.scp079.listener.Reloadable;
 import me.kirito5572.scp079.object.ICommand;
 import me.kirito5572.scp079.object.IsKoreaSCPCoop;
+import me.kirito5572.scp079.object.ResultSetComparator;
 import me.kirito5572.scp079.object.SQLDB;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import org.intellij.lang.annotations.Language;
 
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
-public class ConfigCommand implements ICommand {
+public class ConfigCommand implements ICommand, Reloadable {
+    private static String[] filter_enable;
+    private static String[] filter_mute;
+    private static String[] filter_kick;
+    private static String[] filter_ban;
+    private static String[] filter_muterole;
+    private static String[] filter_channelId;
+    private static String[] filter_warn_enable;
+    private static String[] filter_warn_channelId;
+
+    public static String[] getFilter_enable() {
+        return filter_enable;
+    }
+
+    public static String[] getFilter_mute() {
+        return filter_mute;
+    }
+
+    public static String[] getFilter_kick() {
+        return filter_kick;
+    }
+
+    public static String[]  getFilter_ban() {
+        return filter_ban;
+    }
+
+    public static String[] getFilter_muterole() {
+        return filter_muterole;
+    }
+
+    public static String[] getFilter_channelId() {
+        return filter_channelId;
+    }
+
+    public static String[] getFilter_warn_enable() {
+        return filter_warn_enable;
+    }
+
+    public static String[] getFilter_warn_channelId() {
+        return filter_warn_channelId;
+    }
+
     @Override
     public void handle(List<String> args, GuildMessageReceivedEvent event) {
         if (IsKoreaSCPCoop.verification(event)) {
@@ -107,7 +152,7 @@ public class ConfigCommand implements ICommand {
                         statement.executeUpdate("INSERT INTO `079_config`.recieve_channel VALUES (" + event.getGuild().getId() + ", " + event.getChannel().getId() + ");");
                         statement.executeUpdate("INSERT INTO `079_config`.receive_time VALUES (" + event.getGuild().getId() + ", 0);");
                         statement.executeUpdate("INSERT INTO `079_config`.bot_channel VALUES (" + event.getGuild().getId() + ", 0);");
-                        statement.executeUpdate("INSERT INTO `079_config`.filter_enable VALUES (" + event.getGuild().getId() + ", 0, 0, 0, 0);");
+                        statement.executeUpdate("INSERT INTO `079_config`.filter_enable VALUES (" + event.getGuild().getId() + ", 0, 0, 0, 0, 0, 0);");
                         statement.executeUpdate("INSERT INTO `079_config`.filter_warning VALUES (" + event.getGuild().getId() + ", 0, 0);");
                         statement.close();
                         event.getChannel().sendMessage("기본 등록이 완료되었습니다.").queue();
@@ -159,6 +204,7 @@ public class ConfigCommand implements ICommand {
                         statement.executeUpdate("DELETE FROM `079_config`.receive_time WHERE guildId=" + event.getGuild().getId() + ";");
                         statement.executeUpdate("DELETE FROM `079_config`.bot_channel WHERE guildId=" + event.getGuild().getId() + ";");
                         statement.executeUpdate("DELETE FROM `079_config`.filter_enable WHERE guildId=" + event.getGuild().getId() + ";");
+                        statement.executeUpdate("DELETE FROM `079_config`.filter_warning WHERE guildId=" + event.getGuild().getId() + ";");
                         statement.close();
                         event.getChannel().sendMessage("사용 해제 작업 완료되었습니다.").queue();
                     } catch (Exception e) {
@@ -257,7 +303,7 @@ public class ConfigCommand implements ICommand {
                                 }
                                 String executeString;
                                 if (count == 0) {
-                                    executeString = "UPDATE `079_config`.filter_enable SET mute=0, muterole=0 WHERE guildId=" + event.getGuild().getId() + ";";
+                                    executeString = "UPDATE `079_config`.filter_enable SET mute=0, muteRole=0 WHERE guildId=" + event.getGuild().getId() + ";";
                                 } else {
                                     if (args.size() < 4) {
                                         event.getChannel().sendMessage("인수가 부족합니다.").queue();
@@ -268,7 +314,7 @@ public class ConfigCommand implements ICommand {
                                         event.getChannel().sendMessage("서버에서 역할을 찾을수 없습니다.").queue();
                                         return;
                                     }
-                                    executeString = "UPDATE `079_config`.filter_enable SET mute=" + count + ", muterole= " + roles.get(0).getId() + " WHERE guildId=" + event.getGuild().getId() + ";";
+                                    executeString = "UPDATE `079_config`.filter_enable SET mute=" + count + ", muteRole= " + roles.get(0).getId() + " WHERE guildId=" + event.getGuild().getId() + ";";
                                 }
                                 try {
                                     Statement statement = SQLDB.getConnection().createStatement();
@@ -342,6 +388,60 @@ public class ConfigCommand implements ICommand {
                                 }
                                 break;
                             }
+                            case "경고활성화":
+                                enable = 0;
+                                if (args.size() < 3) {
+                                    event.getChannel().sendMessage("인수가 부족합니다.").queue();
+                                    return;
+                                }
+                                if (args.get(2).equals("활성화")) {
+                                    enable = 1;
+                                } else if (args.get(2).equals("비활성화")) {
+                                } else {
+                                    event.getChannel().sendMessage("활성화/비활성화 조건이여야 합니다.\n" +
+                                            "입력된 조건:" + args.get(2)).queue();
+                                }
+                                try {
+                                    Statement statement = SQLDB.getConnection().createStatement();
+                                    statement.executeUpdate("UPDATE `079_config`.filter_warning SET enable=" + enable + " WHERE guildId=" + event.getGuild().getId() + ";");
+                                } catch (Exception e) {
+                                    SQLDB.reConnect();
+                                    event.getChannel().sendMessage("에러가 발생했습니다.").queue();
+                                    e.printStackTrace();
+                                    return;
+                                }
+                                break;
+                            case "경고채널알림": {
+                                String executeString;
+                                if (args.size() < 3) {
+                                    event.getChannel().sendMessage("인수가 부족합니다.").queue();
+                                    return;
+                                }
+                                if (args.get(2).equals("0")) {
+                                    executeString = "UPDATE `079_config`.filter_warning SET channelId=" + 0 + " WHERE guildId=" + event.getGuild().getId() + ";";
+                                } else if (args.get(2).equals("현재채널")) {
+                                    executeString = "UPDATE `079_config`.filter_warning SET channelId=" + event.getChannel().getId() + " WHERE guildId=" + event.getGuild().getId() + ";";
+                                } else {
+                                    List<TextChannel> textChannelList = FinderUtil.findTextChannels(args.get(2), event.getJDA());
+                                    if (textChannelList.isEmpty()) {
+                                        event.getChannel().sendMessage("해당 채널을 검색 할 수 없습니다.").queue();
+                                        return;
+                                    } else {
+                                        executeString = "UPDATE `079_config`.filter_warning SET channelId=" + textChannelList.get(0).getId() + " WHERE guildId=" + event.getGuild().getId() + ";";
+                                    }
+                                }
+                                try {
+                                    Statement statement = SQLDB.getConnection().createStatement();
+                                    statement.executeUpdate(executeString);
+                                    statement.close();
+                                } catch (Exception e) {
+                                    SQLDB.reConnect();
+                                    event.getChannel().sendMessage("에러가 발생했습니다.").queue();
+                                    e.printStackTrace();
+                                    return;
+                                }
+                                break;
+                            }
                             default:
                                 event.getChannel().sendMessage("그런 설정 항목은 존재 하지 않습니다.\n" +
                                         "`$$설정 필터링` 을 참고해주세요").queue();
@@ -361,7 +461,11 @@ public class ConfigCommand implements ICommand {
                                 .addField("킥", "한 문장에 지정된 횟수 이상의 욕설이 감지된 경우 자동으로 서버에서 킥합니다.\n" +
                                         "$$설정 필터링 오토킥 <횟수>", false)
                                 .addField("밴", "한 문장에 지정된 횟수 이상의 욕설이 감지된 경우 자동으로 서버에서 밴합니다.\n" +
-                                        "$$설정 필터링 오토밴 <횟수>", false);
+                                        "$$설정 필터링 오토밴 <횟수>", false)
+                                .addField("경고활성화", "필터링 경고를 활성화/비활성화 할지 결정합니다 \n" +
+                                        "$$설정 필터링 경고활성화 <활성화/비활성화>", false)
+                                .addField("경고채널알림", "필터링 경고 발생시 채팅으로 알려줍니다. \n" +
+                                        "$$설정 필터링 경고채널알림 <0/채널ID/#멘션/채널명/현재채널>", false);
                     }
                     break;
                 default:
@@ -371,13 +475,41 @@ public class ConfigCommand implements ICommand {
         event.getChannel().sendMessage(builder.build()).queue();
     }
 
-    public void config_Reload() {
+    public void reload() {
         try {
-            Statement statement = SQLDB.getConnection().createStatement();
+            filter_enable = execute_Query("SELECT * FROM `079_config`.filter_enable",
+                    r -> r.getString("enable").equals("1"), "guildId");
+            filter_channelId = execute_Query("SELECT * FROM `079_config`.filter_enable",
+                    r -> r.getString("enable").equals("1"), "channelId");
+            filter_mute = execute_Query("SELECT * FROM `079_config`.filter_enable",
+                    r -> r.getString("enable").equals("1"), "mute");
+            filter_kick = execute_Query("SELECT * FROM `079_config`.filter_enable",
+                    r -> r.getString("enable").equals("1"), "kick");
+            filter_ban = execute_Query("SELECT * FROM `079_config`.filter_enable",
+                    r -> r.getString("enable").equals("1"), "ban");
+            filter_muterole = execute_Query("SELECT * FROM `079_config`.filter_enable",
+                    r -> r.getString("enable").equals("1"), "muteRole");
+            filter_warn_enable = execute_Query("SELECT * FROM `079_config`.filter_warning",
+                    r -> r.getString("enable").equals("1"), "guildId");
+            filter_warn_channelId = execute_Query("SELECT * FROM `079_config`.filter_warning",
+                    r -> r.getString("enable").equals("1"), "channelId");
+
         } catch (Exception e) {
             SQLDB.reConnect();
-            config_Reload();
+            reload();
         }
+    }
+
+    private String[] execute_Query(@Language("SQL") String sql, ResultSetComparator comparator, String column_Name2) throws SQLException {
+        List<String> list = new ArrayList<>();
+        Statement statement = SQLDB.getConnection().createStatement();
+        ResultSet resultSet = statement.executeQuery(sql);
+        while(resultSet.next()) {
+            if (comparator.compare(resultSet)) {
+                list.add(resultSet.getString(column_Name2));
+            }
+        }
+        return list.toArray(new String[0]);
     }
 
     @Override

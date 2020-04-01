@@ -105,8 +105,7 @@ public class App {
         } else {
             try {
                 logger.info("부팅");
-                jda = new JDABuilder(AccountType.BOT)
-                        .setToken(TOKEN)
+                jda = JDABuilder.createDefault(TOKEN)
                         .setAutoReconnect(true)
                         .addEventListeners(listener, getHoryuBanList, activityChangeListener)
                         .build().awaitReady();
