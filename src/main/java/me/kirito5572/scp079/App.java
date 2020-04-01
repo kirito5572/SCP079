@@ -36,7 +36,7 @@ public class App {
     private final Random random = new Random();
     private String TOKEN;
 
-    private App() {
+    public App() {
         date = new Date();
         SimpleDateFormat format1 = new SimpleDateFormat("yyyy/MM/dd aa hh:mm:ss z");
         Time = format1.format(date);
