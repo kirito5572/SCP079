@@ -76,8 +76,7 @@ public class GetHoryuBanList extends ListenerAdapter {
                         if (timeTemp < 10) {
                             mainData[5] = "영구";
                             time[0] = "99999999";
-                        }
-                        if (timeTemp < 60) {
+                        } else if (timeTemp < 60) {
                             mainData[5] = timeTemp + "초";
                             time[0] = "0";
                         }
