@@ -118,7 +118,7 @@ public class App {
             EmbedUtils.setEmbedBuilder(
                     () -> new EmbedBuilder()
                             .setColor(getRandomColor())
-                            .setFooter("Made By kirito5572#5572", Objects.requireNonNull(jda.getUserById("284508374924787713")).getAvatarUrl())
+                            .setFooter("Made By kirito5572#5572")//, Objects.requireNonNull(jda.getUserById("284508374924787713")).getAvatarUrl())
             );
         }
 
