@@ -5,6 +5,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import me.kirito5572.scp079.command.ConfigCommand;
+import me.kirito5572.scp079.filter.WordFilter;
 import net.dv8tion.jda.api.events.ReadyEvent;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -17,6 +18,10 @@ import java.util.List;
 
 public class FilterListener extends ListenerAdapter implements Reloadable {
     private List<String> list = new ArrayList<>();
+
+    public List<String> getList() {
+        return list;
+    }
 
     @Override
     public void onReady(@Nonnull ReadyEvent event) {
@@ -49,18 +54,25 @@ public class FilterListener extends ListenerAdapter implements Reloadable {
     @Override
     public void onGuildMessageReceived(@Nonnull GuildMessageReceivedEvent event) {
         String[] enable = ConfigCommand.getFilter_enable();
-        int count = 0;
+
+        int count;
+
         boolean filter_start = false;
-        for(;count < enable.length; count++) {
-            if(enable[count].equals(event.getGuild().getId())) {
+        for (count = 0; count < enable.length; count++) {
+            if (enable[count].equals(event.getGuild().getId())) {
                 filter_start = true;
-               break;
+                break;
             }
         }
-        if(!filter_start) {
+        if (!filter_start) {
             return;
         }
 
+        String message = event.getMessage().getContentRaw();
+        if(WordFilter.valid(message)) {
 
+        } else {
+
+        }
     }
 }
