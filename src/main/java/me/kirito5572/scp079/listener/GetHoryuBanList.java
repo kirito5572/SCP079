@@ -175,7 +175,7 @@ public class GetHoryuBanList extends ListenerAdapter {
 
     private void filesave(String message) {
         try {
-            SQLDB.getConnection().createStatement().executeUpdate("UPDATE `079_config`.last_caseID SET horyu_last_temp=" + message + ";");
+            SQLDB.getConnection().createStatement().executeUpdate("UPDATE `079_config`.last_caseID SET horyu_last_temp='" + message + "';");
         } catch (SQLException e) {
             e.printStackTrace();
         }
