@@ -1,7 +1,9 @@
 package me.kirito5572.scp079.listener;
 
 import me.kirito5572.scp079.App;
+import me.kirito5572.scp079.ObjectPool;
 import me.kirito5572.scp079.command.VersionCommand;
+import me.kirito5572.scp079.filter.WordFilter;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.entities.Guild;
@@ -13,7 +15,7 @@ import javax.annotation.Nonnull;
 import java.util.*;
 
 public class ActivityChangeListener extends ListenerAdapter {
-    private static JDA jda;
+    private JDA jda;
     private int i = 0;
 
     @Override
@@ -33,13 +35,13 @@ public class ActivityChangeListener extends ListenerAdapter {
                 }
                 switch (i) {
                     case 0:
-                        Objects.requireNonNull(jda.getPresence()).setActivity(Activity.playing("도움말:" + App.getPREFIX() + "명령어"));
+                        Objects.requireNonNull(jda.getPresence()).setActivity(Activity.playing("도움말:" + App.getInstance().getPREFIX() + "명령어"));
                         break;
                     case 1:
                         Objects.requireNonNull(jda.getPresence()).setActivity(Activity.playing(guilds.size() + "개의 서버, " + memberSize + " 명의 유저(중복 제외:" + memberIds.size() + " 명"));
                         break;
                     case 2:
-                        Objects.requireNonNull(jda.getPresence()).setActivity(Activity.playing(VersionCommand.getVersion()));
+                        Objects.requireNonNull(jda.getPresence()).setActivity(Activity.playing(ObjectPool.get(VersionCommand.class).getVersion()));
                         break;
                     case 3:
                         Objects.requireNonNull(jda.getPresence()).setActivity(Activity.playing("버그/개선 사항은 제작자 DM으로"));

@@ -2,6 +2,7 @@ package me.kirito5572.scp079.command;
 
 import com.jagrosh.jdautilities.commons.utils.FinderUtil;
 import me.duncte123.botcommons.messaging.EmbedUtils;
+import me.kirito5572.scp079.ObjectPool;
 import me.kirito5572.scp079.listener.Reloadable;
 import me.kirito5572.scp079.object.ICommand;
 import me.kirito5572.scp079.object.IsKoreaSCPCoop;
@@ -20,50 +21,50 @@ import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 public class ConfigCommand implements ICommand, Reloadable {
-    private static String[] filter_enable;
-    private static String[] filter_mute;
-    private static String[] filter_kick;
-    private static String[] filter_ban;
-    private static String[] filter_muterole;
-    private static String[] filter_channelId;
-    private static String[] filter_warn_enable;
-    private static String[] filter_warn_channelId;
+    private String[] filter_enable;
+    private String[] filter_mute;
+    private String[] filter_kick;
+    private String[] filter_ban;
+    private String[] filter_muterole;
+    private String[] filter_channelId;
+    private String[] filter_warn_enable;
+    private String[] filter_warn_channelId;
 
-    public static String[] getFilter_enable() {
+    public String[] getFilter_enable() {
         return filter_enable;
     }
 
-    public static String[] getFilter_mute() {
+    public String[] getFilter_mute() {
         return filter_mute;
     }
 
-    public static String[] getFilter_kick() {
+    public String[] getFilter_kick() {
         return filter_kick;
     }
 
-    public static String[]  getFilter_ban() {
+    public String[]  getFilter_ban() {
         return filter_ban;
     }
 
-    public static String[] getFilter_muterole() {
+    public String[] getFilter_muterole() {
         return filter_muterole;
     }
 
-    public static String[] getFilter_channelId() {
+    public String[] getFilter_channelId() {
         return filter_channelId;
     }
 
-    public static String[] getFilter_warn_enable() {
+    public String[] getFilter_warn_enable() {
         return filter_warn_enable;
     }
 
-    public static String[] getFilter_warn_channelId() {
+    public String[] getFilter_warn_channelId() {
         return filter_warn_channelId;
     }
 
     @Override
     public void handle(List<String> args, GuildMessageReceivedEvent event) {
-        if (IsKoreaSCPCoop.verification(event)) {
+        if (ObjectPool.get(IsKoreaSCPCoop.class).verification(event)) {
             event.getChannel().sendMessage("당신은 이 명령어를 쓸 권한이 없습니다.\n" +
                     " 이 명령어를 사용하기 위해서는 한코옵서버에서 서버장 또는 관리자 역할을 받아야 합니다.\n" +
                     " 한코옵 링크: discord.gg/6JxCx72").complete().delete().queueAfter(7, TimeUnit.SECONDS);
@@ -85,13 +86,13 @@ public class ConfigCommand implements ICommand, Reloadable {
                 case "채널":
                     if (args.size() > 1) {
                         try {
-                            Statement statement = SQLDB.getConnection().createStatement();
+                            Statement statement = ObjectPool.get(SQLDB.class).getConnection().createStatement();
                             statement.executeUpdate("UPDATE `079_config`.recieve_channel SET channelId =" + args.get(1) + " WHERE guildId=" + event.getGuild().getId());
                             statement.close();
                             event.getChannel().sendMessage("채널 ID 변경이 완료되었습니다.").queue();
                             return;
                         } catch (Exception e) {
-                            SQLDB.reConnect();
+                            ObjectPool.get(SQLDB.class).reConnect();
                             event.getChannel().sendMessage("에러가 발생했습니다.").queue();
                             e.printStackTrace();
                             return;
@@ -103,13 +104,13 @@ public class ConfigCommand implements ICommand, Reloadable {
                 case "시간":
                     if (args.size() > 1) {
                         try {
-                            Statement statement = SQLDB.getConnection().createStatement();
+                            Statement statement = ObjectPool.get(SQLDB.class).getConnection().createStatement();
                             statement.executeUpdate("UPDATE `079_config`.receive_time SET time =" + args.get(1) + " WHERE guildId=" + event.getGuild().getId());
                             statement.close();
                             event.getChannel().sendMessage("제재 수신 최소 시간값 변경 완료되었습니다.").queue();
                             return;
                         } catch (Exception e) {
-                            SQLDB.reConnect();
+                            ObjectPool.get(SQLDB.class).reConnect();
                             event.getChannel().sendMessage("에러가 발생했습니다.").queue();
                             e.printStackTrace();
                             return;
@@ -120,7 +121,7 @@ public class ConfigCommand implements ICommand, Reloadable {
                     }
                 case "등록":
                     try {
-                        Statement statement = SQLDB.getConnection().createStatement();
+                        Statement statement = ObjectPool.get(SQLDB.class).getConnection().createStatement();
                         ResultSet resultSet = statement.executeQuery("SELECT * FROM `079_config`.recieve_channel WHERE guildId=" + event.getGuild().getId());
                         if (resultSet.next()) {
                             event.getChannel().sendMessage("이미 등록되었습니다.").queue();
@@ -148,7 +149,7 @@ public class ConfigCommand implements ICommand, Reloadable {
                             .addField("등록된 정보의 조회/파기",
                                     "등록된 정보의 조회/파기에 관련된 문의는 봇의 DM을 통하여 문의주시기 바랍니다.", false);
                     try {
-                        Statement statement = SQLDB.getConnection().createStatement();
+                        Statement statement = ObjectPool.get(SQLDB.class).getConnection().createStatement();
                         statement.executeUpdate("INSERT INTO `079_config`.recieve_channel VALUES (" + event.getGuild().getId() + ", " + event.getChannel().getId() + ");");
                         statement.executeUpdate("INSERT INTO `079_config`.receive_time VALUES (" + event.getGuild().getId() + ", 0);");
                         statement.executeUpdate("INSERT INTO `079_config`.bot_channel VALUES (" + event.getGuild().getId() + ", 0);");
@@ -157,7 +158,7 @@ public class ConfigCommand implements ICommand, Reloadable {
                         statement.close();
                         event.getChannel().sendMessage("기본 등록이 완료되었습니다.").queue();
                     } catch (Exception e) {
-                        SQLDB.reConnect();
+                        ObjectPool.get(SQLDB.class).reConnect();
                         event.getChannel().sendMessage("에러가 발생했습니다.").queue();
                         e.printStackTrace();
                         return;
@@ -167,7 +168,7 @@ public class ConfigCommand implements ICommand, Reloadable {
                     String channelId = "에러 발생";
                     String time = "기본값(0분 이상)";
                     try {
-                        Statement statement = SQLDB.getConnection().createStatement();
+                        Statement statement = ObjectPool.get(SQLDB.class).getConnection().createStatement();
                         ResultSet resultSet = statement.executeQuery("SELECT * FROM `079_config`.recieve_channel WHERE guildId=" + event.getGuild().getId() + ";");
                         if (resultSet.next()) {
                             channelId = resultSet.getString("channelId");
@@ -182,7 +183,7 @@ public class ConfigCommand implements ICommand, Reloadable {
                         }
                         statement.close();
                     } catch (Exception e) {
-                        SQLDB.reConnect();
+                        ObjectPool.get(SQLDB.class).reConnect();
                         event.getChannel().sendMessage("에러가 발생했습니다.").queue();
                         e.printStackTrace();
                         return;
@@ -199,7 +200,7 @@ public class ConfigCommand implements ICommand, Reloadable {
                             .setDescription("기존의 등록된 제재 정보는 파기 되지 않습니다.\n" +
                                     "기존에 등록되었던 제재 정보의 파기를 원하실 경우, DM으로 파기 요청 부탁드립니다.");
                     try {
-                        Statement statement = SQLDB.getConnection().createStatement();
+                        Statement statement = ObjectPool.get(SQLDB.class).getConnection().createStatement();
                         statement.executeUpdate("DELETE FROM `079_config`.recieve_channel WHERE guildId=" + event.getGuild().getId() + ";");
                         statement.executeUpdate("DELETE FROM `079_config`.receive_time WHERE guildId=" + event.getGuild().getId() + ";");
                         statement.executeUpdate("DELETE FROM `079_config`.bot_channel WHERE guildId=" + event.getGuild().getId() + ";");
@@ -208,7 +209,7 @@ public class ConfigCommand implements ICommand, Reloadable {
                         statement.close();
                         event.getChannel().sendMessage("사용 해제 작업 완료되었습니다.").queue();
                     } catch (Exception e) {
-                        SQLDB.reConnect();
+                        ObjectPool.get(SQLDB.class).reConnect();
                         event.getChannel().sendMessage("에러가 발생했습니다.").queue();
                         e.printStackTrace();
                         return;
@@ -217,13 +218,13 @@ public class ConfigCommand implements ICommand, Reloadable {
                 case "봇채팅":
                     if (args.size() > 1) {
                         try {
-                            Statement statement = SQLDB.getConnection().createStatement();
+                            Statement statement = ObjectPool.get(SQLDB.class).getConnection().createStatement();
                             statement.executeUpdate("UPDATE `079_config`.bot_channel SET channelId =" + args.get(1) + " WHERE guildId=" + event.getGuild().getId());
                             statement.close();
                             event.getChannel().sendMessage("봇 채팅방 업데이트가 완료되었습니다..").queue();
                             return;
                         } catch (Exception e) {
-                            SQLDB.reConnect();
+                            ObjectPool.get(SQLDB.class).reConnect();
                             event.getChannel().sendMessage("에러가 발생했습니다.").queue();
                             e.printStackTrace();
                             return;
@@ -249,10 +250,10 @@ public class ConfigCommand implements ICommand, Reloadable {
                                             "입력된 조건:" + args.get(2)).queue();
                                 }
                                 try {
-                                    Statement statement = SQLDB.getConnection().createStatement();
+                                    Statement statement = ObjectPool.get(SQLDB.class).getConnection().createStatement();
                                     statement.executeUpdate("UPDATE `079_config`.filter_enable SET enable=" + enable + " WHERE guildId=" + event.getGuild().getId() + ";");
                                 } catch (Exception e) {
-                                    SQLDB.reConnect();
+                                    ObjectPool.get(SQLDB.class).reConnect();
                                     event.getChannel().sendMessage("에러가 발생했습니다.").queue();
                                     e.printStackTrace();
                                     return;
@@ -278,11 +279,11 @@ public class ConfigCommand implements ICommand, Reloadable {
                                     }
                                 }
                                 try {
-                                    Statement statement = SQLDB.getConnection().createStatement();
+                                    Statement statement = ObjectPool.get(SQLDB.class).getConnection().createStatement();
                                     statement.executeUpdate(executeString);
                                     statement.close();
                                 } catch (Exception e) {
-                                    SQLDB.reConnect();
+                                    ObjectPool.get(SQLDB.class).reConnect();
                                     event.getChannel().sendMessage("에러가 발생했습니다.").queue();
                                     e.printStackTrace();
                                     return;
@@ -317,11 +318,11 @@ public class ConfigCommand implements ICommand, Reloadable {
                                     executeString = "UPDATE `079_config`.filter_enable SET mute=" + count + ", muteRole= " + roles.get(0).getId() + " WHERE guildId=" + event.getGuild().getId() + ";";
                                 }
                                 try {
-                                    Statement statement = SQLDB.getConnection().createStatement();
+                                    Statement statement = ObjectPool.get(SQLDB.class).getConnection().createStatement();
                                     statement.executeUpdate(executeString);
                                     statement.close();
                                 } catch (Exception e) {
-                                    SQLDB.reConnect();
+                                    ObjectPool.get(SQLDB.class).reConnect();
                                     event.getChannel().sendMessage("에러가 발생했습니다.").queue();
                                     e.printStackTrace();
                                     return;
@@ -347,11 +348,11 @@ public class ConfigCommand implements ICommand, Reloadable {
                                     executeString = "UPDATE `079_config`.filter_enable SET kick=" + count + " WHERE guildId=" + event.getGuild().getId() + ";";
                                 }
                                 try {
-                                    Statement statement = SQLDB.getConnection().createStatement();
+                                    Statement statement = ObjectPool.get(SQLDB.class).getConnection().createStatement();
                                     statement.executeUpdate(executeString);
                                     statement.close();
                                 } catch (Exception e) {
-                                    SQLDB.reConnect();
+                                    ObjectPool.get(SQLDB.class).reConnect();
                                     event.getChannel().sendMessage("에러가 발생했습니다.").queue();
                                     e.printStackTrace();
                                     return;
@@ -377,11 +378,11 @@ public class ConfigCommand implements ICommand, Reloadable {
                                     executeString = "UPDATE `079_config`.filter_enable SET ban=" + count + " WHERE guildId=" + event.getGuild().getId() + ";";
                                 }
                                 try {
-                                    Statement statement = SQLDB.getConnection().createStatement();
+                                    Statement statement = ObjectPool.get(SQLDB.class).getConnection().createStatement();
                                     statement.executeUpdate(executeString);
                                     statement.close();
                                 } catch (Exception e) {
-                                    SQLDB.reConnect();
+                                    ObjectPool.get(SQLDB.class).reConnect();
                                     event.getChannel().sendMessage("에러가 발생했습니다.").queue();
                                     e.printStackTrace();
                                     return;
@@ -402,10 +403,10 @@ public class ConfigCommand implements ICommand, Reloadable {
                                             "입력된 조건:" + args.get(2)).queue();
                                 }
                                 try {
-                                    Statement statement = SQLDB.getConnection().createStatement();
+                                    Statement statement = ObjectPool.get(SQLDB.class).getConnection().createStatement();
                                     statement.executeUpdate("UPDATE `079_config`.filter_warning SET enable=" + enable + " WHERE guildId=" + event.getGuild().getId() + ";");
                                 } catch (Exception e) {
-                                    SQLDB.reConnect();
+                                    ObjectPool.get(SQLDB.class).reConnect();
                                     event.getChannel().sendMessage("에러가 발생했습니다.").queue();
                                     e.printStackTrace();
                                     return;
@@ -431,11 +432,11 @@ public class ConfigCommand implements ICommand, Reloadable {
                                     }
                                 }
                                 try {
-                                    Statement statement = SQLDB.getConnection().createStatement();
+                                    Statement statement = ObjectPool.get(SQLDB.class).getConnection().createStatement();
                                     statement.executeUpdate(executeString);
                                     statement.close();
                                 } catch (Exception e) {
-                                    SQLDB.reConnect();
+                                    ObjectPool.get(SQLDB.class).reConnect();
                                     event.getChannel().sendMessage("에러가 발생했습니다.").queue();
                                     e.printStackTrace();
                                     return;
@@ -495,14 +496,14 @@ public class ConfigCommand implements ICommand, Reloadable {
                     r -> r.getString("enable").equals("1"), "channelId");
 
         } catch (Exception e) {
-            SQLDB.reConnect();
+            ObjectPool.get(SQLDB.class).reConnect();
             reload();
         }
     }
 
     private String[] execute_Query(@Language("SQL") String sql, ResultSetComparator comparator, String column_Name2) throws SQLException {
         List<String> list = new ArrayList<>();
-        Statement statement = SQLDB.getConnection().createStatement();
+        Statement statement = ObjectPool.get(SQLDB.class).getConnection().createStatement();
         ResultSet resultSet = statement.executeQuery(sql);
         while(resultSet.next()) {
             if (comparator.compare(resultSet)) {

@@ -1,6 +1,7 @@
 package me.kirito5572.scp079.listener;
 
 import me.kirito5572.scp079.App;
+import me.kirito5572.scp079.ObjectPool;
 import me.kirito5572.scp079.object.CommandManager;
 import me.kirito5572.scp079.object.SQLDB;
 import net.dv8tion.jda.api.JDA;
@@ -23,7 +24,7 @@ import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 public class Listener extends ListenerAdapter {
-    private static String ID1;
+    private String ID1;
     private final CommandManager manager;
     private final Logger logger = LoggerFactory.getLogger(Listener.class);
 
@@ -31,7 +32,7 @@ public class Listener extends ListenerAdapter {
         this.manager = manager;
     }
 
-    public static String getID1() {
+    public String getID1() {
         return ID1;
     }
 
@@ -116,7 +117,7 @@ public class Listener extends ListenerAdapter {
         }
         ID1 = IDreader.toString();
         String ID2 = IDreader1.toString();
-        if (event.getMessage().getContentRaw().equalsIgnoreCase(App.getPREFIX() + "종료") &&
+        if (event.getMessage().getContentRaw().equalsIgnoreCase(App.getInstance().getPREFIX() + "종료") &&
                 (
                         (event.getAuthor().getIdLong() == Long.decode(ID1)) ||
                                 (event.getAuthor().getIdLong() == Long.decode(ID2))
@@ -148,7 +149,7 @@ public class Listener extends ListenerAdapter {
         try {
             String queryString = "SELECT * FROM `079_config`.bot_channel";
 
-            Statement statement = SQLDB.getConnection().createStatement();
+            Statement statement = ObjectPool.get(SQLDB.class).getConnection().createStatement();
             ResultSet resultSet = statement.executeQuery(queryString);
             while (resultSet.next()) {
                 guildId[i] = resultSet.getString("guildId");
@@ -157,12 +158,13 @@ public class Listener extends ListenerAdapter {
             }
             statement.close();
         } catch (Exception e) {
+            ObjectPool.get(SQLDB.class).reConnect();
             e.printStackTrace();
         }
         if (event.getMessage().isWebhookMessage()) {
             return;
         }
-        if (event.getMessage().getContentRaw().startsWith(App.getPREFIX())) {
+        if (event.getMessage().getContentRaw().startsWith(App.getInstance().getPREFIX())) {
             for (i = 0; i < guildId.length; i++) {
                 if (guildId[i] == null) {
                     continue;

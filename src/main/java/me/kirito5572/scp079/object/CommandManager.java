@@ -1,6 +1,7 @@
 package me.kirito5572.scp079.object;
 
 import me.kirito5572.scp079.App;
+import me.kirito5572.scp079.ObjectPool;
 import me.kirito5572.scp079.command.*;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
@@ -13,17 +14,18 @@ public class CommandManager {
     private final Map<String, ICommand> commands = new HashMap<>();
 
     public CommandManager() {
+
         addCommand(new HelpCommand(this));
-        addCommand(new PingCommand());
-        addCommand(new VersionCommand());
-        addCommand(new ImforCommand());
-        addCommand(new UnbanCommand());
-        addCommand(new HackCommand());
-        addCommand(new ConnectServerCommand());
-        addCommand(new TestCommand());
-        addCommand(new DBSearchCommand());
-        addCommand(new UserInfoCommand());
-        addCommand(new ConfigCommand());
+        addCommand(ObjectPool.get(PingCommand.class));
+        addCommand(ObjectPool.get(VersionCommand.class));
+        addCommand(ObjectPool.get(ImforCommand.class));
+        addCommand(ObjectPool.get(UnbanCommand.class));
+        addCommand(ObjectPool.get(HackCommand.class));
+        addCommand(ObjectPool.get(ConnectServerCommand.class));
+        addCommand(ObjectPool.get(TestCommand.class));
+        addCommand(ObjectPool.get(DBSearchCommand.class));
+        addCommand(ObjectPool.get(UserInfoCommand.class));
+        addCommand(ObjectPool.get(ConfigCommand.class));
     }
 
     private void addCommand(ICommand command) {
@@ -52,7 +54,7 @@ public class CommandManager {
     public void handleCommand(GuildMessageReceivedEvent event) {
         final TextChannel channel = event.getChannel();
         final String[] split = event.getMessage().getContentRaw().replaceFirst(
-                "(?i)" + Pattern.quote(App.getPREFIX()), "").split("\\s+");
+                "(?i)" + Pattern.quote(App.getInstance().getPREFIX()), "").split("\\s+");
         final String invoke = split[0].toLowerCase();
 
         if (commands.containsKey(invoke)) {

@@ -2,7 +2,9 @@ package me.kirito5572.scp079.command;
 
 import me.duncte123.botcommons.messaging.EmbedUtils;
 import me.kirito5572.scp079.App;
+import me.kirito5572.scp079.ObjectPool;
 import me.kirito5572.scp079.object.GetHoryuSearch;
+import me.kirito5572.scp079.object.GetSteamID;
 import me.kirito5572.scp079.object.ICommand;
 import me.kirito5572.scp079.object.IsKoreaSCPCoop;
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -12,12 +14,10 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import static me.kirito5572.scp079.object.GetSteamID.SteamID;
-
 public class DBSearchCommand implements ICommand {
     @Override
     public void handle(List<String> args, GuildMessageReceivedEvent event) {
-        if (IsKoreaSCPCoop.verification(event)) {
+        if (ObjectPool.get(IsKoreaSCPCoop.class).verification(event)) {
             event.getChannel().sendMessage("당신은 이 명령어를 쓸 권한이 없습니다.\n" +
                     " 이 명령어를 사용하기 위해서는 한코옵서버에서 서버장 또는 관리자 역할을 받아야 합니다.\n" +
                     " 한코옵 링크: discord.gg/6JxCx72").complete().delete().queueAfter(7, TimeUnit.SECONDS);
@@ -29,7 +29,7 @@ public class DBSearchCommand implements ICommand {
             event.getChannel().sendMessage("SteamID를 입력해주세요.").queue();
             return;
         }
-        String[] SteamData = SteamID(args.get(0));
+        String[] SteamData = ObjectPool.get(GetSteamID.class).SteamID(args.get(0));
 
         if (SteamData[0].equals("no")) {
             event.getChannel().sendMessage("스팀 ID가 올바르지 않습니다.").queue();
@@ -43,12 +43,12 @@ public class DBSearchCommand implements ICommand {
 
                     return;
                 }
-                data = GetHoryuSearch.Search(args.get(0), args.get(2));
+                data = ObjectPool.get(GetHoryuSearch.class).Search(args.get(0), args.get(2));
                 flag = true;
 
             } else {
                 try {
-                    data = GetHoryuSearch.Search(args.get(0));
+                    data = ObjectPool.get(GetHoryuSearch.class).Search(args.get(0));
                 } catch (SQLException | ClassNotFoundException e) {
                     e.printStackTrace();
                     event.getChannel().sendMessage("에러가 발생했습니다.").queue();
@@ -58,7 +58,7 @@ public class DBSearchCommand implements ICommand {
             }
         } else {
             try {
-                data = GetHoryuSearch.Search(args.get(0));
+                data = ObjectPool.get(GetHoryuSearch.class).Search(args.get(0));
                 if (data[0].equals("error")) {
                     event.getChannel().sendMessage("에러가 발생했습니다.").queue();
                     return;
@@ -106,7 +106,7 @@ public class DBSearchCommand implements ICommand {
     @Override
     public String getHelp() {
         return "DB에서 제재 정보를 검색합니다. \n" +
-                "사용법: " + App.getPREFIX() + getInvoke() + " <SteamID> ";
+                "사용법: " + App.getInstance().getPREFIX() + getInvoke() + " <SteamID> ";
     }
 
     @Override

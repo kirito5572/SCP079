@@ -9,14 +9,14 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class SQLDB {
-    private static Connection connection;
-    private static Statement statement;
-    private static ResultSet resultSet;
-    private static int caseID;
-    private static String driverName;
-    private static String url;
-    private static String user;
-    private static String password;
+    private Connection connection;
+    private Statement statement;
+    private ResultSet resultSet;
+    private int caseID;
+    private String driverName;
+    private String url;
+    private String user;
+    private String password;
 
     public SQLDB() {
         //init
@@ -61,7 +61,7 @@ public class SQLDB {
         }
     }
 
-    public static void SQLupload(String SteamID, String time, String reason, String server, String serverID) {
+    public void SQLupload(String SteamID, String time, String reason, String server, String serverID) {
         if (serverID.equals("600010501266866186")) {
             return;
         }
@@ -84,7 +84,7 @@ public class SQLDB {
         }
     }
 
-    public static String[] SQLdownload(String SteamID) throws SQLException, ClassNotFoundException {
+    public String[] SQLdownload(String SteamID) throws SQLException, ClassNotFoundException {
         String[] data = new String[]{
                 null, null, null, null, null,
                 null, null, null, null, null
@@ -104,7 +104,7 @@ public class SQLDB {
         return data;
     }
 
-    private static void caseIDup() {
+    private void caseIDup() {
         caseID++;
         try {
             statement = connection.createStatement();
@@ -115,7 +115,7 @@ public class SQLDB {
         }
     }
 
-    public static String[] SQLdownload(int caseID) throws SQLException, ClassNotFoundException {
+    public String[] SQLdownload(int caseID) throws SQLException, ClassNotFoundException {
         String[] data = new String[7];
 
         String queryString = "SELECT * FROM mainDB.Sanction_Information WHERE caseID =" + caseID;
@@ -136,7 +136,7 @@ public class SQLDB {
         return data;
     }
 
-    public static String[] GreenDBDownload(String steamID) throws ClassNotFoundException, SQLException {
+    public String[] GreenDBDownload(String steamID) throws ClassNotFoundException, SQLException {
         String[] data = new String[]{
                 null, null, null, null, null,
                 null, null, null, null, null
@@ -156,7 +156,7 @@ public class SQLDB {
         return data;
     }
 
-    public static String[] GreenDBDownload(int caseID, String steamID) throws ClassNotFoundException, SQLException {
+    public String[] GreenDBDownload(int caseID, String steamID) throws ClassNotFoundException, SQLException {
         String[] data = new String[]{
                 null, null, null, null, null,
                 null, null, null, null, null
@@ -183,15 +183,15 @@ public class SQLDB {
         return data;
     }
 
-    public static Connection getConnection() {
+    public Connection getConnection() {
         return connection;
     }
 
-    public static void setConnection(Connection connection) {
-        SQLDB.connection = connection;
+    public void setConnection(Connection connection) {
+        this.connection = connection;
     }
 
-    public static void reConnect() {
+    public void reConnect() {
         try {
             Class.forName(driverName);
 

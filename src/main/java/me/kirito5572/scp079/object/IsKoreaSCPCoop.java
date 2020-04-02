@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Objects;
 
 public class IsKoreaSCPCoop {
-    public static boolean verification(GuildMessageReceivedEvent event) {
+    public boolean verification(GuildMessageReceivedEvent event) {
         boolean isExist = false;
         Guild hanCoOp = Objects.requireNonNull(event.getJDA().getGuildById("607303213602963643"));
         List<Member> memberList = hanCoOp.getMembers();

@@ -2,7 +2,7 @@ package me.kirito5572.scp079.command;
 
 import com.jagrosh.jdautilities.commons.utils.FinderUtil;
 import me.duncte123.botcommons.messaging.EmbedUtils;
-import me.kirito5572.scp079.App;
+import me.kirito5572.scp079.*;
 import me.kirito5572.scp079.object.*;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Guild;
@@ -17,10 +17,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
-import static me.kirito5572.scp079.command.HackCommand.test;
-
 public class ImforCommand implements ICommand {
-    static boolean validIP(String ip) {
+    boolean validIP(String ip) {
         try {
             if (ip == null || ip.isEmpty()) {
                 return false;
@@ -47,7 +45,7 @@ public class ImforCommand implements ICommand {
     public void handle(List<String> args, GuildMessageReceivedEvent event) {
         String serverID = event.getGuild().getId();
 
-        if (IsKoreaSCPCoop.verification(event)) {
+        if (ObjectPool.get(IsKoreaSCPCoop.class).verification(event)) {
             event.getChannel().sendMessage("당신은 이 명령어를 쓸 권한이 없습니다.\n" +
                     " 이 명령어를 사용하기 위해서는 한코옵서버에서 서버장 또는 관리자 역할을 받아야 합니다.\n" +
                     " 한코옵 링크: discord.gg/6JxCx72").complete().delete().queueAfter(7, TimeUnit.SECONDS);
@@ -56,7 +54,7 @@ public class ImforCommand implements ICommand {
         TextChannel channel = event.getChannel();
 
         if (args.isEmpty()) {
-            event.getChannel().sendMessage("인수 부족 " + App.getPREFIX() + "명령어`" +
+            event.getChannel().sendMessage("인수 부족 " + App.getInstance().getPREFIX() + "명령어`" +
                     getInvoke() + "`").queue();
             return;
         }
@@ -198,7 +196,7 @@ public class ImforCommand implements ICommand {
             time = "26297460";
         } else {
             channel.sendMessage("시간 단위가 틀렸거나, 스팀 닉네임의 띄워쓰기를 삭제하여 주세요.\n" +
-                    "사용법: `" + App.getPREFIX() + "명령어/도움말/help" + getInvoke() + "`").queue();
+                    "사용법: `" + App.getInstance().getPREFIX() + "명령어/도움말/help" + getInvoke() + "`").queue();
 
             return;
         }
@@ -251,7 +249,7 @@ public class ImforCommand implements ICommand {
         String reasonFinal = String.join(" ", reason.toString());
         String[] returns = new String[0];
         if (isSteam) {
-            returns = GetSteamID.SteamID(steamId);
+            returns = ObjectPool.get(GetSteamID.class).SteamID(steamId);
 
             if (returns[0].equals("error")) {
                 event.getChannel().sendMessage("스팀 ID 수신중 에러가 발생했습니다.").queue();
@@ -271,7 +269,7 @@ public class ImforCommand implements ICommand {
             }
         }
         if (link != null) {
-            if (!linkConfirm.isLink(link)) {
+            if (!ObjectPool.get(linkConfirm.class).isLink(link)) {
                 event.getChannel().sendMessage("해당 링크는 없는 링크인것 같습니다. 접속할 수 없습니다.").queue();
 
                 return;
@@ -287,7 +285,7 @@ public class ImforCommand implements ICommand {
         NickName = NickName.replace(" ", "");
         NickName = NickName.replaceAll("\\p{Z}", "");
 
-        SQLDB.SQLupload(ID, rawtime + "(" + time + "분)", reasonFinal, event.getGuild().getName(), serverID);
+        ObjectPool.get(SQLDB.class).SQLupload(ID, rawtime + "(" + time + "분)", reasonFinal, event.getGuild().getName(), serverID);
 
         EmbedBuilder builder = EmbedUtils.defaultEmbed()
                 .setTitle("공유된 제재 정보")
@@ -340,11 +338,11 @@ public class ImforCommand implements ICommand {
                 return;
             }
         }
-        if (App.isTESTMODE()) {
-            test(builder, event);
+        if (App.getInstance().isTESTMODE()) {
+            ObjectPool.get(HackCommand.class).test(builder, event);
         } else {
 
-            HackCommand.server_Send(serverID, builder, event.getJDA(), event.getChannel(), Integer.parseInt(time));
+            ObjectPool.get(HackCommand.class).server_Send(serverID, builder, event.getJDA(), event.getChannel(), Integer.parseInt(time));
         }
 
     }
@@ -352,7 +350,7 @@ public class ImforCommand implements ICommand {
     @Override
     public String getHelp() {
         return "SCP 한국 서버들간 제재 정보 공유를 위한 커맨드입니다. \n" +
-                "사용법: `" + App.getPREFIX() + getInvoke() + " <Steam ID> <제재 기간> <사유> `\n" +
+                "사용법: `" + App.getInstance().getPREFIX() + getInvoke() + " <Steam ID> <제재 기간> <사유> `\n" +
                 "제재기한 : m(min)/h(hour)/d(day)/M(month)/y(year)/영구(50y)\n" +
                 "<추가 옵션>\n" +
                 "-ip <ip>\n" +

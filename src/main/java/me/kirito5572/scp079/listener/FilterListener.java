@@ -1,9 +1,9 @@
 package me.kirito5572.scp079.listener;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import com.google.gson.*;
+import com.google.gson.reflect.TypeToken;
+import com.google.gson.stream.JsonReader;
+import me.kirito5572.scp079.ObjectPool;
 import me.kirito5572.scp079.command.ConfigCommand;
 import me.kirito5572.scp079.filter.WordFilter;
 import net.dv8tion.jda.api.events.ReadyEvent;
@@ -13,11 +13,14 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import javax.annotation.Nonnull;
 import java.io.File;
 import java.io.FileReader;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
 public class FilterListener extends ListenerAdapter implements Reloadable {
     private List<String> list = new ArrayList<>();
+
+    private final Type typeToken = new TypeToken<ArrayList<String>>(){}.getType();
 
     public List<String> getList() {
         return list;
@@ -29,22 +32,10 @@ public class FilterListener extends ListenerAdapter implements Reloadable {
     }
 
     public void reload() {
-        StringBuilder TOKENreader = new StringBuilder();
         try {
-            File file = new File("C:\\DiscordServerBotSecrets\\SCP-079\\filter_list.txt");
+            File file = new File("C:\\DiscordServerBotSecrets\\SCP-079\\filter_list.json");
             FileReader fileReader = new FileReader(file);
-            int singalCh;
-            while ((singalCh = fileReader.read()) != -1) {
-                TOKENreader.append((char) singalCh);
-            }
-
-            JsonParser parser = new JsonParser();
-            JsonArray element = parser.parse(TOKENreader.toString()).getAsJsonArray();
-
-            for (JsonElement jsonObject : element) {
-                list.add(jsonObject.getAsString());
-            }
-
+            list = new Gson().fromJson(new JsonReader(fileReader), typeToken);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -53,7 +44,7 @@ public class FilterListener extends ListenerAdapter implements Reloadable {
 
     @Override
     public void onGuildMessageReceived(@Nonnull GuildMessageReceivedEvent event) {
-        String[] enable = ConfigCommand.getFilter_enable();
+        String[] enable = ObjectPool.get(ConfigCommand.class).getFilter_enable();
 
         int count;
 
@@ -69,10 +60,12 @@ public class FilterListener extends ListenerAdapter implements Reloadable {
         }
 
         String message = event.getMessage().getContentRaw();
-        if(WordFilter.valid(message)) {
+        if(ObjectPool.get(WordFilter.class).valid(message).isMatch) {
 
         } else {
 
         }
+
+        throw new UnsupportedOperationException("Not Implemented");
     }
 }

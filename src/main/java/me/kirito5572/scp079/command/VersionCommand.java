@@ -7,21 +7,21 @@ import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import java.util.List;
 
 public class VersionCommand implements ICommand {
-    private static String version = "빌드 버젼 V 1.2.1";
+    private String version = "빌드 버젼 V 1.2.1";
 
-    public static String getVersion() {
+    public String getVersion() {
         return version;
     }
 
     @Override
     public void handle(List<String> args, GuildMessageReceivedEvent event) {
-        event.getChannel().sendMessage(version + " (" + App.getTime() + ")").queue();
+        event.getChannel().sendMessage(version + " (" + App.getInstance().getTime() + ")").queue();
     }
 
     @Override
     public String getHelp() {
         return "빌드 버젼을 알려줍니다. \n" +
-                "사용법: `" + App.getPREFIX() + getInvoke() + "`";
+                "사용법: `" + App.getInstance().getPREFIX() + getInvoke() + "`";
     }
 
     @Override

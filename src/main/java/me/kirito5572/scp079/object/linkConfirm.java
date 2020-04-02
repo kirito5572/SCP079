@@ -4,9 +4,9 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class linkConfirm {
-    private static String link;
+    private String link;
 
-    public static boolean isLink(String rawMessage) {
+    public boolean isLink(String rawMessage) {
         if (rawMessage.startsWith("http://")) {
             rawMessage = rawMessage.replaceFirst("http://", "");
         }
@@ -25,7 +25,7 @@ public class linkConfirm {
         }
     }
 
-    public static String getLink() {
+    public String getLink() {
         return link;
     }
 }

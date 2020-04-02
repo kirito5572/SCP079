@@ -3,6 +3,7 @@ package me.kirito5572.scp079.command;
 import com.jagrosh.jdautilities.commons.utils.FinderUtil;
 import me.duncte123.botcommons.messaging.EmbedUtils;
 import me.kirito5572.scp079.App;
+import me.kirito5572.scp079.ObjectPool;
 import me.kirito5572.scp079.object.ICommand;
 import me.kirito5572.scp079.object.IsKoreaSCPCoop;
 import net.dv8tion.jda.api.entities.*;
@@ -16,7 +17,7 @@ import java.util.concurrent.TimeUnit;
 public class UserInfoCommand implements ICommand {
     @Override
     public void handle(List<String> args, GuildMessageReceivedEvent event) {
-        if (IsKoreaSCPCoop.verification(event)) {
+        if (ObjectPool.get(IsKoreaSCPCoop.class).verification(event)) {
             event.getChannel().sendMessage("당신은 이 명령어를 쓸 권한이 없습니다.\n" +
                     " 이 명령어를 사용하기 위해서는 한코옵서버에서 서버장 또는 관리자 역할을 받아야 합니다.\n" +
                     " 한코옵 링크: discord.gg/6JxCx72").complete().delete().queueAfter(7, TimeUnit.SECONDS);
@@ -89,7 +90,7 @@ public class UserInfoCommand implements ICommand {
     @Override
     public String getHelp() {
         return "유저정보 알기! \n" +
-                "사용법: `" + App.getPREFIX() + getInvoke() + " [유저 이름/@유저/유저 id] `";
+                "사용법: `" + App.getInstance().getPREFIX() + getInvoke() + " [유저 이름/@유저/유저 id] `";
     }
 
     @Override

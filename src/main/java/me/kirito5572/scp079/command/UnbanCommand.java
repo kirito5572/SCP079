@@ -2,6 +2,7 @@ package me.kirito5572.scp079.command;
 
 import me.duncte123.botcommons.messaging.EmbedUtils;
 import me.kirito5572.scp079.App;
+import me.kirito5572.scp079.ObjectPool;
 import me.kirito5572.scp079.object.GetSteamID;
 import me.kirito5572.scp079.object.ICommand;
 import me.kirito5572.scp079.object.IsKoreaSCPCoop;
@@ -16,7 +17,7 @@ public class UnbanCommand implements ICommand {
     @Override
     public void handle(List<String> args, GuildMessageReceivedEvent event) {
         String serverID;
-        if (IsKoreaSCPCoop.verification(event)) {
+        if (ObjectPool.get(IsKoreaSCPCoop.class).verification(event)) {
             event.getChannel().sendMessage("당신은 이 명령어를 쓸 권한이 없습니다.\n" +
                     " 이 명령어를 사용하기 위해서는 한코옵서버에서 서버장 또는 관리자 역할을 받아야 합니다.\n" +
                     " 한코옵 링크: discord.gg/6JxCx72").complete().delete().queueAfter(7, TimeUnit.SECONDS);
@@ -26,7 +27,7 @@ public class UnbanCommand implements ICommand {
         serverID = event.getGuild().getId();
 
         if (args.isEmpty()) {
-            event.getChannel().sendMessage("인수 부족 '" + App.getPREFIX() + "명령어" +
+            event.getChannel().sendMessage("인수 부족 '" + App.getInstance().getPREFIX() + "명령어" +
                     getInvoke() + "'").queue();
             return;
         }
@@ -65,7 +66,7 @@ public class UnbanCommand implements ICommand {
 
         String finalLevel = level;
 
-        String[] returns = GetSteamID.SteamID(SteamID);
+        String[] returns = ObjectPool.get(GetSteamID.class).SteamID(SteamID);
 
         if (returns[0].equals("error")) {
             event.getChannel().sendMessage("스팀 ID가 잘못 입력되었거나, 그런 ID는 존재하지 않습니다.").queue();
@@ -89,13 +90,13 @@ public class UnbanCommand implements ICommand {
                 .addField("제재 담당 서버", event.getGuild().getName(), false)
                 .addField("공유자", event.getMember().getAsMention(), false);
 
-        HackCommand.server_Send(serverID, builder, event.getJDA(), event.getChannel(), 99999999);
+        ObjectPool.get(HackCommand.class).server_Send(serverID, builder, event.getJDA(), event.getChannel(), 99999999);
     }
 
     @Override
     public String getHelp() {
         return "SCP 한국 서버들간 제재 해제 정보 공유를 위한 커맨드입니다. \n" +
-                "사용법: `" + App.getPREFIX() + getInvoke() + " <Steam ID> <ip주소> <제재 감소 기간>`";
+                "사용법: `" + App.getInstance().getPREFIX() + getInvoke() + " <Steam ID> <ip주소> <제재 감소 기간>`";
     }
 
     @Override

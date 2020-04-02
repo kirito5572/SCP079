@@ -18,7 +18,7 @@ public class PingCommand implements ICommand {
     @Override
     public String getHelp() {
         return "핑!\n" +
-                "명령어: `" + App.getPREFIX() + getInvoke() + "`";
+                "명령어: `" + App.getInstance().getPREFIX() + getInvoke() + "`";
     }
 
     @Override

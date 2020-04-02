@@ -1,6 +1,7 @@
 package me.kirito5572.scp079.command;
 
 import me.duncte123.botcommons.messaging.EmbedUtils;
+import me.kirito5572.scp079.ObjectPool;
 import me.kirito5572.scp079.object.ICommand;
 import me.kirito5572.scp079.object.SQLDB;
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -22,14 +23,14 @@ public class ConnectServerCommand implements ICommand {
         for (Guild guild : server) {
             boolean config_complete = false;
             try {
-                Statement statement = SQLDB.getConnection().createStatement();
+                Statement statement = ObjectPool.get(SQLDB.class).getConnection().createStatement();
                 ResultSet resultSet = statement.executeQuery("SELECT * FROM `079_config`.recieve_channel WHERE guildId=" + guild.getId());
                 if (resultSet.next()) {
                     config_complete = true;
                 }
                 statement.close();
             } catch (Exception e) {
-                SQLDB.reConnect();
+                ObjectPool.get(SQLDB.class).reConnect();
                 event.getChannel().sendMessage("에러가 발생했습니다.").queue();
                 e.printStackTrace();
                 return;

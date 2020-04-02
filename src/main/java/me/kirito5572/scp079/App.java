@@ -28,15 +28,23 @@ import java.util.Objects;
 import java.util.Random;
 
 public class App {
-    private static boolean TESTMODE = false;
-    private static Date date;
-    private static String Time;
-    private static String PREFIX;
-    private static TextChannel logTextChannel;
+    private static App instance;
+    public static App getInstance() {
+        return instance;
+    }
+
+    private boolean TESTMODE = false;
+    private Date date;
+    private String Time;
+    private String PREFIX;
+    private TextChannel logTextChannel;
     private final Random random = new Random();
     private String TOKEN;
 
+
     public App() {
+        instance = this;
+
         date = new Date();
         SimpleDateFormat format1 = new SimpleDateFormat("yyyy/MM/dd aa hh:mm:ss z");
         Time = format1.format(date);
@@ -71,7 +79,7 @@ public class App {
             }
 
             TOKEN = TOKENreader.toString();
-            PREFIX = Constants.PREFIX;
+            PREFIX = "$$";
         }
 
         Logger logger = LoggerFactory.getLogger(App.class);
@@ -125,7 +133,7 @@ public class App {
 
     }
 
-    public static String getPREFIX() {
+    public String getPREFIX() {
         return PREFIX;
     }
 
@@ -133,19 +141,19 @@ public class App {
         new App();
     }
 
-    public static String getTime() {
+    public String getTime() {
         return Time;
     }
 
-    public static Date getDate() {
+    public Date getDate() {
         return date;
     }
 
-    public static boolean isTESTMODE() {
+    public boolean isTESTMODE() {
         return TESTMODE;
     }
 
-    public static TextChannel getLogTextChannel() {
+    public TextChannel getLogTextChannel() {
         return logTextChannel;
     }
 

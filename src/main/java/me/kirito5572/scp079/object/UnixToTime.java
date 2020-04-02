@@ -1,7 +1,7 @@
 package me.kirito5572.scp079.object;
 
 public class UnixToTime {
-    public static String UnixToTimeChange(Long time1, Long time2) {
+    public String UnixToTimeChange(Long time1, Long time2) {
         long a = (time2 - time1) / 1000L;
         if (a == 0L) {
             return "영구";

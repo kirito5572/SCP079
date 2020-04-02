@@ -4,6 +4,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import me.duncte123.botcommons.messaging.EmbedUtils;
 import me.kirito5572.scp079.App;
+import me.kirito5572.scp079.ObjectPool;
 import me.kirito5572.scp079.command.HackCommand;
 import me.kirito5572.scp079.object.SQLDB;
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -26,7 +27,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class GetHoryuBanList extends ListenerAdapter {
-    private static int caseNum = 285;
+    private int caseNum;
 
     @Override
     public void onReady(@NotNull ReadyEvent event) {
@@ -36,7 +37,7 @@ public class GetHoryuBanList extends ListenerAdapter {
             public void run() {
                 String temp = get();
                 if (temp.contains("response is error")) {
-                    App.getLogTextChannel().sendMessage("호류서버 제재자 목록을 불러오는 중 에러가 발생했습니다.\n" +
+                    App.getInstance().getLogTextChannel().sendMessage("호류서버 제재자 목록을 불러오는 중 에러가 발생했습니다.\n" +
                             temp).queue();
                     return;
                 }
@@ -145,7 +146,7 @@ public class GetHoryuBanList extends ListenerAdapter {
                     return;
                 }
                 //testsend(builder, event);
-                HackCommand.server_Send("563045452774244361", builder, event.getJDA(), App.getLogTextChannel(), Integer.parseInt(time[0]));
+                ObjectPool.get(HackCommand.class).server_Send("563045452774244361", builder, event.getJDA(), App.getInstance().getLogTextChannel(), Integer.parseInt(time[0]));
             }
         };
         Timer jobScheduler = new Timer();
@@ -174,8 +175,9 @@ public class GetHoryuBanList extends ListenerAdapter {
 
     private void filesave(String message) {
         try {
-            SQLDB.getConnection().createStatement().executeUpdate("UPDATE `079_config`.last_caseID SET horyu_last_temp='" + message + "';");
+            ObjectPool.get(SQLDB.class).getConnection().createStatement().executeUpdate("UPDATE `079_config`.last_caseID SET horyu_last_temp='" + message + "';");
         } catch (SQLException e) {
+            ObjectPool.get(SQLDB.class).reConnect();
             e.printStackTrace();
         }
 
@@ -183,13 +185,14 @@ public class GetHoryuBanList extends ListenerAdapter {
 
     private String filereader() {
         try {
-            ResultSet resultSet = SQLDB.getConnection().createStatement().executeQuery("SELECT * FROM `079_config`.last_caseID;");
+            ResultSet resultSet = ObjectPool.get(SQLDB.class).getConnection().createStatement().executeQuery("SELECT * FROM `079_config`.last_caseID;");
             if(resultSet.next()) {
                 return resultSet.getString("horyu_last_temp");
             } else {
                 return "no result return";
             }
         } catch (SQLException e) {
+            ObjectPool.get(SQLDB.class).reConnect();
             e.printStackTrace();
             return "error";
         }

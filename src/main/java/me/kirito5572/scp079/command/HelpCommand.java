@@ -44,7 +44,7 @@ public class HelpCommand implements ICommand {
 
         if (command == null) {
             event.getChannel().sendMessage("`" + joined + "`는 존재하지 않는 명령어 입니다.\n" +
-                    "`" + App.getPREFIX() + getInvoke() + "` 를 사용해 명령어 리스트를 확인하세요.").queue();
+                    "`" + App.getInstance().getPREFIX() + getInvoke() + "` 를 사용해 명령어 리스트를 확인하세요.").queue();
             return;
         }
 
@@ -67,7 +67,7 @@ public class HelpCommand implements ICommand {
     @Override
     public String getHelp() {
         return "모르는 명령어는 어디서? 여기서.\n" +
-                "명령어: `" + App.getPREFIX() + getInvoke() + " [command]`";
+                "명령어: `" + App.getInstance().getPREFIX() + getInvoke() + " [command]`";
     }
 
     @Override
