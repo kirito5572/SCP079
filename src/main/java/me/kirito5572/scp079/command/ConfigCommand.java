@@ -9,6 +9,8 @@ import me.kirito5572.scp079.object.IsKoreaSCPCoop;
 import me.kirito5572.scp079.object.ResultSetComparator;
 import me.kirito5572.scp079.object.SQLDB;
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.Permission;
+import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
@@ -42,7 +44,7 @@ public class ConfigCommand implements ICommand, Reloadable {
         return filter_kick;
     }
 
-    public String[]  getFilter_ban() {
+    public String[] getFilter_ban() {
         return filter_ban;
     }
 
@@ -64,6 +66,17 @@ public class ConfigCommand implements ICommand, Reloadable {
 
     @Override
     public void handle(List<String> args, GuildMessageReceivedEvent event) {
+        Member member = event.getMember();
+        assert member != null;
+        if (!(member.hasPermission(Permission.MANAGE_CHANNEL) || member.hasPermission(Permission.MANAGE_PERMISSIONS) ||
+                member.hasPermission(Permission.MANAGE_ROLES) || member.hasPermission(Permission.MANAGE_SERVER) ||
+                member.hasPermission(Permission.MANAGE_EMOTES) || member.hasPermission(Permission.MANAGE_WEBHOOKS) ||
+                member.hasPermission(Permission.MESSAGE_MANAGE) || member.hasPermission(Permission.NICKNAME_MANAGE))) {
+            event.getChannel().sendMessage("당신은 명령어를 사용하지 못하는 비 인가 유저입니다.\n" +
+                    " 이 명령어를 사용하기 위해서는 서버에서 8개의 관리 권한중 하나 이상을 취득하고 있어야 합니다.")
+                    .complete().delete().queueAfter(7, TimeUnit.SECONDS);
+            return;
+        }
         if (ObjectPool.get(IsKoreaSCPCoop.class).verification(event)) {
             event.getChannel().sendMessage("당신은 이 명령어를 쓸 권한이 없습니다.\n" +
                     " 이 명령어를 사용하기 위해서는 한코옵서버에서 서버장 또는 관리자 역할을 받아야 합니다.\n" +

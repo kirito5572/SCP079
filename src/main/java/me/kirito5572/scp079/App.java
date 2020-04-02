@@ -15,6 +15,8 @@ import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.requests.GatewayIntent;
+import net.dv8tion.jda.api.utils.MemberCachePolicy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,6 +25,7 @@ import java.awt.*;
 import java.io.File;
 import java.io.FileReader;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Objects;
 import java.util.Random;
@@ -48,7 +51,7 @@ public class App {
         date = new Date();
         SimpleDateFormat format1 = new SimpleDateFormat("yyyy/MM/dd aa hh:mm:ss z");
         Time = format1.format(date);
-        SQLDB sqldb = new SQLDB();
+        ObjectPool.get(SQLDB.class);
         CommandManager commandManager = new CommandManager();
         if (TESTMODE) {
             StringBuilder TOKENreader = new StringBuilder();
@@ -116,6 +119,8 @@ public class App {
                 jda = JDABuilder.createDefault(TOKEN)
                         .setAutoReconnect(true)
                         .addEventListeners(listener, getHoryuBanList, activityChangeListener)
+                        .setEnabledIntents(GatewayIntent.getIntents(GatewayIntent.ALL_INTENTS))
+                        .setMemberCachePolicy(MemberCachePolicy.ALL)
                         .build().awaitReady();
                 logger.info("부팅완료");
                 logTextChannel = Objects.requireNonNull(jda.getGuildById("665581943382999048")).getTextChannelById("665581943382999051");

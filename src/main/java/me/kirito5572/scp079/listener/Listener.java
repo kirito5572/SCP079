@@ -177,8 +177,10 @@ public class Listener extends ListenerAdapter {
                         if (!(Objects.requireNonNull(event.getMember()).hasPermission(Permission.ADMINISTRATOR) || event.getMember().hasPermission(Permission.MANAGE_ROLES) ||
                                 event.getMember().hasPermission(Permission.MESSAGE_MANAGE) || event.getMember().hasPermission(Permission.MANAGE_CHANNEL) ||
                                 event.getMember().hasPermission(Permission.MANAGE_PERMISSIONS) || event.getMember().hasPermission(Permission.MANAGE_SERVER))) {
-                            event.getChannel().sendMessage(event.getMember().getAsMention() + ", 여긴 지정된 봇 채팅방이 아닙니다.").complete().delete().queueAfter(5, TimeUnit.SECONDS);
-                            return;
+                            if(!event.getAuthor().getId().equals(getID1())) {
+                                event.getChannel().sendMessage(event.getMember().getAsMention() + ", 여긴 지정된 봇 채팅방이 아닙니다.").complete().delete().queueAfter(5, TimeUnit.SECONDS);
+                                return;
+                            }
                         }
                     }
                 }

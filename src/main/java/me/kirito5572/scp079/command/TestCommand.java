@@ -8,12 +8,18 @@ import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import javax.swing.plaf.nimbus.State;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Arrays;
 import java.util.List;
 
 public class TestCommand implements ICommand {
     @Override
     public void handle(List<String> args, GuildMessageReceivedEvent event) {
+        System.out.println(Arrays.toString(event.getGuild().getMembers().toArray()));
+        System.out.println(event.getGuild().getMembers().size());
+        System.out.println(event.getMember());
     }
+
+
 
     @Override
     public String getHelp() {

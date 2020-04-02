@@ -45,25 +45,38 @@ public class FilterListener extends ListenerAdapter implements Reloadable {
     @Override
     public void onGuildMessageReceived(@Nonnull GuildMessageReceivedEvent event) {
         String[] enable = ObjectPool.get(ConfigCommand.class).getFilter_enable();
+        String[] warn = ObjectPool.get(ConfigCommand.class).getFilter_warn_enable();
 
-        int count;
+        int value;
 
-        boolean filter_start = false;
-        for (count = 0; count < enable.length; count++) {
-            if (enable[count].equals(event.getGuild().getId())) {
-                filter_start = true;
+        boolean filter_enable = false;
+        boolean filter_warn = false;
+        for (value = 0; value < enable.length; value++) {
+            if (enable[value].equals(event.getGuild().getId())) {
+                filter_enable = true;
                 break;
             }
         }
-        if (!filter_start) {
-            return;
+        if (!filter_enable) {
+            for (value = 0; value < warn.length; value++) {
+                if (warn[value].equals(event.getGuild().getId())) {
+                    filter_warn = true;
+                    break;
+                }
+            }
+            if(!filter_warn) {
+                return;
+            }
         }
 
         String message = event.getMessage().getContentRaw();
-        if(ObjectPool.get(WordFilter.class).valid(message).isMatch) {
+        WordFilter.WordFilterResult r = ObjectPool.get(WordFilter.class).valid(message);
+        if(r.isMatch) {
+
+        } else if (r.isWarn) {
 
         } else {
-
+            return;
         }
 
         throw new UnsupportedOperationException("Not Implemented");
