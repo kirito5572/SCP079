@@ -7,8 +7,10 @@ import java.util.List;
 
 public class WordFilter {
     public class WordFilterResult {
-        public boolean isMatch;
-        public boolean isWarn;
+        public boolean isMatch = false;
+        public boolean isWarn = false;
+        public String filter_Match = "";
+        public String filter_Warn = "";
     }
 
     private List<String> list;
@@ -19,12 +21,14 @@ public class WordFilter {
         String message_Raw = message.replaceAll("[^가-힣xfea-zA-Z\\s]", "");
         message = message.replaceAll("[^가-힣xfea-zA-Z]", "");
         WordFilterResult r = new WordFilterResult();
-
         for(String data : list) {
             if (message.contains(data)) {
                 r.isWarn = true;
                 if(message_Raw.contains(data)) {
                     r.isMatch = true;
+                    r.filter_Match = r.filter_Match + data + ",";
+                } else {
+                    r.filter_Warn = r.filter_Warn + data + ",";
                 }
             }
         }
