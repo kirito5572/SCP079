@@ -1,6 +1,6 @@
 package me.kirito5572.scp079.filter;
 
-import me.kirito5572.scp079.ObjectPool;
+import me.kirito5572.scp079.object.ObjectPool;
 import me.kirito5572.scp079.listener.FilterListener;
 
 import java.util.List;
@@ -11,6 +11,7 @@ public class WordFilter {
         public boolean isWarn = false;
         public String filter_Match = "";
         public String filter_Warn = "";
+        public int matchSize = 0;
     }
 
     private List<String> list;
@@ -27,6 +28,7 @@ public class WordFilter {
                 if(message_Raw.contains(data)) {
                     r.isMatch = true;
                     r.filter_Match = r.filter_Match + data + ",";
+                    r.matchSize++;
                 } else {
                     r.filter_Warn = r.filter_Warn + data + ",";
                 }

@@ -1,9 +1,8 @@
 package me.kirito5572.scp079.listener;
 
 import me.kirito5572.scp079.App;
-import me.kirito5572.scp079.ObjectPool;
+import me.kirito5572.scp079.object.ObjectPool;
 import me.kirito5572.scp079.command.VersionCommand;
-import me.kirito5572.scp079.filter.WordFilter;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.entities.Guild;

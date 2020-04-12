@@ -14,9 +14,6 @@ import java.util.List;
 public class TestCommand implements ICommand {
     @Override
     public void handle(List<String> args, GuildMessageReceivedEvent event) {
-        System.out.println(Arrays.toString(event.getGuild().getMembers().toArray()));
-        System.out.println(event.getGuild().getMembers().size());
-        System.out.println(event.getMember());
     }
 
 

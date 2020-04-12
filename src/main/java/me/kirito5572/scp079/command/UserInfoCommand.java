@@ -3,7 +3,7 @@ package me.kirito5572.scp079.command;
 import com.jagrosh.jdautilities.commons.utils.FinderUtil;
 import me.duncte123.botcommons.messaging.EmbedUtils;
 import me.kirito5572.scp079.App;
-import me.kirito5572.scp079.ObjectPool;
+import me.kirito5572.scp079.object.ObjectPool;
 import me.kirito5572.scp079.object.ICommand;
 import me.kirito5572.scp079.object.IsKoreaSCPCoop;
 import net.dv8tion.jda.api.entities.*;

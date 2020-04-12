@@ -72,7 +72,6 @@ public class ImforCommand implements ICommand {
         try {
             ID = args.get(0);
             boolean isrealSteamID = true;
-            System.out.println(ID.length());
             if (ID.startsWith("76") && ID.length() == 17) {
                 for (int i = 0; i < ID.length(); i++) {
                     char temp = ID.charAt(i);

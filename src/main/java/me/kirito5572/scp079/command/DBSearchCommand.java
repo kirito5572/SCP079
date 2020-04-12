@@ -2,7 +2,7 @@ package me.kirito5572.scp079.command;
 
 import me.duncte123.botcommons.messaging.EmbedUtils;
 import me.kirito5572.scp079.App;
-import me.kirito5572.scp079.ObjectPool;
+import me.kirito5572.scp079.object.ObjectPool;
 import me.kirito5572.scp079.object.GetHoryuSearch;
 import me.kirito5572.scp079.object.GetSteamID;
 import me.kirito5572.scp079.object.ICommand;

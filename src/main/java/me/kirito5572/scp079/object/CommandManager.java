@@ -1,7 +1,6 @@
 package me.kirito5572.scp079.object;
 
 import me.kirito5572.scp079.App;
-import me.kirito5572.scp079.ObjectPool;
 import me.kirito5572.scp079.command.*;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
@@ -20,7 +19,6 @@ public class CommandManager {
         addCommand(ObjectPool.get(VersionCommand.class));
         addCommand(ObjectPool.get(ImforCommand.class));
         addCommand(ObjectPool.get(UnbanCommand.class));
-        addCommand(ObjectPool.get(HackCommand.class));
         addCommand(ObjectPool.get(ConnectServerCommand.class));
         addCommand(ObjectPool.get(TestCommand.class));
         addCommand(ObjectPool.get(DBSearchCommand.class));

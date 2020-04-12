@@ -1,7 +1,8 @@
 package me.kirito5572.scp079.listener;
 
 import me.kirito5572.scp079.App;
-import me.kirito5572.scp079.ObjectPool;
+import me.kirito5572.scp079.object.IsKoreaSCPCoop;
+import me.kirito5572.scp079.object.ObjectPool;
 import me.kirito5572.scp079.object.CommandManager;
 import me.kirito5572.scp079.object.SQLDB;
 import net.dv8tion.jda.api.JDA;
@@ -10,6 +11,7 @@ import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.ReadyEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.hooks.EventListener;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
@@ -61,6 +63,14 @@ public class Listener extends ListenerAdapter {
                     "[채팅방: %s]", author, content, guild.getName(), textChannel.getName()));
         } else if (event.isFromType(ChannelType.PRIVATE)) {
             if (event.getAuthor().getId().equals(event.getJDA().getSelfUser().getId())) {
+                return;
+            }
+            if (event.getMessage().getContentRaw().startsWith(App.getInstance().getPREFIX())) {
+                if (ObjectPool.get(IsKoreaSCPCoop.class).verification(event)) {
+                    event.getChannel().sendMessage("이곳은 명령어를 사용하는 곳이 아닙니다.").queue();
+                } else {
+                    event.getChannel().sendMessage("명령어는 본인의 서버에서 사용해 주십시오.").queue();
+                }
                 return;
             }
             if (content.equals("a")) {

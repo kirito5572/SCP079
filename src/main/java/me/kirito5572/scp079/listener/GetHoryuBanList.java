@@ -4,7 +4,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import me.duncte123.botcommons.messaging.EmbedUtils;
 import me.kirito5572.scp079.App;
-import me.kirito5572.scp079.ObjectPool;
+import me.kirito5572.scp079.object.ObjectPool;
 import me.kirito5572.scp079.command.HackCommand;
 import me.kirito5572.scp079.object.SQLDB;
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -20,6 +20,8 @@ import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 import java.io.*;
+import java.nio.charset.StandardCharsets;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Objects;
@@ -107,16 +109,34 @@ public class GetHoryuBanList extends ListenerAdapter {
                         }
                     }
                 }
+                InputStreamReader reader;
                 try {
-                    FileReader reader = new FileReader("horyu_rule.json");
-                    JsonParser parser = new JsonParser();
-                    JsonElement element = parser.parse(reader);
-                    try {
-                        mainData[2] = element.getAsJsonObject().get(mainData[2]).getAsString();
-                    } catch (Exception ignored) {
-                    }
+                    reader = new InputStreamReader(new FileInputStream("C:\\GitHub\\SCP079\\build\\libs\\horyu_rule.json"), StandardCharsets.UTF_8);
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
+                    try {
+                        reader = new InputStreamReader(new FileInputStream("C:\\Users\\Administrator\\Desktop\\horyu_rule.json"), StandardCharsets.UTF_8);
+                    } catch (FileNotFoundException e1) {
+                        e1.printStackTrace();
+                        try {
+                            reader = new InputStreamReader(new FileInputStream("horyu_rule.json"), StandardCharsets.UTF_8);
+                        } catch (FileNotFoundException e2) {
+                            e2.printStackTrace();
+                            return;
+                        }
+                    }
+                }
+                JsonElement element;
+                try {
+                    JsonParser parser = new JsonParser();
+                    element = parser.parse(reader);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    return;
+                }
+                try {
+                    mainData[2] = element.getAsJsonObject().get(mainData[2]).getAsString();
+                } catch (Exception ignored) {
                 }
                 String[] id_data = mainData[1].split("@");
                 EmbedBuilder builder;
@@ -175,7 +195,10 @@ public class GetHoryuBanList extends ListenerAdapter {
 
     private void filesave(String message) {
         try {
-            ObjectPool.get(SQLDB.class).getConnection().createStatement().executeUpdate("UPDATE `079_config`.last_caseID SET horyu_last_temp='" + message + "';");
+            PreparedStatement preparedStatement = ObjectPool.get(SQLDB.class).getConnection().prepareStatement("UPDATE `079_config`.last_caseID SET horyu_last_temp=?");
+            preparedStatement.setString(1, message);
+            preparedStatement.execute();
+
         } catch (SQLException e) {
             ObjectPool.get(SQLDB.class).reConnect();
             e.printStackTrace();

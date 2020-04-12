@@ -1,6 +1,6 @@
 package me.kirito5572.scp079.filter;
 
-import me.kirito5572.scp079.ObjectPool;
+import me.kirito5572.scp079.object.ObjectPool;
 import me.kirito5572.scp079.listener.FilterListener;
 import org.junit.Before;
 import org.junit.Test;
