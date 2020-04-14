@@ -16,6 +16,7 @@ import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.requests.GatewayIntent;
+import net.dv8tion.jda.api.utils.ChunkingFilter;
 import net.dv8tion.jda.api.utils.MemberCachePolicy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -119,7 +120,7 @@ public class App {
                         .setAutoReconnect(true)
                         .addEventListeners(listener, getHoryuBanList, activityChangeListener)
                         .setEnabledIntents(GatewayIntent.getIntents(GatewayIntent.ALL_INTENTS))
-                        .setMemberCachePolicy(MemberCachePolicy.ALL)
+                        .setChunkingFilter(ChunkingFilter.ALL)
                         .build().awaitReady();
                 logger.info("부팅완료");
                 logTextChannel = Objects.requireNonNull(jda.getGuildById("665581943382999048")).getTextChannelById("665581943382999051");
