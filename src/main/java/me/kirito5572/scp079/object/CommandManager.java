@@ -4,6 +4,7 @@ import me.kirito5572.scp079.App;
 import me.kirito5572.scp079.command.*;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.exceptions.ErrorResponseException;
 
 import java.util.*;
 import java.util.regex.Pattern;
@@ -24,6 +25,7 @@ public class CommandManager {
         addCommand(ObjectPool.get(DBSearchCommand.class));
         addCommand(ObjectPool.get(UserInfoCommand.class));
         addCommand(ObjectPool.get(ConfigCommand.class));
+        addCommand(ObjectPool.get(TransCommand.class));
     }
 
     private void addCommand(ICommand command) {
@@ -57,8 +59,12 @@ public class CommandManager {
 
         if (commands.containsKey(invoke)) {
             final List<String> args = Arrays.asList(split).subList(1, split.length);
-
-            channel.sendTyping().queue();
+            try {
+                channel.sendTyping().queue();
+            } catch (ErrorResponseException e) {
+                e.printStackTrace();
+                System.out.println(event.getGuild());
+            }
             commands.get(invoke).handle(args, event);
         }
     }

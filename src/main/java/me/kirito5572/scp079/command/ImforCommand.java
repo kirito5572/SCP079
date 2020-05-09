@@ -13,6 +13,7 @@ import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.exceptions.ErrorResponseException;
 
 import java.awt.*;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
@@ -286,14 +287,20 @@ public class ImforCommand implements ICommand {
 
         ObjectPool.get(SQLDB.class).SQLupload(ID, rawtime + "(" + time + "분)", reasonFinal, event.getGuild().getName(), serverID);
 
+        String startTime = String.valueOf((new Date().getTime() - 32400L) * 10000L + 621355968000000000L);
+        String endTime = String.valueOf((new Date().getTime() + Long.parseLong(time) * 60000L) * 10000L + 621355968000000000L);
         EmbedBuilder builder = EmbedUtils.defaultEmbed()
                 .setTitle("공유된 제재 정보")
                 .setColor(Color.RED)
                 .addField("제재 대상자", NickName, false);
         if (isSteam) {
-            builder.addField("스팀 ID", ID, false);
+            builder.addField("스팀 ID", ID, false)
+                    .setDescription(NickName + ";" + ID + "@steam;" + endTime + ";" + reasonFinal + ";"
+                            + Objects.requireNonNull(event.getMember()).getEffectiveName() + "(제재공유);" + startTime + ";");
         } else {
-            builder.addField("디스코드 ID", ID, false);
+            builder.addField("디스코드 ID", ID, false)
+                    .setDescription(NickName + ";" + ID + "@steam;" + endTime + ";" + reasonFinal + ";"
+                            + Objects.requireNonNull(event.getMember()).getEffectiveName() + "(제재공유);" + startTime + ";");
         }
         builder.addField("제재 사유", reasonFinal, false)
                 .addField("제재 기간", rawtime + "(" + time + "분)", false)
@@ -340,7 +347,11 @@ public class ImforCommand implements ICommand {
         if (App.getInstance().isTESTMODE()) {
             ObjectPool.get(HackCommand.class).test(builder, event);
         } else {
-
+            if(isSteam) {
+                if(!event.getAuthor().getId().equals("688434014066835484")) {
+                    ObjectPool.get(HackCommand.class).auto_ban(steamId, time, reasonFinal + "(제재 공유 시스템)", event.getJDA());
+                }
+            }
             ObjectPool.get(HackCommand.class).server_Send(serverID, builder, event.getJDA(), event.getChannel(), Integer.parseInt(time));
         }
 

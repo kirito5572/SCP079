@@ -7,7 +7,7 @@ import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import java.util.List;
 
 public class VersionCommand implements ICommand {
-    private String version = "빌드 버젼 V 1.2.2";
+    private String version = "빌드 버젼 V 1.2.3";
 
     public String getVersion() {
         return version;

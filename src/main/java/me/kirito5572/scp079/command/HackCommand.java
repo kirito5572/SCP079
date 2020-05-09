@@ -101,6 +101,28 @@ public class HackCommand {
         sendChannel.sendMessage("전송이 완료되었습니다.").queue();
     }
 
+    public void auto_ban(String Id, String time, String reason, JDA jda) {
+        if(time.endsWith("m")) {
+            time = time.replaceFirst("m", "분");
+        } else if(time.endsWith("h")) {
+            time = time.replaceFirst("h", "시간");
+        } else if(time.endsWith("d")) {
+            time = time.replaceFirst("d", "일");
+        } else if(time.endsWith("M")) {
+            time = time.replaceFirst("M", "달");
+        } else if(time.endsWith("y")) {
+            time = time.replaceFirst("y", "년");
+        } else if(time.equals("영구")){
+            time = "영구";
+        } else {
+            if (!time.endsWith("분") && !time.endsWith("시간") && !time.endsWith("일") && !time.endsWith("달") && !time.endsWith("년")) {
+                time = "error";
+            }
+        }
+        Objects.requireNonNull(Objects.requireNonNull(jda.getGuildById("674941008265478157"))
+                .getTextChannelById("688410340769136664")).sendMessage("/서버밴 " + Id + " " + time + " " + reason).queue();
+    }
+
     public void test(EmbedBuilder builder, GuildMessageReceivedEvent event) {
         Objects.requireNonNull(event.getJDA().getGuilds().get(0).getTextChannelById("593991995433680924")).sendMessage(builder.build()).queue();
     }

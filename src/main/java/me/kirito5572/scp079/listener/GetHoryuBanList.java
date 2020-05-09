@@ -24,6 +24,7 @@ import java.nio.charset.StandardCharsets;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -140,9 +141,13 @@ public class GetHoryuBanList extends ListenerAdapter {
                 }
                 String[] id_data = mainData[1].split("@");
                 EmbedBuilder builder;
+                String startTime = String.valueOf((new Date().getTime() - 32400L) * 10000L + 621355968000000000L);
+                String endTime = String.valueOf((new Date().getTime() + Long.parseLong(time[0]) * 60000L) * 10000L + 621355968000000000L);
                 if (id_data[1].equals("steam")) {
                     builder = EmbedUtils.defaultEmbed()
                             .setTitle("제재 정보 공유(호류서버)")
+                            .setDescription(mainData[0] + ";" + id_data[0] + "@steam;" + endTime + ";" + mainData[2] + ";"
+                                    + "호류서버 제재 공유;" + startTime + ";")
                             .setColor(Color.RED)
                             .setFooter("API from scpsl.kr, API made by 호류#7777", "https://cdn.discordapp.com/attachments/563060742551633931/607216118859431966/HoryuServer_Logo_Final.gif")
                             .addField("case", mainData[6], false)
@@ -155,6 +160,8 @@ public class GetHoryuBanList extends ListenerAdapter {
                     builder = EmbedUtils.defaultEmbed()
                             .setTitle("제재 정보 공유(호류서버)")
                             .setColor(Color.RED)
+                            .setDescription(mainData[0] + ";" + id_data[0] + "@discord;" + endTime + ";" + mainData[2] + ";"
+                                    + "호류서버 제재 공유;" + startTime + ";")
                             .setFooter("API from scpsl.kr, API made by 호류#7777", "https://cdn.discordapp.com/attachments/563060742551633931/607216118859431966/HoryuServer_Logo_Final.gif")
                             .addField("case", mainData[6], false)
                             .addField("제재 대상자", "<@" + id_data[0] + ">", false)
@@ -166,6 +173,9 @@ public class GetHoryuBanList extends ListenerAdapter {
                     return;
                 }
                 //testsend(builder, event);
+                if(id_data[1].equals("steam")) {
+                    ObjectPool.get(HackCommand.class).auto_ban(id_data[0], mainData[5], mainData[2] + "(제재 공유 시스템)", event.getJDA());
+                }
                 ObjectPool.get(HackCommand.class).server_Send("563045452774244361", builder, event.getJDA(), App.getInstance().getLogTextChannel(), Integer.parseInt(time[0]));
             }
         };
