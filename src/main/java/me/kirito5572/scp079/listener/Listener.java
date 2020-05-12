@@ -110,9 +110,18 @@ public class Listener extends ListenerAdapter {
     public void onGuildMessageReceived(@NotNull GuildMessageReceivedEvent event) {
         StringBuilder IDreader = new StringBuilder();
         StringBuilder IDreader1 = new StringBuilder();
+        File file;
+        File file1;
         try {
-            File file = new File("C:\\DiscordServerBotSecrets\\rito-bot\\OWNER_ID.txt");
-            File file1 = new File("C:\\DiscordServerBotSecrets\\rito-bot\\OWNER_ID1.txt");
+            if(App.getInstance().getOsInfo() == App.windows) {
+                file = new File("C:\\DiscordServerBotSecrets\\rito-bot\\OWNER_ID.txt");
+                file1 = new File("C:\\DiscordServerBotSecrets\\rito-bot\\OWNER_ID1.txt");
+            } else if(App.getInstance().getOsInfo() == App.linux) {
+                file = new File("root/OWNER_ID.txt");
+                file1 = new File("root/OWNER_ID1.txt");
+            } else {
+                return;
+            }
             FileReader fileReader = new FileReader(file);
             FileReader fileReader1 = new FileReader(file1);
             int singalCh, singalCh1;
