@@ -55,7 +55,6 @@ public class App {
         instance = this;
 
         String os = System.getProperty("os.name").toLowerCase();
-        System.out.println(os);
         if (os.contains("win")) {
             System.out.println(System.getProperty("os.name") + " 에서 부팅 시작....");
             osInfo = App.windows;
@@ -83,6 +82,7 @@ public class App {
         ObjectPool.get(SQLDB.class);
         CommandManager commandManager = new CommandManager();
         StringBuilder TOKENreader = new StringBuilder();
+        System.out.println(osInfo);
         if(osInfo == windows) {
             try {
                 File file = new File("C:\\DiscordServerBotSecrets\\SCP-079\\TOKEN.txt");
