@@ -61,12 +61,12 @@ public class App {
         } else if (os.contains("mac")) {
             System.out.println(System.getProperty("os.name") + " 은 지원하지 않는 운영체제 입니다.");
             System.exit(-3);
+        }  else if (os.contains("linux")) {
+            System.out.println(System.getProperty("os.name") + " 에서 부팅 시작....");
+            osInfo = App.linux;
         } else if (os.contains("nix") || os.contains("nux") || os.contains("aix")) {
             System.out.println(System.getProperty("os.name") + " 에서 부팅 시작....");
             osInfo = App.unix;
-        } else if (os.contains("linux")) {
-            System.out.println(System.getProperty("os.name") + " 에서 부팅 시작....");
-            osInfo = App.linux;
         } else if (os.contains("sunos")) {
             System.out.println(System.getProperty("os.name") + " 은 지원하지 않는 운영체제 입니다.");
             System.exit(-3);
