@@ -111,21 +111,32 @@ public class GetHoryuBanList extends ListenerAdapter {
                     }
                 }
                 InputStreamReader reader;
-                try {
-                    reader = new InputStreamReader(new FileInputStream("C:\\GitHub\\SCP079\\build\\libs\\horyu_rule.json"), StandardCharsets.UTF_8);
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
+                if(App.getInstance().getOsInfo() == App.windows) {
                     try {
-                        reader = new InputStreamReader(new FileInputStream("C:\\Users\\Administrator\\Desktop\\horyu_rule.json"), StandardCharsets.UTF_8);
-                    } catch (FileNotFoundException e1) {
-                        e1.printStackTrace();
+                        reader = new InputStreamReader(new FileInputStream("C:\\GitHub\\SCP079\\build\\libs\\horyu_rule.json"), StandardCharsets.UTF_8);
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
                         try {
-                            reader = new InputStreamReader(new FileInputStream("horyu_rule.json"), StandardCharsets.UTF_8);
-                        } catch (FileNotFoundException e2) {
-                            e2.printStackTrace();
-                            return;
+                            reader = new InputStreamReader(new FileInputStream("C:\\Users\\Administrator\\Desktop\\horyu_rule.json"), StandardCharsets.UTF_8);
+                        } catch (FileNotFoundException e1) {
+                            e1.printStackTrace();
+                            try {
+                                reader = new InputStreamReader(new FileInputStream("horyu_rule.json"), StandardCharsets.UTF_8);
+                            } catch (FileNotFoundException e2) {
+                                e2.printStackTrace();
+                                return;
+                            }
                         }
                     }
+                } else if(App.getInstance().getOsInfo() == App.linux) {
+                    try {
+                        reader = new InputStreamReader(new FileInputStream("root\\horyu_rule.json"), StandardCharsets.UTF_8);
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                        return;
+                    }
+                } else {
+                    return;
                 }
                 JsonElement element;
                 try {
@@ -256,7 +267,6 @@ public class GetHoryuBanList extends ListenerAdapter {
                 returnData[5] = element.getAsJsonObject().get("pardonTime").getAsString();
             }
         } catch (Exception e) {
-            System.out.println(message);
             e.printStackTrace();
             return new String[]{"error"};
         }

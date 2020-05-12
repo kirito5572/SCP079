@@ -1,5 +1,7 @@
 package me.kirito5572.scp079.object;
 
+import me.kirito5572.scp079.App;
+
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -21,9 +23,20 @@ public class SQLDB {
     public SQLDB() {
         //init
         StringBuilder SQLPassword = new StringBuilder();
+        StringBuilder endPoint = new StringBuilder();
+        File SQLPasswordFile;
+        File SQLEndPointFile;
+        if(App.getInstance().getOsInfo() == App.windows) {
+            SQLPasswordFile = new File("C:\\DiscordServerBotSecrets\\SCP-079\\SQLPassword.txt");
+            SQLEndPointFile = new File("C:\\DiscordServerBotSecrets\\SCP-079\\endPoint.txt");
+        } else if(App.getInstance().getOsInfo() == App.linux) {
+            SQLPasswordFile = new File("root\\SQLPassword.txt");
+            SQLEndPointFile = new File("root\\endPoint.txt");
+        } else {
+            return;
+        }
         try {
-            File file = new File("C:\\DiscordServerBotSecrets\\SCP-079\\SQLPassword.txt");
-            FileReader fileReader = new FileReader(file);
+            FileReader fileReader = new FileReader(SQLPasswordFile);
             int singalCh;
             while ((singalCh = fileReader.read()) != -1) {
                 SQLPassword.append((char) singalCh);
@@ -31,10 +44,8 @@ public class SQLDB {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        StringBuilder endPoint = new StringBuilder();
         try {
-            File file = new File("C:\\DiscordServerBotSecrets\\SCP-079\\endPoint.txt");
-            FileReader fileReader = new FileReader(file);
+            FileReader fileReader = new FileReader(SQLEndPointFile);
             int singalCh;
             while ((singalCh = fileReader.read()) != -1) {
                 endPoint.append((char) singalCh);
@@ -48,15 +59,13 @@ public class SQLDB {
         password = SQLPassword.toString();
 
         try {
-            Class.forName(driverName);
-
             connection = DriverManager.getConnection(url, user, password);
             statement = connection.createStatement();
             resultSet = statement.executeQuery("SELECT * FROM `079_config`.last_caseID");
             if(resultSet.next()) {
                 caseID = resultSet.getInt("caseID");
             }
-        } catch (ClassNotFoundException | SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }
@@ -74,7 +83,6 @@ public class SQLDB {
 
         System.out.println(queryString);
         try {
-            Class.forName(driverName);
 
             statement = connection.createStatement();
             statement.executeUpdate(queryString);
@@ -91,7 +99,6 @@ public class SQLDB {
         };
 
         String queryString = "SELECT * FROM mainDB.Sanction_Information WHERE SteamID =" + SteamID;
-        Class.forName(driverName);
 
         statement = connection.createStatement();
         resultSet = statement.executeQuery(queryString);
@@ -119,7 +126,6 @@ public class SQLDB {
         String[] data = new String[7];
 
         String queryString = "SELECT * FROM mainDB.Sanction_Information WHERE caseID =" + caseID;
-        Class.forName(driverName);
 
         statement = connection.createStatement();
         resultSet = statement.executeQuery(queryString);
@@ -143,7 +149,6 @@ public class SQLDB {
         };
 
         String queryString = "SELECT * FROM ritobotDB.Sanction_Infor WHERE SteamID =" + steamID;
-        Class.forName(driverName);
 
         statement = connection.createStatement();
         resultSet = statement.executeQuery(queryString);
@@ -163,7 +168,6 @@ public class SQLDB {
         };
 
         String queryString = "SELECT * FROM ritobotDB.Sanction_Infor WHERE SteamID =" + steamID;
-        Class.forName(driverName);
 
         statement = connection.createStatement();
         resultSet = statement.executeQuery(queryString);
@@ -193,10 +197,9 @@ public class SQLDB {
 
     public void reConnect() {
         try {
-            Class.forName(driverName);
 
             setConnection(DriverManager.getConnection(url, user, password));
-        } catch (ClassNotFoundException | SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }

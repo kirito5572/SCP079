@@ -35,40 +35,54 @@ public class App {
         return instance;
     }
 
-    private boolean TESTMODE = false;
-    private Date date;
-    private String Time;
-    private String PREFIX;
+    private int osInfo;
+
+    public int getOsInfo() {
+        return osInfo;
+    }
+
+    public static final int windows = 0;
+    public static final int linux = 1;
+    public static final int unix = 2;
+
+    private final String Time;
+    private final String PREFIX;
     private TextChannel logTextChannel;
     private final Random random = new Random();
-    private String TOKEN;
 
 
     public App() {
         instance = this;
 
-        date = new Date();
+        String os = System.getProperty("os.name").toLowerCase();
+        if (os.contains("win")) {
+            System.out.println(System.getProperty("os.name") + " 에서 부팅 시작....");
+            osInfo = App.windows;
+        } else if (os.contains("mac")) {
+            System.out.println(System.getProperty("os.name") + " 은 지원하지 않는 운영체제 입니다.");
+            System.exit(-3);
+        } else if (os.contains("nix") || os.contains("nux") || os.contains("aix")) {
+            System.out.println(System.getProperty("os.name") + " 에서 부팅 시작....");
+            osInfo = App.unix;
+        } else if (os.contains("linux")) {
+            System.out.println(System.getProperty("os.name") + " 에서 부팅 시작....");
+            osInfo = App.linux;
+        } else if (os.contains("sunos")) {
+            System.out.println(System.getProperty("os.name") + " 은 지원하지 않는 운영체제 입니다.");
+            System.exit(-3);
+        } else {
+            System.out.println(System.getProperty("os.name") + " 은 지원하지 않는 운영체제 입니다.");
+            System.exit(-3);
+        }
+
+
+        Date date = new Date();
         SimpleDateFormat format1 = new SimpleDateFormat("yyyy/MM/dd aa hh:mm:ss z");
         Time = format1.format(date);
         ObjectPool.get(SQLDB.class);
         CommandManager commandManager = new CommandManager();
-        if (TESTMODE) {
-            StringBuilder TOKENreader = new StringBuilder();
-            try {
-                File file = new File("C:\\DiscordServerBotSecrets\\SCP-079\\TOKEN_DEBUG.txt");
-                FileReader fileReader = new FileReader(file);
-                int singalCh;
-                while ((singalCh = fileReader.read()) != -1) {
-                    TOKENreader.append((char) singalCh);
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            TOKEN = TOKENreader.toString();
-            PREFIX = "$!";
-        } else {
-            StringBuilder TOKENreader = new StringBuilder();
+        StringBuilder TOKENreader = new StringBuilder();
+        if(osInfo == windows) {
             try {
                 File file = new File("C:\\DiscordServerBotSecrets\\SCP-079\\TOKEN.txt");
                 FileReader fileReader = new FileReader(file);
@@ -79,10 +93,25 @@ public class App {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
-            TOKEN = TOKENreader.toString();
-            PREFIX = "$$";
+        } else if(osInfo == linux) {
+            try {
+                File file = new File("root\\TOKEN.txt");
+                FileReader fileReader = new FileReader(file);
+                int singalCh;
+                while ((singalCh = fileReader.read()) != -1) {
+                    TOKENreader.append((char) singalCh);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            System.out.println("아직 해당 운영체제는 지원하지 않습니다.");
+            System.exit(-4);
         }
+
+        String TOKEN = TOKENreader.toString();
+        PREFIX = "$$";
+
 
         Logger logger = LoggerFactory.getLogger(App.class);
 
@@ -93,46 +122,26 @@ public class App {
         ActivityChangeListener activityChangeListener = new ActivityChangeListener();
 
         JDA jda;
-
-        if (TESTMODE) {
-            try {
-                logger.info("테스트 부팅");
-                jda = JDABuilder.createDefault(TOKEN)
-                        .setAutoReconnect(true)
-                        .addEventListeners(listener)
-                        .build().awaitReady();
-                logger.info("테스트 부팅완료");
-                jda.getPresence().setActivity(Activity.playing("디버깅 모드"));
-            } catch (LoginException | InterruptedException e) {
-                e.printStackTrace();
-                return;
-            }
-            EmbedUtils.setEmbedBuilder(
-                    () -> new EmbedBuilder()
-                            .setColor(getRandomColor())
-                            .setFooter("테스트 모드")
-            );
-        } else {
-            try {
-                logger.info("부팅");
-                jda = JDABuilder.createDefault(TOKEN)
-                        .setAutoReconnect(true)
-                        .addEventListeners(listener, getHoryuBanList, activityChangeListener)
-                        .setEnabledIntents(GatewayIntent.getIntents(GatewayIntent.ALL_INTENTS))
-                        .setChunkingFilter(ChunkingFilter.ALL)
-                        .build().awaitReady();
-                logger.info("부팅완료");
-                logTextChannel = Objects.requireNonNull(jda.getGuildById("665581943382999048")).getTextChannelById("665581943382999051");
-            } catch (LoginException | InterruptedException e) {
-                e.printStackTrace();
-                return;
-            }
-            EmbedUtils.setEmbedBuilder(
-                    () -> new EmbedBuilder()
-                            .setColor(getRandomColor())
-                            .setFooter("Made By kirito5572#5572")//, Objects.requireNonNull(jda.getUserById("284508374924787713")).getAvatarUrl())
-            );
+        try {
+            logger.info("부팅");
+            jda = JDABuilder.createDefault(TOKEN)
+                    .setAutoReconnect(true)
+                    .addEventListeners(listener, getHoryuBanList, activityChangeListener)
+                    .setEnabledIntents(GatewayIntent.getIntents(GatewayIntent.ALL_INTENTS))
+                    .setChunkingFilter(ChunkingFilter.ALL)
+                    .build().awaitReady();
+            logger.info("부팅완료");
+            logTextChannel = Objects.requireNonNull(jda.getGuildById("665581943382999048")).getTextChannelById("665581943382999051");
+        } catch (LoginException | InterruptedException e) {
+            e.printStackTrace();
+            return;
         }
+        EmbedUtils.setEmbedBuilder(
+                () -> new EmbedBuilder()
+                        .setColor(getRandomColor())
+                        .setFooter("Made By kirito5572#5572")//, Objects.requireNonNull(jda.getUserById("284508374924787713")).getAvatarUrl())
+        );
+
 
 
     }
@@ -147,14 +156,6 @@ public class App {
 
     public String getTime() {
         return Time;
-    }
-
-    public Date getDate() {
-        return date;
-    }
-
-    public boolean isTESTMODE() {
-        return TESTMODE;
     }
 
     public TextChannel getLogTextChannel() {

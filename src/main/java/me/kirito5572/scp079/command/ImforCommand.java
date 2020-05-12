@@ -344,16 +344,12 @@ public class ImforCommand implements ICommand {
                 return;
             }
         }
-        if (App.getInstance().isTESTMODE()) {
-            ObjectPool.get(HackCommand.class).test(builder, event);
-        } else {
-            if(isSteam) {
-                if(!event.getAuthor().getId().equals("688434014066835484")) {
-                    ObjectPool.get(HackCommand.class).auto_ban(steamId, time, reasonFinal + "(제재 공유 시스템)", event.getJDA());
-                }
+        if(isSteam) {
+            if(!event.getAuthor().getId().equals("688434014066835484")) {
+                ObjectPool.get(HackCommand.class).auto_ban(steamId, time, reasonFinal + "(제재 공유 시스템)", event.getJDA());
             }
-            ObjectPool.get(HackCommand.class).server_Send(serverID, builder, event.getJDA(), event.getChannel(), Integer.parseInt(time));
         }
+        ObjectPool.get(HackCommand.class).server_Send(serverID, builder, event.getJDA(), event.getChannel(), Integer.parseInt(time));
 
     }
 
