@@ -96,7 +96,7 @@ public class App {
             }
         } else if(osInfo == linux) {
             try {
-                File file = new File("\\root\\TOKEN.txt");
+                File file = new File("root/TOKEN.txt");
                 FileReader fileReader = new FileReader(file);
                 int singalCh;
                 while ((singalCh = fileReader.read()) != -1) {

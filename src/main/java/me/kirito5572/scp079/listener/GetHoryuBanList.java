@@ -130,7 +130,7 @@ public class GetHoryuBanList extends ListenerAdapter {
                     }
                 } else if(App.getInstance().getOsInfo() == App.linux) {
                     try {
-                        reader = new InputStreamReader(new FileInputStream("\\root\\horyu_rule.json"), StandardCharsets.UTF_8);
+                        reader = new InputStreamReader(new FileInputStream("root/horyu_rule.json"), StandardCharsets.UTF_8);
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
                         return;
