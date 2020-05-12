@@ -30,8 +30,8 @@ public class SQLDB {
             SQLPasswordFile = new File("C:\\DiscordServerBotSecrets\\SCP-079\\SQLPassword.txt");
             SQLEndPointFile = new File("C:\\DiscordServerBotSecrets\\SCP-079\\endPoint.txt");
         } else if(App.getInstance().getOsInfo() == App.linux) {
-            SQLPasswordFile = new File("root\\SQLPassword.txt");
-            SQLEndPointFile = new File("root\\endPoint.txt");
+            SQLPasswordFile = new File("\\root\\SQLPassword.txt");
+            SQLEndPointFile = new File("\\root\\endPoint.txt");
         } else {
             return;
         }
