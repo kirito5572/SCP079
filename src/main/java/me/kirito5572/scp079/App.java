@@ -55,6 +55,7 @@ public class App {
         instance = this;
 
         String os = System.getProperty("os.name").toLowerCase();
+        System.out.println(os);
         if (os.contains("win")) {
             System.out.println(System.getProperty("os.name") + " 에서 부팅 시작....");
             osInfo = App.windows;
