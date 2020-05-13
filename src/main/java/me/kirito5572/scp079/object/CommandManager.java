@@ -26,6 +26,7 @@ public class CommandManager {
         addCommand(ObjectPool.get(UserInfoCommand.class));
         addCommand(ObjectPool.get(ConfigCommand.class));
         addCommand(ObjectPool.get(TransCommand.class));
+        addCommand(ObjectPool.get(SteamUserInfoCommand.class));
     }
 
     private void addCommand(ICommand command) {
