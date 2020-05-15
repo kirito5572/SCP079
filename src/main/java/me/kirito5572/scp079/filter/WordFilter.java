@@ -14,8 +14,9 @@ public class WordFilter {
         public int matchSize = 0;
     }
 
-    private List<String> list;
+    public List<String> list;
     public void init() {
+        ObjectPool.get(FilterListener.class).reload();
         list = ObjectPool.get(FilterListener.class).getList();
     }
     public WordFilterResult valid(String message) {
@@ -24,12 +25,12 @@ public class WordFilter {
         WordFilterResult r = new WordFilterResult();
         for(String data : list) {
             if (message.contains(data)) {
-                r.isWarn = true;
                 if(message_Raw.contains(data)) {
                     r.isMatch = true;
                     r.filter_Match = r.filter_Match + data + ",";
                     r.matchSize++;
                 } else {
+                    r.isWarn = true;
                     r.filter_Warn = r.filter_Warn + data + ",";
                 }
             }

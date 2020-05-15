@@ -92,7 +92,7 @@ public class SQLDB {
         }
     }
 
-    public String[] SQLdownload(String SteamID) throws SQLException, ClassNotFoundException {
+    public String[] SQLdownload(String SteamID) throws SQLException {
         String[] data = new String[]{
                 null, null, null, null, null,
                 null, null, null, null, null

@@ -258,6 +258,7 @@ public class ConfigCommand implements ICommand, Reloadable {
                                 if (args.get(2).equals("활성화")) {
                                     enable = 1;
                                 } else if (args.get(2).equals("비활성화")) {
+                                    enable = 0;
                                 } else {
                                     event.getChannel().sendMessage("활성화/비활성화 조건이여야 합니다.\n" +
                                             "입력된 조건:" + args.get(2)).queue();
@@ -355,11 +356,11 @@ public class ConfigCommand implements ICommand, Reloadable {
                                     return;
                                 }
                                 String executeString;
-                                if (count == 0) {
-                                    executeString = "UPDATE `079_config`.filter_enable SET kick=0 WHERE guildId=" + event.getGuild().getId() + ";";
-                                } else {
-                                    executeString = "UPDATE `079_config`.filter_enable SET kick=" + count + " WHERE guildId=" + event.getGuild().getId() + ";";
+                                if (count <= 0) {
+                                    count = 0;
                                 }
+                                executeString = "UPDATE `079_config`.filter_enable SET kick=" + count + " WHERE guildId=" + event.getGuild().getId() + ";";
+
                                 try {
                                     Statement statement = ObjectPool.get(SQLDB.class).getConnection().createStatement();
                                     statement.executeUpdate(executeString);
@@ -385,11 +386,11 @@ public class ConfigCommand implements ICommand, Reloadable {
                                     return;
                                 }
                                 String executeString;
-                                if (count == 0) {
-                                    executeString = "UPDATE `079_config`.filter_enable SET ban=0 WHERE guildId=" + event.getGuild().getId() + ";";
-                                } else {
-                                    executeString = "UPDATE `079_config`.filter_enable SET ban=" + count + " WHERE guildId=" + event.getGuild().getId() + ";";
+                                if (count <= 0) {
+                                    count = 0;
                                 }
+                                executeString = "UPDATE `079_config`.filter_enable SET ban=" + count + " WHERE guildId=" + event.getGuild().getId() + ";";
+
                                 try {
                                     Statement statement = ObjectPool.get(SQLDB.class).getConnection().createStatement();
                                     statement.executeUpdate(executeString);

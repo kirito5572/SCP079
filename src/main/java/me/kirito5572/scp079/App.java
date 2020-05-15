@@ -4,7 +4,10 @@ package me.kirito5572.scp079;/*
 
 import me.duncte123.botcommons.messaging.EmbedUtils;
 import me.duncte123.botcommons.web.WebUtils;
+import me.kirito5572.scp079.command.ConfigCommand;
+import me.kirito5572.scp079.filter.WordFilter;
 import me.kirito5572.scp079.listener.ActivityChangeListener;
+import me.kirito5572.scp079.listener.FilterListener;
 import me.kirito5572.scp079.listener.GetHoryuBanList;
 import me.kirito5572.scp079.listener.Listener;
 import me.kirito5572.scp079.object.CommandManager;
@@ -13,7 +16,6 @@ import me.kirito5572.scp079.object.SQLDB;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
-import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.utils.ChunkingFilter;
@@ -121,13 +123,16 @@ public class App {
         Listener listener = new Listener(commandManager);
         GetHoryuBanList getHoryuBanList = new GetHoryuBanList();
         ActivityChangeListener activityChangeListener = new ActivityChangeListener();
+        FilterListener filterListener = new FilterListener();
+        ObjectPool.get(ConfigCommand.class).reload();
+        ObjectPool.get(WordFilter.class).init();
 
         JDA jda;
         try {
             logger.info("부팅");
             jda = JDABuilder.createDefault(TOKEN)
                     .setAutoReconnect(true)
-                    .addEventListeners(listener, getHoryuBanList, activityChangeListener)
+                    .addEventListeners(listener, getHoryuBanList, activityChangeListener, filterListener)
                     .setEnabledIntents(GatewayIntent.getIntents(GatewayIntent.ALL_INTENTS))
                     .setChunkingFilter(ChunkingFilter.ALL)
                     .build().awaitReady();
